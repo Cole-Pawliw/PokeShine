@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2ae8pqnmg0s5"]
+
+[ext_resource type="Script" path="res://Scripts/SceneController.cs" id="1_uerx3"]
+[ext_resource type="PackedScene" uid="uid://dgj5yuhlagrg8" path="res://Scenes/MainMenu.tscn" id="2_r3nyo"]
+[ext_resource type="PackedScene" uid="uid://ugxewxi8b38p" path="res://Scenes/ShinyHuntScreen.tscn" id="3_da00u"]
+
+[node name="SceneController" type="Node"]
+script = ExtResource("1_uerx3")
+
+[node name="MainMenu" parent="." instance=ExtResource("2_r3nyo")]
+
+[node name="ShinyHuntScreen" parent="." instance=ExtResource("3_da00u")]
+visible = false

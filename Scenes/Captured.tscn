@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5chr2l42fkts"]
+
+[ext_resource type="Script" path="res://Scripts/Captured.cs" id="1_6t67q"]
+[ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_7txgh"]
+[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_ti3n2"]
+
+[node name="Captured" type="Control"]
+custom_minimum_size = Vector2(457, 84)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -20.0
+offset_bottom = -635.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6t67q")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 460.0
+offset_bottom = 85.0
+
+[node name="ShinySprite" type="Sprite2D" parent="."]
+position = Vector2(45, 42)
+scale = Vector2(1.05, 1.05)
+texture = ExtResource("2_7txgh")
+
+[node name="Info" type="Label" parent="."]
+layout_mode = 0
+offset_left = 159.0
+offset_right = 358.0
+offset_bottom = 85.0
+theme = ExtResource("3_ti3n2")
+theme_override_font_sizes/font_size = 26
+text = "XXXXX
+MM/DD/YYYY"
+horizontal_alignment = 1
+vertical_alignment = 1

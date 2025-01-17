@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://jiq0ec4wmt54"]
+
+[ext_resource type="Script" path="res://Scripts/OptionSelect.cs" id="1_un06g"]
+[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_pele7"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_p2inl"]
+[ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="4_7cp8t"]
+
+[node name="OptionSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_un06g")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 720.0
+color = Color(0.760784, 0.376471, 0.384314, 1)
+
+[node name="ListContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_top = 120.0
+offset_right = 480.0
+offset_bottom = 720.0
+
+[node name="List" type="ItemList" parent="ListContainer"]
+custom_minimum_size = Vector2(480, 600)
+layout_mode = 2
+theme = ExtResource("2_pele7")
+
+[node name="BackButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 12.0
+offset_right = 115.0
+offset_bottom = 108.0
+texture_normal = ExtResource("3_p2inl")
+stretch_mode = 0
+
+[node name="ShinyButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 12.0
+offset_right = 461.0
+offset_bottom = 108.0
+texture_normal = ExtResource("4_7cp8t")
+stretch_mode = 0

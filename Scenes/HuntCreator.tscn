@@ -1,0 +1,107 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4vgfm2j2x2w"]
+
+[ext_resource type="Script" path="res://Scripts/HuntCreator.cs" id="1_qvm6q"]
+[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_p8t5h"]
+
+[node name="HuntCreator" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qvm6q")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 720.0
+color = Color(0.760784, 0.376471, 0.384314, 1)
+
+[node name="GameListContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_left = 165.0
+offset_top = 120.0
+offset_right = 315.0
+offset_bottom = 220.0
+
+[node name="GameList" type="ItemList" parent="GameListContainer"]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+theme = ExtResource("2_p8t5h")
+item_count = 22
+item_0/text = "Ruby"
+item_1/text = "Sapphire"
+item_2/text = "Emerald"
+item_3/text = "Fire Red"
+item_4/text = "Leaf Green"
+item_5/text = "Diamond"
+item_6/text = "Pearl"
+item_7/text = "Platinum"
+item_8/text = "Heart Gold"
+item_9/text = "Soul Silver"
+item_10/text = "Black"
+item_11/text = "White"
+item_12/text = "Black 2"
+item_13/text = "White 2"
+item_14/text = "X"
+item_15/text = "Y"
+item_16/text = "Omega Ruby"
+item_17/text = "Alpha Sapphire"
+item_18/text = "Sun"
+item_19/text = "Moon"
+item_20/text = "Ultra Sun"
+item_21/text = "Ultra Moon"
+
+[node name="PokemonListContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_left = 139.0
+offset_top = 250.0
+offset_right = 339.0
+offset_bottom = 350.0
+
+[node name="PokemonList" type="ItemList" parent="PokemonListContainer"]
+visible = false
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme = ExtResource("2_p8t5h")
+
+[node name="MethodListContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_left = 139.0
+offset_top = 400.0
+offset_right = 339.0
+offset_bottom = 500.0
+
+[node name="MethodList" type="ItemList" parent="MethodListContainer"]
+visible = false
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme = ExtResource("2_p8t5h")
+
+[node name="CharmButton" type="CheckBox" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 161.0
+offset_top = 516.0
+offset_right = 308.0
+offset_bottom = 547.0
+theme = ExtResource("2_p8t5h")
+text = "Shiny Charm"
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 652.0
+offset_right = 276.0
+offset_bottom = 698.0
+theme = ExtResource("2_p8t5h")
+text = "Start Hunt"
+
+[connection signal="item_selected" from="GameListContainer/GameList" to="." method="GameVersionSelected"]
+[connection signal="item_selected" from="PokemonListContainer/PokemonList" to="." method="PokemonSelected"]
+[connection signal="item_selected" from="MethodListContainer/MethodList" to="." method="HuntMethodSelected"]
+[connection signal="pressed" from="StartButton" to="." method="EmitStartHunt"]
