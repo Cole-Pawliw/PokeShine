@@ -101,7 +101,17 @@ offset_bottom = 698.0
 theme = ExtResource("2_p8t5h")
 text = "Start Hunt"
 
+[node name="GameSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 130.0
+offset_right = 136.0
+offset_bottom = 207.0
+theme = ExtResource("2_p8t5h")
+text = "Game:"
+
 [connection signal="item_selected" from="GameListContainer/GameList" to="." method="GameVersionSelected"]
 [connection signal="item_selected" from="PokemonListContainer/PokemonList" to="." method="PokemonSelected"]
 [connection signal="item_selected" from="MethodListContainer/MethodList" to="." method="HuntMethodSelected"]
 [connection signal="pressed" from="StartButton" to="." method="EmitStartHunt"]
+[connection signal="pressed" from="GameSelect" to="." method="GameSelectPressed"]

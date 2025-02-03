@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://jiq0ec4wmt54"]
+[gd_scene load_steps=4 format=3 uid="uid://jiq0ec4wmt54"]
 
 [ext_resource type="Script" path="res://Scripts/OptionSelect.cs" id="1_un06g"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_pele7"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_p2inl"]
 [ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="4_7cp8t"]
 
 [node name="OptionSelect" type="Control"]
@@ -16,6 +15,7 @@ script = ExtResource("1_un06g")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 0
+offset_top = 390.0
 offset_right = 480.0
 offset_bottom = 720.0
 color = Color(0.760784, 0.376471, 0.384314, 1)
@@ -23,29 +23,39 @@ color = Color(0.760784, 0.376471, 0.384314, 1)
 [node name="ListContainer" type="ScrollContainer" parent="."]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 0
-offset_top = 120.0
+offset_top = 470.0
 offset_right = 480.0
 offset_bottom = 720.0
 
 [node name="List" type="ItemList" parent="ListContainer"]
-custom_minimum_size = Vector2(480, 600)
+custom_minimum_size = Vector2(480, 250)
 layout_mode = 2
 theme = ExtResource("2_pele7")
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 19.0
-offset_top = 12.0
-offset_right = 115.0
-offset_bottom = 108.0
-texture_normal = ExtResource("3_p2inl")
-stretch_mode = 0
+offset_right = 480.0
+offset_bottom = 390.0
 
-[node name="ShinyButton" type="TextureButton" parent="."]
+[node name="ConfirmButton" type="TextureButton" parent="."]
 layout_mode = 0
-offset_left = 365.0
-offset_top = 12.0
-offset_right = 461.0
-offset_bottom = 108.0
+offset_left = 405.0
+offset_top = 396.0
+offset_right = 501.0
+offset_bottom = 492.0
+scale = Vector2(0.7, 0.7)
 texture_normal = ExtResource("4_7cp8t")
 stretch_mode = 0
+
+[node name="Search" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 411.0
+offset_right = 297.0
+offset_bottom = 447.0
+placeholder_text = "asdf"
+
+[connection signal="item_selected" from="ListContainer/List" to="." method="ItemSelected"]
+[connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]
+[connection signal="pressed" from="ConfirmButton" to="." method="ConfirmButtonPressed"]
+[connection signal="text_changed" from="Search" to="." method="SearchUpdated"]

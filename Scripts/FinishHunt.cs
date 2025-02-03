@@ -29,5 +29,5 @@ public partial class FinishHunt : Control
 		
 	}
 	
-	private void 
+	
 }

@@ -4,18 +4,24 @@ using System;
 public partial class OptionSelect : Control
 {
 	[Signal]
-	public delegate void BackButtonPressedEventHandler();
+	public delegate void CloseMenuEventHandler(string selected);
 	
+	string selectedValue;
+	string[] allValues;
 	ItemList list;
+	TextEdit searchBar;
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		list = GetNode<ItemList>("ListContainer/List");
+		searchBar = GetNode<TextEdit>("Search");
 	}
 	
 	public void CreateList(int listType, string[] items)
 	{
-		foreach (string item in items)
+		allValues = items;
+		foreach (string item in allValues)
 		{
 			list.AddItem(item);
 		}
@@ -23,11 +29,32 @@ public partial class OptionSelect : Control
 	
 	private void ItemSelected(long index)
 	{
-		
+		selectedValue = list.GetItemText((int)index);
 	}
 	
-	private void Back()
+	private void SearchUpdated(string newText)
 	{
-		EmitSignal("BackButtonPressed");
+		list.Clear(); // Clear every item from the list
+		// Re-add the items that match the search term
+		foreach (string item in allValues)
+		{
+			// Only add the item if the current search text is in the string
+			if (item.Contains(newText)) { list.AddItem(item); }
+		}
+	}
+	
+	private void BackButtonPressed()
+	{
+		Back(""); // Return to the previous screen with no new item
+	}
+	
+	private void ConfirmButtonPressed()
+	{
+		Back(selectedValue); // Return to the previous screen with the newly selected item
+	}
+	
+	private void Back(string itemName)
+	{
+		EmitSignal("CloseMenu", itemName);
 	}
 }

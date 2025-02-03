@@ -30,9 +30,12 @@ public partial class HuntCreator : Control
 	ItemList methodList;
 	CheckBox charmButton;
 	
+	Button gameSelect;
+	
 	string selectedGame = "";
 	string selectedPokemon = "";
 	string selectedMethod = "";
+	int optionMode = 0;
 	
 	// This dictionary maps the names of pokemon games to corresponding information
 	// The int corresponds with an index to be used in methodAvailabilityDict
@@ -52,6 +55,7 @@ public partial class HuntCreator : Control
 		methodList = GetNode<ItemList>("MethodListContainer/MethodList");
 		charmButton = GetNode<CheckBox>("CharmButton");
 		
+		gameSelect = GetNode<Button>("GameSelect");
 		
 		// Stores the repeated GameInfo objects for re-use in gameInfoDict
 		GameInfo[] infoStorage = { new GameInfo(0, "RS"), new GameInfo(1, "FL"), new GameInfo(2, "DP"), 
@@ -175,6 +179,86 @@ public partial class HuntCreator : Control
 		selectedMethod = methodList.GetItemText((int)index);
 	}
 	
+	private void GameSelectPressed()
+	{
+		optionMode = 1;
+		OpenSelector();
+	}
+	
+	private void OpenSelector()
+	{
+		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
+		AddChild(selectScreen);
+		
+		selectScreen.CloseMenu += UpdateSelection;
+	}
+	
+	private void UpdateSelection(string selectedOption)
+	{
+		if (selectedOption == "")
+		{
+			return;
+		}
+		
+		/*
+		// Set other lists invisible before changing
+		pokemonList.Visible = false;
+		methodList.Visible = false;
+		charmButton.Visible = false;
+		
+		charmButton.ButtonPressed = false; // Make sure user cannot enable shiny charm then change games
+		selectedGame = gameList.GetItemText((int)index); // Get the name of the selected game
+		GameInfo info = gameInfoDict[selectedGame]; // Get the code for the selected game
+		
+		setPokemonList(info.spritesFolder); // Add all available pokemon to the list
+		setMethodList(info.methodID); // Add all available methods to the list
+		
+		// Make changed lists visible again
+		pokemonList.Visible = true;
+		methodList.Visible = true;
+		if (info.methodID >= 5) // Shiny charm introduced in Black2/White2
+		{
+			charmButton.Visible = true;
+		}*/
+		
+		if (optionMode == 1)
+		{
+			selectedGame = selectedOption;
+			charmButton.Visible = false; // Hide the charm button in case it isn't available
+			
+			// Reset other selections so non existent options can't be selected
+			selectedPokemon = "";
+			selectedMethod = "";
+			charmButton.ButtonPressed = false; // Make sure user cannot enable shiny charm then change games
+			
+			GameInfo info = gameInfoDict[selectedGame]; // Get the code for the selected game
+			if (info.methodID >= 5) // Shiny charm introduced in Black2/White2
+			{
+				charmButton.Visible = true;
+			}
+		}
+		else if (optionMode == 2)
+		{
+			selectedPokemon = selectedOption;
+		}
+		else if (optionMode == 3)
+		{
+			selectedMethod = selectedOption;
+		}
+		UpdateButtonText();
+		CloseSelector();
+	}
+	
+	private void CloseSelector()
+	{
+		
+	}
+	
+	private void UpdateButtonText()
+	{
+		gameSelect.Text = "Game:\n" + selectedGame;
+	}
+	
 	private void EmitStartHunt()
 	{
 		GD.Print(selectedPokemon);
@@ -187,7 +271,7 @@ public partial class HuntCreator : Control
 		path = path + fileName;
 		
 		if (!File.Exists(path))
-		{
+		{	
 			return null;
 		}
 		
