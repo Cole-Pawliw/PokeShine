@@ -82,6 +82,33 @@ custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme = ExtResource("2_p8t5h")
 
+[node name="GameSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 130.0
+offset_right = 136.0
+offset_bottom = 207.0
+theme = ExtResource("2_p8t5h")
+text = "Game:"
+
+[node name="PokemonSelect" type="Button" parent="."]
+visible = false
+offset_left = 54.0
+offset_top = 244.0
+offset_right = 151.0
+offset_bottom = 321.0
+theme = ExtResource("2_p8t5h")
+text = "Pokemon:"
+
+[node name="MethodSelect" type="Button" parent="."]
+visible = false
+offset_left = 81.0
+offset_top = 341.0
+offset_right = 178.0
+offset_bottom = 418.0
+theme = ExtResource("2_p8t5h")
+text = "Method:"
+
 [node name="CharmButton" type="CheckBox" parent="."]
 visible = false
 layout_mode = 0
@@ -101,17 +128,10 @@ offset_bottom = 698.0
 theme = ExtResource("2_p8t5h")
 text = "Start Hunt"
 
-[node name="GameSelect" type="Button" parent="."]
-layout_mode = 0
-offset_left = 39.0
-offset_top = 130.0
-offset_right = 136.0
-offset_bottom = 207.0
-theme = ExtResource("2_p8t5h")
-text = "Game:"
-
 [connection signal="item_selected" from="GameListContainer/GameList" to="." method="GameVersionSelected"]
 [connection signal="item_selected" from="PokemonListContainer/PokemonList" to="." method="PokemonSelected"]
 [connection signal="item_selected" from="MethodListContainer/MethodList" to="." method="HuntMethodSelected"]
-[connection signal="pressed" from="StartButton" to="." method="EmitStartHunt"]
 [connection signal="pressed" from="GameSelect" to="." method="GameSelectPressed"]
+[connection signal="pressed" from="PokemonSelect" to="." method="PokemonSelectPressed"]
+[connection signal="pressed" from="MethodSelect" to="." method="MethodSelectPressed"]
+[connection signal="pressed" from="StartButton" to="." method="EmitStartHunt"]

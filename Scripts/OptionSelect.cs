@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class OptionSelect : Control
 {
@@ -7,18 +8,18 @@ public partial class OptionSelect : Control
 	public delegate void CloseMenuEventHandler(string selected);
 	
 	string selectedValue;
-	string[] allValues;
+	List<string> allValues;
 	ItemList list;
-	TextEdit searchBar;
+	LineEdit searchBar;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		list = GetNode<ItemList>("ListContainer/List");
-		searchBar = GetNode<TextEdit>("Search");
+		searchBar = GetNode<LineEdit>("Search");
 	}
 	
-	public void CreateList(int listType, string[] items)
+	public void CreateList(int listType, List<string> items)
 	{
 		allValues = items;
 		foreach (string item in allValues)
@@ -39,7 +40,7 @@ public partial class OptionSelect : Control
 		foreach (string item in allValues)
 		{
 			// Only add the item if the current search text is in the string
-			if (item.Contains(newText)) { list.AddItem(item); }
+			if (item.ToLower().Contains(newText.ToLower())) { list.AddItem(item); }
 		}
 	}
 	
@@ -56,5 +57,11 @@ public partial class OptionSelect : Control
 	private void Back(string itemName)
 	{
 		EmitSignal("CloseMenu", itemName);
+	}
+	
+	// Destroy this UI element
+	public void Cleanup()
+	{
+		QueueFree();
 	}
 }
