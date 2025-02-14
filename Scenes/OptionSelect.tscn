@@ -53,7 +53,6 @@ offset_left = 112.0
 offset_top = 411.0
 offset_right = 297.0
 offset_bottom = 447.0
-placeholder_text = "asdf"
 
 [connection signal="item_selected" from="ListContainer/List" to="." method="ItemSelected"]
 [connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]

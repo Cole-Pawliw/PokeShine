@@ -24,7 +24,27 @@ public partial class FinishHunt : Control
 		
 	}
 	
-	private void SelectPokemonPressed()
+	private void PokemonSelectPressed()
+	{
+		
+	}
+	
+	private void MethodSelectPressed()
+	{
+		
+	}
+	
+	private void GameSelectPressed()
+	{
+		
+	}
+	
+	private void GenderSelectPressed()
+	{
+		
+	}
+	
+	private void BallSelectPressed()
 	{
 		
 	}

@@ -70,6 +70,7 @@ public partial class SceneController : Node
 		huntScreen.Visible = false;
 		
 		startHuntScreen.StartHunt += StartHuntSignalReceiver;
+		startHuntScreen.BackButtonPressed += CloseCreator;
 	}
 	
 	private void DeleteHunt()
@@ -78,6 +79,14 @@ public partial class SceneController : Node
 		mainScreen.RemoveHunt(data);
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
+	}
+	
+	private void CloseCreator()
+	{
+		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
+		mainScreen.Visible = true;
+		startHuntScreen.Visible = false;
+		startHuntScreen.Cleanup();
 	}
 	
 	private void StartHuntSignalReceiver(string gameName, string pokemonName, string method, bool charm)

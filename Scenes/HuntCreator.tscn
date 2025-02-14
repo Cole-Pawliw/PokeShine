@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4vgfm2j2x2w"]
+[gd_scene load_steps=4 format=3 uid="uid://b4vgfm2j2x2w"]
 
 [ext_resource type="Script" path="res://Scripts/HuntCreator.cs" id="1_qvm6q"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_p8t5h"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_bv7v0"]
 
 [node name="HuntCreator" type="Control"]
 layout_mode = 3
@@ -18,120 +19,62 @@ offset_right = 480.0
 offset_bottom = 720.0
 color = Color(0.760784, 0.376471, 0.384314, 1)
 
-[node name="GameListContainer" type="ScrollContainer" parent="."]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 0
-offset_left = 165.0
-offset_top = 120.0
-offset_right = 315.0
-offset_bottom = 220.0
-
-[node name="GameList" type="ItemList" parent="GameListContainer"]
-custom_minimum_size = Vector2(150, 100)
-layout_mode = 2
-theme = ExtResource("2_p8t5h")
-item_count = 22
-item_0/text = "Ruby"
-item_1/text = "Sapphire"
-item_2/text = "Emerald"
-item_3/text = "Fire Red"
-item_4/text = "Leaf Green"
-item_5/text = "Diamond"
-item_6/text = "Pearl"
-item_7/text = "Platinum"
-item_8/text = "Heart Gold"
-item_9/text = "Soul Silver"
-item_10/text = "Black"
-item_11/text = "White"
-item_12/text = "Black 2"
-item_13/text = "White 2"
-item_14/text = "X"
-item_15/text = "Y"
-item_16/text = "Omega Ruby"
-item_17/text = "Alpha Sapphire"
-item_18/text = "Sun"
-item_19/text = "Moon"
-item_20/text = "Ultra Sun"
-item_21/text = "Ultra Moon"
-
-[node name="PokemonListContainer" type="ScrollContainer" parent="."]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 0
-offset_left = 139.0
-offset_top = 250.0
-offset_right = 339.0
-offset_bottom = 350.0
-
-[node name="PokemonList" type="ItemList" parent="PokemonListContainer"]
-visible = false
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 2
-theme = ExtResource("2_p8t5h")
-
-[node name="MethodListContainer" type="ScrollContainer" parent="."]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 0
-offset_left = 139.0
-offset_top = 400.0
-offset_right = 339.0
-offset_bottom = 500.0
-
-[node name="MethodList" type="ItemList" parent="MethodListContainer"]
-visible = false
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 2
-theme = ExtResource("2_p8t5h")
-
 [node name="GameSelect" type="Button" parent="."]
 layout_mode = 0
-offset_left = 39.0
+offset_left = 165.0
 offset_top = 130.0
-offset_right = 136.0
-offset_bottom = 207.0
+offset_right = 315.0
+offset_bottom = 230.0
 theme = ExtResource("2_p8t5h")
 text = "Game:"
 
 [node name="PokemonSelect" type="Button" parent="."]
 visible = false
-offset_left = 54.0
-offset_top = 244.0
-offset_right = 151.0
-offset_bottom = 321.0
+offset_left = 165.0
+offset_top = 270.0
+offset_right = 315.0
+offset_bottom = 370.0
 theme = ExtResource("2_p8t5h")
 text = "Pokemon:"
 
 [node name="MethodSelect" type="Button" parent="."]
 visible = false
-offset_left = 81.0
-offset_top = 341.0
-offset_right = 178.0
-offset_bottom = 418.0
+offset_left = 165.0
+offset_top = 410.0
+offset_right = 315.0
+offset_bottom = 510.0
 theme = ExtResource("2_p8t5h")
 text = "Method:"
 
 [node name="CharmButton" type="CheckBox" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 161.0
-offset_top = 516.0
-offset_right = 308.0
-offset_bottom = 547.0
+offset_left = 175.0
+offset_top = 540.0
+offset_right = 305.0
+offset_bottom = 571.0
 theme = ExtResource("2_p8t5h")
 text = "Shiny Charm"
 
 [node name="StartButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 187.0
-offset_top = 652.0
-offset_right = 276.0
-offset_bottom = 698.0
+offset_left = 195.0
+offset_top = 600.0
+offset_right = 285.0
+offset_bottom = 650.0
 theme = ExtResource("2_p8t5h")
 text = "Start Hunt"
 
-[connection signal="item_selected" from="GameListContainer/GameList" to="." method="GameVersionSelected"]
-[connection signal="item_selected" from="PokemonListContainer/PokemonList" to="." method="PokemonSelected"]
-[connection signal="item_selected" from="MethodListContainer/MethodList" to="." method="HuntMethodSelected"]
+[node name="BackButton" type="TextureButton" parent="."]
+offset_left = 19.0
+offset_top = 12.0
+offset_right = 115.0
+offset_bottom = 108.0
+texture_normal = ExtResource("3_bv7v0")
+stretch_mode = 0
+
 [connection signal="pressed" from="GameSelect" to="." method="GameSelectPressed"]
 [connection signal="pressed" from="PokemonSelect" to="." method="PokemonSelectPressed"]
 [connection signal="pressed" from="MethodSelect" to="." method="MethodSelectPressed"]
 [connection signal="pressed" from="StartButton" to="." method="EmitStartHunt"]
+[connection signal="pressed" from="BackButton" to="." method="BackToMenu"]

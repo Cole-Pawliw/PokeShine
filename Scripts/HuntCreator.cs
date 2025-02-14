@@ -25,10 +25,6 @@ public class GameInfo
 
 public partial class HuntCreator : Control
 {
-	ItemList gameList;
-	ItemList pokemonList;
-	ItemList methodList;
-	
 	Button gameSelect;
 	Button pokemonSelect;
 	Button methodSelect;
@@ -51,17 +47,15 @@ public partial class HuntCreator : Control
 	
 	[Signal]
 	public delegate void StartHuntEventHandler(string gameName, string pokemonName, string method, bool charm);
+	[Signal]
+	public delegate void BackButtonPressedEventHandler();
 	
 	public override void _Ready()
 	{
-		gameList = GetNode<ItemList>("GameListContainer/GameList");
-		pokemonList = GetNode<ItemList>("PokemonListContainer/PokemonList");
-		methodList = GetNode<ItemList>("MethodListContainer/MethodList");
-		charmButton = GetNode<CheckBox>("CharmButton");
-		
 		gameSelect = GetNode<Button>("GameSelect");
 		pokemonSelect = GetNode<Button>("PokemonSelect");
 		methodSelect = GetNode<Button>("MethodSelect");
+		charmButton = GetNode<CheckBox>("CharmButton");
 		
 		// Stores the repeated GameInfo objects for re-use in gameInfoDict
 		GameInfo[] infoStorage = { new GameInfo(0, "RS"), new GameInfo(1, "FL"), new GameInfo(2, "DP"), 
@@ -112,79 +106,6 @@ public partial class HuntCreator : Control
 		*/
 	}
 	
-	private void GameVersionSelected(long index)
-	{
-		// Set other lists invisible before changing
-		pokemonList.Visible = false;
-		methodList.Visible = false;
-		charmButton.Visible = false;
-		
-		charmButton.ButtonPressed = false; // Make sure user cannot enable shiny charm then change games
-		selectedGame = gameList.GetItemText((int)index); // Get the name of the selected game
-		GameInfo info = gameInfoDict[selectedGame]; // Get the code for the selected game
-		
-		setPokemonList(info.spritesFolder); // Add all available pokemon to the list
-		setMethodList(info.methodID); // Add all available methods to the list
-		
-		// Make changed lists visible again
-		pokemonList.Visible = true;
-		methodList.Visible = true;
-		if (info.methodID >= 5) // Shiny charm introduced in Black2/White2
-		{
-			charmButton.Visible = true;
-		}
-	}
-	
-	private void setPokemonList(string folderName)
-	{
-		// Remove previous pokemon from the list
-		pokemonList.Clear();
-		
-		// Open the sprites folder for the selected game
-		using var spritesDir = DirAccess.Open($"res://Sprites/{folderName}/Regular/");
-		spritesDir.ListDirBegin();
-		string fileName = spritesDir.GetNext();
-		
-		// Add the name of each sprite to the pokemon ItemList
-		string pokemonName;
-		while (fileName != "")
-		{
-			// Prevent double names due to import files in the folders
-			if (fileName.Split('.').Last() != "import") {
-				pokemonName = fileName.Split('.')[0];
-				pokemonList.AddItem(pokemonName);
-			}
-			fileName = spritesDir.GetNext();
-		}
-	}
-	
-	private void setMethodList(int gameCode)
-	{
-		// Clear the previous methods from the list
-		methodList.Clear();
-		
-		// If the method is available in the selected game, add it to methodList
-		foreach(KeyValuePair<string, bool[]> method in methodAvailabilityDict)
-		{
-			if (method.Value[gameCode] == true)
-			{
-				methodList.AddItem(method.Key);
-			}
-		}
-	}
-
-
-	private void PokemonSelected(long index)
-	{
-		selectedPokemon = pokemonList.GetItemText((int)index);
-	}
-
-
-	private void HuntMethodSelected(long index)
-	{
-		selectedMethod = methodList.GetItemText((int)index);
-	}
-	
 	private void GameSelectPressed()
 	{
 		optionMode = 1;
@@ -193,12 +114,20 @@ public partial class HuntCreator : Control
 	
 	private void PokemonSelectPressed()
 	{
+		if (selectedGame == "")
+		{
+			return;
+		}
 		optionMode = 2;
 		OpenSelector();
 	}
 	
 	private void MethodSelectPressed()
 	{
+		if (selectedGame == "")
+		{
+			return;
+		}
 		optionMode = 3;
 		OpenSelector();
 	}
@@ -214,14 +143,17 @@ public partial class HuntCreator : Control
 		} 
 		else if (optionMode == 2) // Send list of pokemon
 		{
+			GameInfo info = gameInfoDict[selectedGame]; // Get the code for the selected game
+			string folderName = info.spritesFolder; // Get the associated folder name for the current game
+			
 			// Open the sprites folder for the selected game
 			using var spritesDir = DirAccess.Open($"res://Sprites/{folderName}/Regular/");
 			spritesDir.ListDirBegin();
 			string fileName = spritesDir.GetNext();
 			
-			List<string> names = new List<string>();
+			List<string> names = new List<string>(); // List of pokemon names
 			
-			// Add the name of each sprite to the pokemon ItemList
+			// Add the name of each sprite to the pokemon list
 			string pokemonName;
 			while (fileName != "")
 			{
@@ -237,7 +169,19 @@ public partial class HuntCreator : Control
 		}
 		else if (optionMode == 3) // Send list of methods
 		{
-			selectScreen.CreateList(optionMode, new List<string>(methodAvailabilityDict.Keys));
+			GameInfo info = gameInfoDict[selectedGame]; // Get the code for the selected game
+			int gameCode = info.methodID; // Get the associated folder name for the current game
+			
+			List<string> methods = new List<string>();
+			// If the method is available in the selected game, add it to methods
+			foreach(KeyValuePair<string, bool[]> method in methodAvailabilityDict)
+			{
+				if (method.Value[gameCode] == true)
+				{
+					methods.Add(method.Key);
+				}
+			}
+			selectScreen.CreateList(optionMode, methods);
 		}
 		
 		selectScreen.CloseMenu += UpdateSelection;
@@ -256,10 +200,10 @@ public partial class HuntCreator : Control
 		gameSelect.Visible = false;
 		pokemonSelect.Visible = false;
 		methodSelect.Visible = false;
-		charmButton.Visible = false;
 		
 		if (optionMode == 1)
 		{
+			charmButton.Visible = false;
 			selectedGame = selectedOption;
 			
 			// Reset other selections so non existent options can't be selected
@@ -302,12 +246,17 @@ public partial class HuntCreator : Control
 	private void UpdateButtonText()
 	{
 		gameSelect.Text = "Game:\n" + selectedGame;
+		pokemonSelect.Text = "Pokemon:\n" + selectedPokemon;
+		methodSelect.Text = "Method:\n" + selectedMethod;
 	}
 	
 	private void EmitStartHunt()
 	{
-		GD.Print(selectedPokemon);
-		EmitSignal("StartHunt", selectedGame, selectedPokemon, selectedMethod, charmButton.ButtonPressed);
+		// Only emit the signal if all selections have been made
+		if (selectedGame != "" && selectedPokemon != "" && selectedMethod != "")
+		{
+			EmitSignal("StartHunt", selectedGame, selectedPokemon, selectedMethod, charmButton.ButtonPressed);
+		}
 	}
 	
 	private string LoadJsonFromFile(string path, string fileName)
@@ -330,6 +279,11 @@ public partial class HuntCreator : Control
 		}
 		
 		return data;
+	}
+	
+	public void BackToMenu()
+	{
+		EmitSignal("BackButtonPressed");
 	}
 	
 	// Destroy this UI element
