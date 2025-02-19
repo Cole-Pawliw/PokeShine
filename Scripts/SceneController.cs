@@ -15,10 +15,8 @@ KNOWN BUGS:
 
 /*
 Incomplete features
-- Store dates when starting/ending hunts
 - Make new json files on first launch (check for existence then create)
 - Save files
-- Finish hunt screen
 - View completed hunt details
 - Dynamic hunt odds on hunt screen
 

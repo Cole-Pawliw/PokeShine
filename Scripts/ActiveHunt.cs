@@ -111,6 +111,8 @@ public class HuntData
 	}
 	
 	public string huntMethod { get; set; } // The method being performed for the hunt, used to determine odds
+	public string capturedGender { get; set; } // The gender of the pokemon
+	public string capturedBall { get; set; } // The ball used to catch the pokemon
 	public bool charm { get; set; } = false; // An item that increases shiny odds
 	public int count { get; set; } = 0; // The current number of encounters/resets for the pokemon
 	public int incrementValue { get; set; } = 1; // The number to increase the counter by

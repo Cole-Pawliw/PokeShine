@@ -30,6 +30,7 @@ text = "Game:"
 
 [node name="PokemonSelect" type="Button" parent="."]
 visible = false
+layout_mode = 0
 offset_left = 165.0
 offset_top = 270.0
 offset_right = 315.0
@@ -39,6 +40,7 @@ text = "Pokemon:"
 
 [node name="MethodSelect" type="Button" parent="."]
 visible = false
+layout_mode = 0
 offset_left = 165.0
 offset_top = 410.0
 offset_right = 315.0
@@ -66,6 +68,7 @@ theme = ExtResource("2_p8t5h")
 text = "Start Hunt"
 
 [node name="BackButton" type="TextureButton" parent="."]
+layout_mode = 0
 offset_left = 19.0
 offset_top = 12.0
 offset_right = 115.0

@@ -19,7 +19,7 @@ public partial class OptionSelect : Control
 		searchBar = GetNode<LineEdit>("Search");
 	}
 	
-	public void CreateList(int listType, List<string> items)
+	public void CreateList(List<string> items)
 	{
 		allValues = items;
 		foreach (string item in allValues)

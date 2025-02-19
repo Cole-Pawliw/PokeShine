@@ -14,6 +14,8 @@ public partial class ShinyHuntScreen : Control
 	public delegate void BackButtonPressedEventHandler();
 	[Signal]
 	public delegate void DeleteSignalEventHandler();
+	[Signal]
+	public delegate void FinishHuntEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -117,11 +119,6 @@ public partial class ShinyHuntScreen : Control
 		UpdateCounterLabel();
 	}
 	
-	private void ShinyFound()
-	{
-		// Replace with function body.
-	}
-	
 	private void BackToMenu()
 	{
 		activeHunt = false;
@@ -153,6 +150,31 @@ public partial class ShinyHuntScreen : Control
 		RemoveChild(settingsMenu);
 		settingsMenu.Cleanup();
 		activeHunt = true;
+	}
+	
+	private void ShinyFound()
+	{
+		activeHunt = false;
+		FinishHunt finishMenu = (FinishHunt)GD.Load<PackedScene>("res://Scenes/FinishHunt.tscn").Instantiate();
+		AddChild(finishMenu);
+		finishMenu.Name = "Finish";
+		finishMenu.SetInitialSettings(data);
+		
+		finishMenu.BackButtonPressed += CloseFinishScreen;
+		finishMenu.FinishButtonPressed += HuntCompleted;
+	}
+	
+	private void CloseFinishScreen()
+	{
+		FinishHunt finishMenu = GetNode<FinishHunt>("Finish");
+		RemoveChild(finishMenu);
+		finishMenu.Cleanup();
+		activeHunt = true;
+	}
+	
+	private void HuntCompleted()
+	{
+		
 	}
 	
 	private void DeleteHunt()
