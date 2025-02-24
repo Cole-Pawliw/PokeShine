@@ -18,7 +18,6 @@ KNOWN BUGS:
 /*
 Incomplete features
 - Make new json files on first launch (check for existence then create)
-- Save files
 - View completed hunt details
 - Dynamic hunt odds on hunt screen
 
