@@ -31,7 +31,7 @@ public partial class MainMenu : Control
 		completedPanel = GetNode<Panel>("TabContainer/CompletedContainer/CompletedPanel");
 	}
 	
-	// Returns a list of ActiveHunt for each hunt in the scene
+	// Returns a list of HuntData for each hunt in the scene
 	public List<HuntData> GetHunts()
 	{
 		List<HuntData> list = new List<HuntData>(hunts);

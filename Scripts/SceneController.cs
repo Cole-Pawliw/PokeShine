@@ -6,6 +6,9 @@ using System.IO;
 
 // GD.Print();
 
+// SAVE FILE LOCATION
+// %appdata%\Godot\app_userdata\Shiny Hunt Tracker
+
 /*
 KNOWN BUGS:
 - Gen 6 games show all models, including those from gen 7
@@ -28,6 +31,9 @@ public partial class SceneController : Node
 {
 	MainMenu mainScreen;
 	ShinyHuntScreen huntScreen;
+	string saveFileName = "savefile.save";
+	
+	double timer = 0;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -37,8 +43,30 @@ public partial class SceneController : Node
 		
 		mainScreen.HuntButtonPressed += OpenHunt;
 		mainScreen.NewHuntButtonPressed += CreateNewHunt;
+		mainScreen.TreeExiting += AppClosing;
 		huntScreen.BackButtonPressed += CloseHunt;
 		huntScreen.DeleteSignal += DeleteHunt;
+		
+		Load();
+	}
+	
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		timer += delta;
+		
+		// Update the main menu and save everything every 5 minutes
+		if (timer > 300.0)
+		{
+			// Only update the current hunt if the hunt screen is open
+			if (huntScreen.Visible)
+			{
+				HuntData data = huntScreen.data;
+				mainScreen.UpdateHunt(data);
+			}
+			Save();
+			timer = 0.0;
+		}
 	}
 	
 	private void OpenHunt(int selectedHuntID)
@@ -53,6 +81,7 @@ public partial class SceneController : Node
 	{
 		HuntData data = huntScreen.data;
 		mainScreen.UpdateHunt(data);
+		Save();
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
 	}
@@ -74,6 +103,7 @@ public partial class SceneController : Node
 	{
 		HuntData data = huntScreen.data;
 		mainScreen.RemoveHunt(data);
+		Save();
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
 	}
@@ -91,11 +121,47 @@ public partial class SceneController : Node
 		string startDT = Time.GetDatetimeStringFromSystem();
 		HuntData huntToAdd = new HuntData(pokemonName, gameName, method, charm, startDT);
 		mainScreen.AddHunt(huntToAdd);
+		Save(); // Update save file with newly added hunt
 		
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		mainScreen.Visible = true;
 		startHuntScreen.Visible = false;
 		startHuntScreen.Cleanup();
+	}
+	
+	private void Save()
+	{
+		List<HuntData> allHunts = mainScreen.GetHunts();
+		
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		
+		string huntData = JsonSerializer.Serialize<List<HuntData>>(allHunts, options);
+		SaveJsonToFile(saveFileName, huntData);
+	}
+	
+	private void Load()
+	{
+		string path = ProjectSettings.GlobalizePath("user://");
+		string huntData = LoadJsonFromFile(path, saveFileName);
+		
+		if (huntData == null)
+		{
+			return;
+		}
+		
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(huntData, options)!;
+		
+		foreach (HuntData hunt in allHunts)
+		{
+			mainScreen.AddHunt(hunt);
+		}
 	}
 	
 	private void SaveJsonToFile(string fileName, string data)
@@ -138,5 +204,16 @@ public partial class SceneController : Node
 		}
 		
 		return data;
+	}
+	
+	private void AppClosing()
+	{
+		// Only update the current hunt if the hunt screen is open
+		if (huntScreen.Visible)
+		{
+			HuntData data = huntScreen.data;
+			mainScreen.UpdateHunt(data);
+		}
+		Save();
 	}
 }

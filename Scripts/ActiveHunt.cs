@@ -3,6 +3,10 @@ using System;
 
 public class HuntData
 {
+	public HuntData()
+	{
+		huntID = ++instances;
+	}
 	public HuntData(string name, string game)
 	{
 		pokemonName = name;
