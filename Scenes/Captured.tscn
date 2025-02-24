@@ -33,7 +33,7 @@ offset_right = 358.0
 offset_bottom = 85.0
 theme = ExtResource("3_ti3n2")
 theme_override_font_sizes/font_size = 26
-text = "XXXXX
-MM/DD/YYYY"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="pressed" from="Button" to="." method="SelectButton"]

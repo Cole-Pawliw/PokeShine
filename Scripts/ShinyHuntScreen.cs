@@ -158,7 +158,7 @@ public partial class ShinyHuntScreen : Control
 		FinishHunt finishMenu = (FinishHunt)GD.Load<PackedScene>("res://Scenes/FinishHunt.tscn").Instantiate();
 		AddChild(finishMenu);
 		finishMenu.Name = "Finish";
-		finishMenu.SetInitialSettings(data);
+		finishMenu.SetInitialSettings(new HuntData(data));
 		
 		finishMenu.BackButtonPressed += CloseFinishScreen;
 		finishMenu.FinishButtonPressed += HuntCompleted;
@@ -174,7 +174,11 @@ public partial class ShinyHuntScreen : Control
 	
 	private void HuntCompleted()
 	{
-		
+		FinishHunt finishMenu = GetNode<FinishHunt>("Finish");
+		data = finishMenu.data;
+		RemoveChild(finishMenu);
+		finishMenu.Cleanup();
+		BackToMenu();
 	}
 	
 	private void DeleteHunt()

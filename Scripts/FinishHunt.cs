@@ -14,7 +14,7 @@ public partial class FinishHunt : Control
 	CheckBox charmButton;
 	Label info;
 	
-	HuntData data;
+	public HuntData data;
 	int optionMode = 0;
 	
 	[Signal]
@@ -37,6 +37,7 @@ public partial class FinishHunt : Control
 	public void SetInitialSettings(HuntData hunt)
 	{
 		data = hunt;
+		data.isComplete = true;
 		
 		UpdateButtons();
 		
@@ -51,6 +52,12 @@ public partial class FinishHunt : Control
 		string endDT = Time.GetDatetimeStringFromSystem();
 		string endDate = endDT.Split('T')[0];
 		data.endDate = endDT;
+		
+		GameInfo gameInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
+		if (gameInfo.methodID >= 5) // Shiny charm introduced in Black2/White2
+		{
+			charmButton.Visible = true;
+		}
 		
 		info.Text = $"{data.count}\n{timerInHourFormat}\n{endDate}";
 	}
@@ -189,8 +196,8 @@ public partial class FinishHunt : Control
 			charmButton.ButtonPressed = false;
 			
 			data.huntGame = selectedOption;
-			GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-			if (info.methodID >= 5) // Shiny charm introduced in Black2/White2
+			GameInfo gameInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
+			if (gameInfo.methodID >= 5) // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
 			}
@@ -264,6 +271,7 @@ public partial class FinishHunt : Control
 		if (data.pokemonName == "") {
 			return;
 		}
+		data.isComplete = true;
 		EmitSignal("FinishButtonPressed");
 	}
 	

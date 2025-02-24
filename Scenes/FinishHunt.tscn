@@ -49,6 +49,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CharmButton" type="CheckBox" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 163.0
 offset_top = 544.0
@@ -66,7 +67,7 @@ offset_bottom = 106.0
 texture_normal = ExtResource("4_l8w8v")
 stretch_mode = 0
 
-[node name="ShinyButton" type="TextureButton" parent="."]
+[node name="FinishButton" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 193.0
 offset_top = 607.0
@@ -114,7 +115,7 @@ text = "Ball:"
 [connection signal="pressed" from="PokemonSelect" to="." method="PokemonSelectPressed"]
 [connection signal="pressed" from="CharmButton" to="." method="CharmButtonToggled"]
 [connection signal="pressed" from="BackButton" to="." method="BackToHunt"]
-[connection signal="pressed" from="ShinyButton" to="." method="ConfirmFinish"]
+[connection signal="pressed" from="FinishButton" to="." method="ConfirmFinish"]
 [connection signal="pressed" from="GameSelect" to="." method="GameSelectPressed"]
 [connection signal="pressed" from="MethodSelect" to="." method="MethodSelectPressed"]
 [connection signal="pressed" from="GenderSelect" to="." method="GenderSelectPressed"]

@@ -32,6 +32,27 @@ public class HuntData
 		incrementValue = inc;
 		huntID = ++instances;
 	}
+	public HuntData(HuntData src)
+	{
+		isComplete = src.isComplete;
+		startDate = src.startDate;
+		endDate = src.endDate;
+		pokemonName = src.pokemonName;
+		huntGame = src.huntGame;
+		huntMethod = src.huntMethod;
+		capturedGender = src.capturedGender;
+		capturedBall = src.capturedBall;
+		charm = src.charm;
+		count = src.count;
+		incrementValue = src.incrementValue;
+		timeSpent = src.timeSpent;
+		showShiny = src.showShiny;
+		showRegular = src.showRegular;
+		showOdds = src.showOdds;
+		showFullTimer = src.showFullTimer;
+		showMiniTimer = src.showMiniTimer;
+		huntID = src.huntID;
+	}
 	
 	public bool Equals(HuntData other)
 	{
@@ -132,7 +153,6 @@ public class HuntData
 public partial class ActiveHunt : Control
 {
 	public HuntData data;
-	
 	Label label;
 	
 	[Signal]
@@ -150,6 +170,7 @@ public partial class ActiveHunt : Control
 		Sprite2D sprite = GetNode<Sprite2D>("ShinySprite");
 		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemonName}.png");
 		
+		// Scale the size of the image to fit the ActiveHunt scene
 		float scaleFactor = Math.Min(90f / sprite.Texture.GetWidth(), 85f / sprite.Texture.GetHeight());
 		sprite.Scale = new Vector2(scaleFactor, scaleFactor);
 		

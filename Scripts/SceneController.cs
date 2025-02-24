@@ -8,7 +8,6 @@ using System.IO;
 
 /*
 KNOWN BUGS:
-- Selecting a game in HuntCreator sometimes slowly moves up the list instead of just selecting -- Might be resolved?
 - Gen 6 games show all models, including those from gen 7
 - HuntData needs better constructors
 */
@@ -45,7 +44,7 @@ public partial class SceneController : Node
 	private void OpenHunt(int selectedHuntID)
 	{
 		HuntData selectedHunt = mainScreen.GetHunt(selectedHuntID);
-		huntScreen.InitializeHunt(selectedHunt);
+		huntScreen.InitializeHunt(new HuntData(selectedHunt));
 		huntScreen.Visible = true;
 		mainScreen.Visible = false;
 	}

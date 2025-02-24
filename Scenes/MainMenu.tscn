@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dgj5yuhlagrg8"]
+[gd_scene load_steps=5 format=3 uid="uid://dgj5yuhlagrg8"]
 
 [ext_resource type="Script" path="res://Scripts/MainMenu.cs" id="1_xcoif"]
 [ext_resource type="Texture2D" uid="uid://lrsmx4iisltv" path="res://Assets/start.png" id="2_6wsh1"]
-[ext_resource type="PackedScene" uid="uid://c5chr2l42fkts" path="res://Scenes/Captured.tscn" id="3_4kbi4"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="4_br7ok"]
 [ext_resource type="ButtonGroup" uid="uid://bcu6mtho33lvp" path="res://MenuButtonGroup.tres" id="5_3ghdq"]
 
@@ -52,21 +51,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="CapturedContainer" type="ScrollContainer" parent="TabContainer"]
+[node name="CompletedContainer" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 
-[node name="CapturedPanel" type="Panel" parent="TabContainer/CapturedContainer"]
+[node name="CompletedPanel" type="Panel" parent="TabContainer/CompletedContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Captured" parent="TabContainer/CapturedContainer/CapturedPanel" instance=ExtResource("3_4kbi4")]
-layout_mode = 1
-offset_left = 7.0
-offset_top = 10.0
-offset_right = -13.0
-offset_bottom = -506.0
 
 [node name="MainButton" type="Button" parent="."]
 layout_mode = 0
@@ -95,4 +87,4 @@ text = "Completed"
 
 [connection signal="pressed" from="NewHuntButton" to="." method="OpenNewHuntScreen"]
 [connection signal="toggled" from="MainButton" to="." method="SetMainPanel"]
-[connection signal="toggled" from="CompletedButton" to="." method="SetCapturedPanel"]
+[connection signal="toggled" from="CompletedButton" to="." method="SetCompletedPanel"]
