@@ -166,7 +166,6 @@ public partial class SceneController : Node
 	private void SaveJsonToFile(string fileName, string data)
 	{
 		string path = ProjectSettings.GlobalizePath("user://");
-		GD.Print(path);
 		if (!Directory.Exists(path))
 		{
 			Directory.CreateDirectory(path);

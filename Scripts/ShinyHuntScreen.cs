@@ -73,12 +73,17 @@ public partial class ShinyHuntScreen : Control
 		string timerInHourFormat, finalString = "";
 		int fullTime = data.timeSpent;
 		int hours, minutes, seconds;
-		int oddsDenom = 1365; // Temporary value until odds are dynamically calculated
+		float oddsDenom = (float)Math.Round(CalculateHuntOdds(), 2);
 		
 
 		if (data.showOdds)
 		{
-			finalString += $"1/{oddsDenom}\n";
+			// Some hunt methods have too variable of odds to determine with accuracy
+			// The actual odds will be hidden in these cases to prevent confusion
+			if (oddsDenom != 0)
+			{
+				finalString += $"1/{oddsDenom}\n";
+			}
 		}
 		if (data.showFullTimer)
 		{
@@ -95,6 +100,83 @@ public partial class ShinyHuntScreen : Control
 			finalString += $"{resetTimer}";
 		}
 		info.Text = finalString;
+	}
+	
+	private float CalculateHuntOdds()
+	{
+		GameInfo game = GameHuntInformation.gameInfoDict[data.huntGame];
+		float odds = (game.methodID < 7) ? 8192f : 4096f; // Base odds in different games
+		int shinyRolls = (data.charm) ? 3 : 1; // Used to track multiple factors affecting odds
+		int chain; // Used in some cases to calculate odds with a formula
+		
+		switch (data.huntMethod)
+		{
+			case "Shiny Family Breeding":
+				odds = 128;
+				break;
+			case "Masuda Method":
+				odds += (game.methodID < 5) ? 5 : 6; // Masuda breeding has different rolls starting in gen 5
+				break;
+			case "Poke Radar": // This case isn't fully accurate to what's going on but these odds are good enough
+				shinyRolls = 1; // Shiny charm doesn't affect odds for this method
+				chain = Math.Min(data.count, 40);
+				float intermediary = 65535f / (8200 - chain * 200);
+				odds = 65536f / (float)Math.Ceiling(intermediary);
+				
+				if (game.methodID > 6)
+				{
+					odds /= 2; // Double odds to account for increased shiny odds after gen 6
+				}
+				break;
+			case "Friend Safari":
+				shinyRolls += 4;
+				break;
+			case "Chain Fishing":
+				chain = Math.Min(data.count, 20);
+				shinyRolls += 2 * chain;
+				break;
+			case "Dex Nav":
+				odds = 0; // No odds indicates there are too many variables to accurately track odds
+				break;
+			case "SOS Chain":
+				// Shiny rolls increase by 4 after chains of 11, 21, and 31
+				for (int i = 1; i < 4 && i * 10 + 1 < data.count; i++)
+				{
+					shinyRolls += 4;
+				}
+				break;
+			case "Ultra Wormhole":
+				odds = 0; // No odds indicates there are too many variables to accurately track odds
+				break;
+			case "Catch Combo":
+				shinyRolls += 1; // This method assumes the player is always using a lure
+				// If statements are required here instead of a loop because of varying increments
+				if (data.count > 10)
+				{
+					shinyRolls += 3;
+				}
+				if (data.count > 20)
+				{
+					shinyRolls += 4;
+				}
+				if (data.count > 30)
+				{
+					shinyRolls += 4;
+				}
+				break;
+			case "Dynamax Adventures":
+				odds = 100;
+				shinyRolls = 1; // Shiny charm doesn't affect these odds
+				break;
+			case "Mass Outbreak": // Mass outbreaks are in both PLA and SV, but have different functionality in each
+				shinyRolls += 12; // Currently only considering PLA until a good solution is found for SV sandwiches
+				break;
+			case "Massive Mass Outbreak":
+				shinyRolls += 25;
+				break;
+		}
+		
+		return odds / shinyRolls;
 	}
 	
 	// Updates the label displaying the hunt odds and timers

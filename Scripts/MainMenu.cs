@@ -123,6 +123,7 @@ public partial class MainMenu : Control
 			{
 				if (hunt.data.huntID == hunts[huntIndex].huntID)
 				{
+					hunt.data = hunts[huntIndex];
 					hunt.UpdateLabel();
 				}
 			}
@@ -133,6 +134,7 @@ public partial class MainMenu : Control
 			{
 				if (hunt.data.huntID == hunts[huntIndex].huntID)
 				{
+					hunt.data = hunts[huntIndex];
 					hunt.UpdateLabel();
 				}
 			}
