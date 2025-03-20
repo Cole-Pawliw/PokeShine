@@ -110,23 +110,15 @@ public partial class FinishHunt : Control
 		else if (optionMode == 2) // Send list of pokemon
 		{
 			GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-			string folderName = info.spritesFolder; // Get the associated folder name for the current game
+			int gameCode = info.methodID; // Get the associated folder name for the current game
 			
-			// Open the sprites folder for the selected game
-			using var spritesDir = DirAccess.Open($"res://Sprites/{folderName}/Regular/");
-			spritesDir.ListDirBegin();
-			string fileName = spritesDir.GetNext();
-			
-			// Add the name of each sprite to the pokemon list
-			string pokemonName;
-			while (fileName != "")
+			// If the pokemon is available in the selected game, add it to itemList
+			foreach(KeyValuePair<string, bool[]> pokemon in GameHuntInformation.pokemonAvailabilityDict)
 			{
-				// Prevent double names due to import files in the folders
-				if (fileName.Split('.').Last() != "import") {
-					pokemonName = fileName.Split('.')[0];
-					itemList.Add(pokemonName);
+				if (pokemon.Value[gameCode] == true)
+				{
+					itemList.Add(pokemon.Key);
 				}
-				fileName = spritesDir.GetNext();
 			}
 		}
 		else if (optionMode == 3) // Send list of methods

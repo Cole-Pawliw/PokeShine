@@ -11,7 +11,6 @@ using System.IO;
 
 /*
 KNOWN BUGS:
-- Gen 6 games show all models, including those from gen 7
 - HuntData needs better constructors
 */
 
@@ -19,7 +18,6 @@ KNOWN BUGS:
 Incomplete features
 - Make new json files on first launch (check for existence then create)
 - View completed hunt details
-- Dynamic hunt odds on hunt screen
 
 Extra features
 - Stats page (odds graph, other detailed info)
