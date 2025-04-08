@@ -18,7 +18,7 @@ script = ExtResource("1_xcoif")
 layout_mode = 0
 offset_right = 480.0
 offset_bottom = 720.0
-color = Color(0.760784, 0.376471, 0.384314, 1)
+color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="NewHuntButton" type="TextureButton" parent="."]
 layout_mode = 0

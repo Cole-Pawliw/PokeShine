@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://r7si871pi6oj"]
+
+[ext_resource type="Script" path="res://Scripts/FinishedStats.cs" id="1_071mg"]
+[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_j7nrf"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_t1ssc"]
+[ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="4_eoea3"]
+
+[node name="FinishedStats" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_071mg")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 720.0
+
+[node name="Background" type="ColorRect" parent="ScrollContainer"]
+custom_minimum_size = Vector2(480, 720)
+layout_mode = 2
+color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="StatsLabel" type="Label" parent="ScrollContainer/Background"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 295.0
+offset_right = 190.0
+offset_bottom = 561.0
+theme = ExtResource("2_j7nrf")
+theme_override_font_sizes/font_size = 25
+text = "Started on:
+Ended on:
+Hunted in:
+Method:
+Gender:
+Ball:
+Time spent:"
+
+[node name="CountLabel" type="Label" parent="ScrollContainer/Background"]
+layout_mode = 0
+offset_left = 171.0
+offset_top = 196.0
+offset_right = 296.0
+offset_bottom = 254.0
+theme = ExtResource("2_j7nrf")
+theme_override_font_sizes/font_size = 40
+text = "XXXXX"
+horizontal_alignment = 1
+
+[node name="BackButton" type="TextureButton" parent="ScrollContainer/Background"]
+offset_left = 19.0
+offset_top = 12.0
+offset_right = 115.0
+offset_bottom = 108.0
+texture_normal = ExtResource("3_t1ssc")
+stretch_mode = 0
+
+[node name="ShinySprite" type="Sprite2D" parent="ScrollContainer/Background"]
+position = Vector2(236, 125)
+scale = Vector2(1.55, 1.55)
+texture = ExtResource("4_eoea3")
+
+[connection signal="pressed" from="ScrollContainer/Background/BackButton" to="." method="BackToMenu"]

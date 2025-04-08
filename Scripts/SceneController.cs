@@ -17,7 +17,6 @@ KNOWN BUGS:
 /*
 Incomplete features
 - Make new json files on first launch (check for existence then create)
-- View completed hunt details
 
 Extra features
 - Stats page (odds graph, other detailed info)
@@ -39,6 +38,7 @@ public partial class SceneController : Node
 		huntScreen = GetNode<ShinyHuntScreen>("ShinyHuntScreen");
 		
 		mainScreen.HuntButtonPressed += OpenHunt;
+		mainScreen.CapturedButtonPressed += OpenStats;
 		mainScreen.NewHuntButtonPressed += CreateNewHunt;
 		mainScreen.TreeExiting += AppClosing;
 		huntScreen.BackButtonPressed += CloseHunt;
@@ -74,6 +74,19 @@ public partial class SceneController : Node
 		mainScreen.Visible = false;
 	}
 	
+	private void OpenStats(int selectedHuntID)
+	{
+		HuntData selectedHunt = mainScreen.GetHunt(selectedHuntID);
+		FinishedStats statsScreen = (FinishedStats)GD.Load<PackedScene>("res://Scenes/FinishedStats.tscn").Instantiate();
+		AddChild(statsScreen);
+		statsScreen.BackButtonPressed += CloseStats;
+		statsScreen.InitializeStats(new HuntData(selectedHunt));
+		
+		statsScreen.Visible = true;
+		mainScreen.Visible = false;
+		huntScreen.Visible = false;
+	}
+	
 	private void CloseHunt()
 	{
 		HuntData data = huntScreen.data;
@@ -81,6 +94,14 @@ public partial class SceneController : Node
 		Save();
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
+	}
+	
+	private void CloseStats()
+	{
+		FinishedStats statsScreen = GetNode<FinishedStats>("FinishedStats");
+		mainScreen.Visible = true;
+		statsScreen.Visible = false;
+		statsScreen.Cleanup();
 	}
 	
 	private void CreateNewHunt()
