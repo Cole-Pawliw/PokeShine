@@ -52,6 +52,7 @@ text = "XXXXX"
 horizontal_alignment = 1
 
 [node name="BackButton" type="TextureButton" parent="ScrollContainer/Background"]
+layout_mode = 0
 offset_left = 19.0
 offset_top = 12.0
 offset_right = 115.0

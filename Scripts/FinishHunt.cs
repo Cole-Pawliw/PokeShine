@@ -14,6 +14,8 @@ public partial class FinishHunt : Control
 	CheckBox charmButton;
 	Label info;
 	
+	AvailabilityInformation dicts;
+	
 	public HuntData data;
 	int optionMode = 0;
 	
@@ -32,6 +34,8 @@ public partial class FinishHunt : Control
 		ballSelect = GetNode<Button>("BallSelect");
 		charmButton = GetNode<CheckBox>("CharmButton");
 		info = GetNode<Label>("Info");
+		
+		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
 	}
 	
 	public void SetInitialSettings(HuntData hunt)
@@ -113,7 +117,7 @@ public partial class FinishHunt : Control
 			int gameCode = info.methodID; // Get the associated folder name for the current game
 			
 			// If the pokemon is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> pokemon in GameHuntInformation.pokemonAvailabilityDict)
+			foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
 			{
 				if (pokemon.Value[gameCode] == true)
 				{
@@ -127,7 +131,7 @@ public partial class FinishHunt : Control
 			int gameCode = info.methodID; // Get the associated folder name for the current game
 			
 			// If the method is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> method in GameHuntInformation.methodAvailabilityDict)
+			foreach(KeyValuePair<string, bool[]> method in dicts.methodAvailabilityDict)
 			{
 				if (method.Value[gameCode] == true)
 				{
@@ -145,7 +149,7 @@ public partial class FinishHunt : Control
 			int gameCode = info.methodID; // Get the associated folder name for the current game
 			
 			// If the ball is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> ball in GameHuntInformation.ballAvailabilityDict)
+			foreach(KeyValuePair<string, bool[]> ball in dicts.ballAvailabilityDict)
 			{
 				if (ball.Value[gameCode] == true)
 				{

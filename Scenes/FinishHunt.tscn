@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0kx3rtce3h8o"]
+[gd_scene load_steps=7 format=3 uid="uid://b0kx3rtce3h8o"]
 
 [ext_resource type="Script" path="res://Scripts/FinishHunt.cs" id="1_km3h5"]
+[ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_pbhrc"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_s238b"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_0xk1e"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="4_l8w8v"]
 [ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="5_0sduh"]
 
-[node name="Control" type="Control"]
+[node name="FinishHunt" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,6 +15,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_km3h5")
+
+[node name="AvailabilityInformation" parent="." instance=ExtResource("2_pbhrc")]
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 0

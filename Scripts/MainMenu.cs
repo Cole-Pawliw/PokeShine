@@ -212,10 +212,12 @@ public partial class MainMenu : Control
 		{
 			hunt.Position = new Vector2(x, y);
 			y += increment;
-			
-			if (y > tabContainer.Size.Y) {
-				huntPanel.CustomMinimumSize = new Vector2(tabContainer.Size.X, y);
-			}
+		}
+		
+		// Change the size of the container panel to fit all the hunts
+		if (y != huntPanel.CustomMinimumSize.Y)
+		{
+			huntPanel.CustomMinimumSize = new Vector2(tabContainer.Size.X, Math.Max(y, tabContainer.Size.Y));
 		}
 	}
 	
@@ -227,10 +229,12 @@ public partial class MainMenu : Control
 		{
 			hunt.Position = new Vector2(x, y);
 			y += increment;
-			
-			if (y > tabContainer.Size.Y) {
-				huntPanel.CustomMinimumSize = new Vector2(tabContainer.Size.X, y);
-			}
+		}
+		
+		// Change the size of the container panel to fit all the hunts
+		if (y != completedPanel.CustomMinimumSize.Y)
+		{
+			completedPanel.CustomMinimumSize = new Vector2(tabContainer.Size.X, Math.Max(y, tabContainer.Size.Y));
 		}
 	}
 	

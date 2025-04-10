@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
 
-// GD.Print();
-
 // SAVE FILE LOCATION
 // %appdata%\Godot\app_userdata\Shiny Hunt Tracker
 
@@ -15,18 +13,18 @@ KNOWN BUGS:
 */
 
 /*
-Incomplete features
-- Make new json files on first launch (check for existence then create)
-
 Extra features
-- Stats page (odds graph, other detailed info)
+- Active hunt stats page (odds graph, other detailed info)
 - Multi hunt, for random encounters in a route
+- Allow a sort mode in the main menu to move active hunts around
+- Per-route pokemon availability (very complicated to make, might not get added)
 */
 
 public partial class SceneController : Node
 {
 	MainMenu mainScreen;
 	ShinyHuntScreen huntScreen;
+	JsonManager json;
 	string saveFileName = "savefile.save";
 	
 	double timer = 0;
@@ -36,6 +34,7 @@ public partial class SceneController : Node
 	{
 		mainScreen = GetNode<MainMenu>("MainMenu");
 		huntScreen = GetNode<ShinyHuntScreen>("ShinyHuntScreen");
+		json = GetNode<JsonManager>("JsonManager");
 		
 		mainScreen.HuntButtonPressed += OpenHunt;
 		mainScreen.CapturedButtonPressed += OpenStats;
@@ -157,13 +156,14 @@ public partial class SceneController : Node
 		};
 		
 		string huntData = JsonSerializer.Serialize<List<HuntData>>(allHunts, options);
-		SaveJsonToFile(saveFileName, huntData);
+		string path = ProjectSettings.GlobalizePath("user://");
+		json.SaveJsonToFile(path, saveFileName, huntData);
 	}
 	
 	private void Load()
 	{
 		string path = ProjectSettings.GlobalizePath("user://");
-		string huntData = LoadJsonFromFile(path, saveFileName);
+		string huntData = json.LoadJsonFromFile(path, saveFileName);
 		
 		if (huntData == null)
 		{
@@ -180,47 +180,6 @@ public partial class SceneController : Node
 		{
 			mainScreen.AddHunt(hunt);
 		}
-	}
-	
-	private void SaveJsonToFile(string fileName, string data)
-	{
-		string path = ProjectSettings.GlobalizePath("user://");
-		if (!Directory.Exists(path))
-		{
-			Directory.CreateDirectory(path);
-		}
-		
-		path = path + fileName;
-		try
-		{
-			File.WriteAllText(path, data);
-		}
-		catch (System.Exception e)
-		{
-			GD.Print(e);
-		}
-	}
-	
-	private string LoadJsonFromFile(string path, string fileName)
-	{
-		string data = null;
-		path = Path.Join(path, fileName);
-		
-		if (!File.Exists(path))
-		{
-			return null;
-		}
-		
-		try
-		{
-			data = File.ReadAllText(path);
-		}
-		catch (System.Exception e)
-		{
-			GD.Print(e);
-		}
-		
-		return data;
 	}
 	
 	private void AppClosing()

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6sqrm3iu8b4o"]
+
+[ext_resource type="Script" path="res://Scripts/AvailabilityInformation.cs" id="1_l1pir"]
+[ext_resource type="PackedScene" uid="uid://duta7wyqc1c2p" path="res://Scenes/JsonManager.tscn" id="2_414lt"]
+
+[node name="AvailabilityInformation" type="Node"]
+script = ExtResource("1_l1pir")
+
+[node name="JsonManager" parent="." instance=ExtResource("2_414lt")]
