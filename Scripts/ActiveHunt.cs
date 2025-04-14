@@ -42,6 +42,7 @@ public class HuntData
 		startDate = src.startDate;
 		endDate = src.endDate;
 		pokemonName = src.pokemonName;
+		nickname = src.nickname;
 		huntGame = src.huntGame;
 		huntMethod = src.huntMethod;
 		capturedGender = src.capturedGender;
@@ -93,7 +94,8 @@ public class HuntData
 	public string startDate { get; set; } // Datetime formatted string storing when the hunt was created
 	public string endDate { get; set; } // Datetime formatted string storing when the hunt ended
 	
-	public string pokemonName { get; set; } //The name of the pokemon being hunted
+	public string pokemonName { get; set; } // The name of the pokemon being hunted
+	public string nickname { get; set; } = ""; // The user set nickname after catching the pokemon
 	
 	public string huntFolder { get; private set; } // The folder to be used to access the sprites for this game
 	private string _huntGame; // The game the pokemon is being hunted in
@@ -158,6 +160,7 @@ public partial class ActiveHunt : Control
 {
 	public HuntData data;
 	Label label;
+	Button sortButton;
 	
 	[Signal]
 	public delegate void SelectButtonPressedEventHandler(int selectedHuntID);
@@ -166,6 +169,7 @@ public partial class ActiveHunt : Control
 	public override void _Ready()
 	{
 		label = GetNode<Label>("Count");
+		sortButton = GetNode<Button>("SortButton");
 	}
 	
 	public void InitializeHunt(HuntData hunt)
@@ -196,6 +200,11 @@ public partial class ActiveHunt : Control
 	{
 		data.count = Math.Max(data.count - data.incrementValue, 0);
 		UpdateLabel();
+	}
+	
+	public void ToggleSort()
+	{
+		sortButton.Visible = !sortButton.Visible;
 	}
 	
 	private void SelectButton()

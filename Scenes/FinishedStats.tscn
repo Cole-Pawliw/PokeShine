@@ -24,6 +24,16 @@ custom_minimum_size = Vector2(480, 720)
 layout_mode = 2
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
+[node name="NameLabel" type="Label" parent="ScrollContainer/Background"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 185.0
+offset_right = 350.0
+offset_bottom = 213.0
+theme = ExtResource("2_j7nrf")
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
 [node name="StatsLabel" type="Label" parent="ScrollContainer/Background"]
 layout_mode = 0
 offset_left = 49.0
@@ -42,10 +52,10 @@ Time spent:"
 
 [node name="CountLabel" type="Label" parent="ScrollContainer/Background"]
 layout_mode = 0
-offset_left = 171.0
-offset_top = 196.0
-offset_right = 296.0
-offset_bottom = 254.0
+offset_left = 170.0
+offset_top = 217.0
+offset_right = 295.0
+offset_bottom = 275.0
 theme = ExtResource("2_j7nrf")
 theme_override_font_sizes/font_size = 40
 text = "XXXXX"

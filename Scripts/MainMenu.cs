@@ -12,6 +12,9 @@ public partial class MainMenu : Control
 	Panel huntPanel;
 	Panel completedPanel;
 	
+	bool sortMode = false;
+	int selectedHuntToSort = -1; // -1 means no hunt selected
+	
 	[Signal]
 	public delegate void HuntButtonPressedEventHandler(int selectedHuntID);
 	[Signal]
@@ -29,6 +32,12 @@ public partial class MainMenu : Control
 		tabContainer = GetNode<TabContainer>("TabContainer");
 		huntPanel = GetNode<Panel>("TabContainer/HuntContainer/HuntPanel");
 		completedPanel = GetNode<Panel>("TabContainer/CompletedContainer/CompletedPanel");
+	}
+	
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		
 	}
 	
 	// Returns a list of HuntData for each hunt in the scene
@@ -204,6 +213,19 @@ public partial class MainMenu : Control
 		return null;
 	}
 	
+	public int GetHuntIndex(int id)
+	{
+		for (int i = 0; i < hunts.length(); i++)
+		{
+			if (hunts[i].huntID == id)
+			{
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
 	private void UpdateActivePositions()
 	{
 		int x = 7, y = 10;
@@ -250,6 +272,21 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 1;
 		}
+	}
+	
+	private void ToggleSortMode()
+	{
+		// 
+	}
+	
+	private void HuntToSortSelected()
+	{
+		
+	}
+	
+	private void HuntToSortDeselected()
+	{
+		
 	}
 	
 	private void EmitHuntButtonPressed(int id)

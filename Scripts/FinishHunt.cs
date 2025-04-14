@@ -13,6 +13,7 @@ public partial class FinishHunt : Control
 	Button ballSelect;
 	CheckBox charmButton;
 	Label info;
+	TextEdit nickname;
 	
 	AvailabilityInformation dicts;
 	
@@ -34,6 +35,7 @@ public partial class FinishHunt : Control
 		ballSelect = GetNode<Button>("BallSelect");
 		charmButton = GetNode<CheckBox>("CharmButton");
 		info = GetNode<Label>("Info");
+		nickname = GetNode<TextEdit>("Nickname");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
 	}
@@ -264,9 +266,15 @@ public partial class FinishHunt : Control
 	private void ConfirmFinish()
 	{
 		// A pokemon name is needed to finish the hunt, everything else is optional
-		if (data.pokemonName == "") {
+		if (data.pokemonName == "")
+		{
 			return;
 		}
+		if (nickname.Text != "")
+		{
+			data.nickname = nickname.Text; // Use default pokemon name if no nickname is set
+		}
+		
 		data.isComplete = true;
 		EmitSignal("FinishButtonPressed");
 	}

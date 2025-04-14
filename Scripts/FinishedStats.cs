@@ -7,6 +7,7 @@ public partial class FinishedStats : Control
 	public HuntData data;
 	Label statsLabel;
 	Label countLabel;
+	Label nameLabel;
 	Sprite2D sprite;
 	
 	[Signal]
@@ -17,6 +18,7 @@ public partial class FinishedStats : Control
 	{
 		statsLabel = GetNode<Label>("ScrollContainer/Background/StatsLabel");
 		countLabel = GetNode<Label>("ScrollContainer/Background/CountLabel");
+		nameLabel = GetNode<Label>("ScrollContainer/Background/NameLabel");
 		sprite = GetNode<Sprite2D>("ScrollContainer/Background/ShinySprite");
 	}
 	
@@ -24,6 +26,7 @@ public partial class FinishedStats : Control
 	{
 		data = hunt;
 		SetSprite();
+		SetName();
 		SetCount();
 		SetStats();
 	}
@@ -31,6 +34,18 @@ public partial class FinishedStats : Control
 	private void SetSprite()
 	{
 		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemonName}.png");
+	}
+	
+	private void SetName()
+	{
+		if (data.nickname == "" || data.nickname == null)
+		{
+			nameLabel.Text = data.pokemonName;
+		}
+		else
+		{
+			nameLabel.Text = data.nickname;
+		}
 	}
 	
 	private void SetCount()
