@@ -10,14 +10,16 @@ public partial class HuntCreator : Control
 	Button pokemonSelect;
 	Button methodSelect;
 	CheckBox charmButton;
+	CheckBox multiButton;
 	
 	AvailabilityInformation dicts;
 	
 	string[] selections = {"", "", ""};
+	public List<string> pokemonSelected;
 	int optionMode = 0;
 	
 	[Signal]
-	public delegate void StartHuntEventHandler(string gameName, string pokemonName, string method, bool charm);
+	public delegate void StartHuntEventHandler(string gameName, string method, bool charm);
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
 	
@@ -27,8 +29,10 @@ public partial class HuntCreator : Control
 		pokemonSelect = GetNode<Button>("PokemonSelect");
 		methodSelect = GetNode<Button>("MethodSelect");
 		charmButton = GetNode<CheckBox>("CharmButton");
+		multiButton = GetNode<CheckBox>("MultiHuntButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
+		pokemonSelected = new List<string>();
 	}
 	
 	private void GameSelectPressed()
@@ -62,6 +66,7 @@ public partial class HuntCreator : Control
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
 		AddChild(selectScreen);
 		List<string> itemList = new List<string>();
+		bool multiSelect = false;
 		
 		if (optionMode == 1) // Send list of games
 		{
@@ -80,6 +85,8 @@ public partial class HuntCreator : Control
 					itemList.Add(pokemon.Key);
 				}
 			}
+			
+			multiSelect = multiButton.ButtonPressed;
 		}
 		else if (optionMode == 3) // Send list of methods
 		{
@@ -96,7 +103,7 @@ public partial class HuntCreator : Control
 			}
 		}
 		
-		selectScreen.CreateList(itemList);
+		selectScreen.CreateList(itemList, multiSelect);
 		selectScreen.CloseMenu += UpdateSelection;
 	}
 	
@@ -126,9 +133,25 @@ public partial class HuntCreator : Control
 			
 			
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
-			if (info.methodID >= 5) // Shiny charm introduced in Black2/White2
+			if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
+			}
+		} 
+		else if (optionMode == 2)
+		{
+			OptionSelect selectScreen = GetNode<OptionSelect>("OptionSelect");
+			pokemonSelected = selectScreen.selectedValues;
+		}
+		else if (optionMode == 3)
+		{
+			if (selectedOption == "Random Encounter")
+			{
+				multiButton.Visible = true;
+			}
+			else
+			{
+				multiButton.Visible = false;
 			}
 		}
 		
@@ -163,7 +186,7 @@ public partial class HuntCreator : Control
 		// Only emit the signal if all selections have been made
 		if (selections[0] != "" && selections[1] != "" && selections[2] != "")
 		{
-			EmitSignal("StartHunt", selections[0], selections[1], selections[2], charmButton.ButtonPressed);
+			EmitSignal("StartHunt", selections[0], selections[2], charmButton.ButtonPressed);
 		}
 	}
 	

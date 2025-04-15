@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class HuntData
 {
@@ -9,13 +10,25 @@ public class HuntData
 	}
 	public HuntData(string name, string game)
 	{
-		pokemonName = name;
+		pokemon = new List<string>();
+		pokemon.Add(name);
 		huntGame = game;
 		huntID = ++instances;
 	}
 	public HuntData(string name, string game, string method, bool shinyCharm, string time)
 	{
-		pokemonName = name;
+		pokemon = new List<string>();
+		pokemon.Add(name);
+		huntGame = game;
+		huntMethod = method;
+		charm = shinyCharm;
+		startDate = time;
+		huntID = ++instances;
+	}
+	public HuntData(List<string> names, string game, string method, bool shinyCharm, string time)
+	{
+		pokemon = new List<string>();
+		pokemon = names;
 		huntGame = game;
 		huntMethod = method;
 		charm = shinyCharm;
@@ -25,10 +38,11 @@ public class HuntData
 	public HuntData(bool comp, string start, string end, string name,
 					string game, string method, bool shinyCharm, int c, int inc)
 	{
+		pokemon = new List<string>();
 		isComplete = comp;
 		startDate = start;
 		endDate = end;
-		pokemonName = name;
+		pokemon.Add(name);
 		huntGame = game;
 		huntMethod = method;
 		charm = shinyCharm;
@@ -41,7 +55,7 @@ public class HuntData
 		isComplete = src.isComplete;
 		startDate = src.startDate;
 		endDate = src.endDate;
-		pokemonName = src.pokemonName;
+		pokemon = src.pokemon;
 		nickname = src.nickname;
 		huntGame = src.huntGame;
 		huntMethod = src.huntMethod;
@@ -71,13 +85,13 @@ public class HuntData
 		}
 		
 		var other = (HuntData)obj;
-		return (other.isComplete, other.startDate, other.endDate, other.pokemonName, other.huntGame, other.count,
-				other.incrementValue).Equals((isComplete, startDate, endDate, pokemonName, huntGame, count, incrementValue));
+		return (other.isComplete, other.startDate, other.endDate, other.pokemon, other.huntGame, other.count,
+				other.incrementValue).Equals((isComplete, startDate, endDate, pokemon, huntGame, count, incrementValue));
 	}
 	
 	public override int GetHashCode()
 	{
-		return (isComplete, startDate, endDate, pokemonName, huntGame, count, incrementValue).GetHashCode();
+		return (isComplete, startDate, endDate, pokemon, huntGame, count, incrementValue).GetHashCode();
 	}
 	
 	public static bool operator ==(HuntData hunt1, HuntData hunt2)
@@ -94,7 +108,7 @@ public class HuntData
 	public string startDate { get; set; } // Datetime formatted string storing when the hunt was created
 	public string endDate { get; set; } // Datetime formatted string storing when the hunt ended
 	
-	public string pokemonName { get; set; } // The name of the pokemon being hunted
+	public List<string> pokemon { get; set; } // The name of the pokemon being hunted
 	public string nickname { get; set; } = ""; // The user set nickname after catching the pokemon
 	
 	public string huntFolder { get; private set; } // The folder to be used to access the sprites for this game
@@ -160,15 +174,21 @@ public partial class ActiveHunt : Control
 {
 	public HuntData data;
 	Label label;
+	Label multiIndicator;
 	Button sortButton;
 	
 	[Signal]
 	public delegate void SelectButtonPressedEventHandler(int selectedHuntID);
+	[Signal]
+	public delegate void SortButtonDownEventHandler(int selectedHuntID);
+	[Signal]
+	public delegate void SortButtonUpEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		label = GetNode<Label>("Count");
+		multiIndicator = GetNode<Label>("MultiIndicator");
 		sortButton = GetNode<Button>("SortButton");
 	}
 	
@@ -176,7 +196,7 @@ public partial class ActiveHunt : Control
 	{
 		data = hunt;
 		Sprite2D sprite = GetNode<Sprite2D>("ShinySprite");
-		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemonName}.png");
+		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
 		
 		// Scale the size of the image to fit the ActiveHunt scene
 		float scaleFactor = Math.Min(90f / sprite.Texture.GetWidth(), 85f / sprite.Texture.GetHeight());
@@ -188,6 +208,14 @@ public partial class ActiveHunt : Control
 	public void UpdateLabel()
 	{
 		label.Text = $"{data.count}";
+		if (data.pokemon.Count > 1)
+		{
+			multiIndicator.Text = $"+{data.pokemon.Count - 1}";
+		}
+		else
+		{
+			multiIndicator.Text = "";
+		}
 	}
 	
 	private void Increment()
@@ -210,6 +238,16 @@ public partial class ActiveHunt : Control
 	private void SelectButton()
 	{
 		EmitSignal("SelectButtonPressed", data.huntID);
+	}
+	
+	private void SortSelect()
+	{
+		EmitSignal("SortButtonDown", data.huntID);
+	}
+	
+	private void SortDeselect()
+	{
+		EmitSignal("SortButtonUp");
 	}
 	
 	// Destroy this UI element

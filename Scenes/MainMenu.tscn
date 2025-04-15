@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgj5yuhlagrg8"]
+[gd_scene load_steps=6 format=3 uid="uid://dgj5yuhlagrg8"]
 
-[ext_resource type="Script" path="res://Scripts/MainMenu.cs" id="1_xcoif"]
+[ext_resource type="Script" uid="uid://crb4ie5d888n1" path="res://Scripts/MainMenu.cs" id="1_xcoif"]
 [ext_resource type="Texture2D" uid="uid://lrsmx4iisltv" path="res://Assets/start.png" id="2_6wsh1"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="4_br7ok"]
 [ext_resource type="ButtonGroup" uid="uid://bcu6mtho33lvp" path="res://MenuButtonGroup.tres" id="5_3ghdq"]
+[ext_resource type="Texture2D" uid="uid://dplhrfhm5q8ju" path="res://Assets/filter_off.png" id="5_w3t6f"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -60,16 +61,18 @@ layout_mode = 0
 offset_top = 120.0
 offset_right = 480.0
 offset_bottom = 720.0
-theme_override_colors/font_selected_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hovered_color = Color(0, 0, 0, 0)
-theme_override_colors/font_unselected_color = Color(0, 0, 0, 0)
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
+theme_override_colors/font_unselected_color = Color(0, 0, 0, 0)
+theme_override_colors/font_hovered_color = Color(0, 0, 0, 0)
+theme_override_colors/font_selected_color = Color(0, 0, 0, 0)
 theme_override_colors/drop_mark_color = Color(0, 0, 0, 0)
+current_tab = 0
 tabs_visible = false
 
 [node name="HuntContainer" type="ScrollContainer" parent="TabContainer"]
 layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="HuntPanel" type="Panel" parent="TabContainer/HuntContainer"]
 layout_mode = 2
@@ -79,12 +82,24 @@ size_flags_vertical = 3
 [node name="CompletedContainer" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="CompletedPanel" type="Panel" parent="TabContainer/CompletedContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="ToggleSortButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 657.0
+offset_right = 101.0
+offset_bottom = 753.0
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("5_w3t6f")
+stretch_mode = 0
+
 [connection signal="pressed" from="NewHuntButton" to="." method="OpenNewHuntScreen"]
 [connection signal="toggled" from="MainButton" to="." method="SetMainPanel"]
 [connection signal="toggled" from="CompletedButton" to="." method="SetCompletedPanel"]
+[connection signal="pressed" from="ToggleSortButton" to="." method="ToggleSortMode"]

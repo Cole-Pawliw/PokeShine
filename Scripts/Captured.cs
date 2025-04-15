@@ -12,7 +12,7 @@ public partial class Captured : Control
 	{
 		data = hunt;
 		Sprite2D sprite = GetNode<Sprite2D>("ShinySprite");
-		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemonName}.png");
+		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
 		
 		// Scale the size of the image to fit the Captured scene
 		float scaleFactor = Math.Min(90f / sprite.Texture.GetWidth(), 85f / sprite.Texture.GetHeight());

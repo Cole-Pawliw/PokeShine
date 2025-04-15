@@ -9,15 +9,18 @@ using System.IO;
 
 /*
 KNOWN BUGS:
+- Finish adding support for all pokemon games
+	- Add sprites for different games
+	- Expand gameInfoDict to include all games
 - HuntData needs better constructors
 */
 
 /*
 Extra features
 - Active hunt stats page (odds graph, other detailed info)
-- Multi hunt, for random encounters in a route
-- Allow a sort mode in the main menu to move active hunts around
 - Per-route pokemon availability (very complicated to make, might not get added)
+- Mod support (custom sprites for ROM hacks)
+- Allow for editing the hunt in HuntSettings (method, pokemon, etc.)
 */
 
 public partial class SceneController : Node
@@ -133,14 +136,15 @@ public partial class SceneController : Node
 		startHuntScreen.Cleanup();
 	}
 	
-	private void StartHuntSignalReceiver(string gameName, string pokemonName, string method, bool charm)
+	private void StartHuntSignalReceiver(string gameName, string method, bool charm)
 	{
 		string startDT = Time.GetDatetimeStringFromSystem();
-		HuntData huntToAdd = new HuntData(pokemonName, gameName, method, charm, startDT);
+		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
+		HuntData huntToAdd = new HuntData(startHuntScreen.pokemonSelected, gameName, method, charm, startDT);
+		
 		mainScreen.AddHunt(huntToAdd);
 		Save(); // Update save file with newly added hunt
 		
-		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		mainScreen.Visible = true;
 		startHuntScreen.Visible = false;
 		startHuntScreen.Cleanup();

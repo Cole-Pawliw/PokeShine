@@ -47,6 +47,15 @@ public partial class HuntSettings : Control
 		odds.ButtonPressed = settings.showOdds;
 		huntTimer.ButtonPressed = settings.showFullTimer;
 		encounterTimer.ButtonPressed = settings.showMiniTimer;
+		
+		if (settings.pokemon.Count > 1)
+		{
+			regular.Disabled = true; // Regular sprites not available for multi-hunts
+		}
+		else
+		{
+			regular.Disabled = false;
+		}
 	}
 	
 	private void BackButtonPressed()

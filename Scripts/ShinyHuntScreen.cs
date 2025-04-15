@@ -1,14 +1,17 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class ShinyHuntScreen : Control
 {
 	public HuntData data;
 	Label counter, info;
-	Sprite2D shiny, regular;
+	List<Sprite2D> sprites;
 	double secondTimer = 0; // Tracks how much time has passed up to 1 second
 	int resetTimer = 0; // Times how long each reset takes
 	bool activeHunt = false; // True when this screen is being used by a hunt
+	
+	int halfX = 240, thirdX = 160, y = 600, yOffset = 120; // Constant values used for placing sprites in a grid
 	
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
@@ -22,8 +25,11 @@ public partial class ShinyHuntScreen : Control
 	{
 		counter = GetNode<Label>("Count");
 		info = GetNode<Label>("HuntInfo");
-		shiny = GetNode<Sprite2D>("ShinySprite");
-		regular = GetNode<Sprite2D>("RegularSprite");
+		sprites = new List<Sprite2D>(10); // Up to 10 sprites can be supported for multi-hunts
+		for (int i = 1; i <= 10; i++)
+		{
+			sprites.Add(GetNode<Sprite2D>($"Sprite{i}"));
+		}
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -47,20 +53,76 @@ public partial class ShinyHuntScreen : Control
 	{
 		data = hunt;
 		
-		regular.Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Regular/{hunt.pokemonName}.png");
-		shiny.Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Shiny/{hunt.pokemonName}.png");
-		UpdateCounterLabel();
+		if (data.pokemon.Count == 1) // Single shiny hunt, show regular and shiny sprites
+		{
+			sprites[0].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Regular/{hunt.pokemon[0]}.png");
+			sprites[1].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Shiny/{hunt.pokemon[0]}.png");
+			PositionSprites(2);
+			ScaleSprites(2);
+		}
+		else // Multi-hunt
+		{
+			for (int i = 0; i < data.pokemon.Count; i++)
+			{
+				sprites[i].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Shiny/{hunt.pokemon[i]}.png");
+			}
+			PositionSprites(data.pokemon.Count);
+			ScaleSprites(data.pokemon.Count);
+		}
 		
-		float scaleFactor = 240f / regular.Texture.GetHeight();
-		regular.Scale = new Vector2(scaleFactor, scaleFactor);
-		scaleFactor = 240f / shiny.Texture.GetHeight();
-		shiny.Scale = new Vector2(scaleFactor, scaleFactor);
+		UpdateCounterLabel();
 		
 		resetTimer = 0;
 		secondTimer = 0;
 		UpdateInfoLabel();
 		
 		activeHunt = true;
+	}
+	
+	private void PositionSprites(int amount)
+	{
+		int rows = (int)Math.Max(Math.Ceiling(amount / 2.0), 2); // Minimum of 2 rows is needed
+		int buffer = y / (rows + 1); // y = 600 will result in a whole number for any amount up to 10
+		
+		if (amount == 2) // Unique case for 2 sprites, one of top of the other
+		{
+			sprites[0].Position = new Vector2(halfX, buffer + yOffset);
+			sprites[1].Position = new Vector2(halfX, buffer * 2 + yOffset);
+		}
+		else // More than 2 sprites uses 2 columns and up to 5 rows, with an odd number being centred
+		{
+			for (int i = 0; i < rows; i++)
+			{
+				for (int j = 0; j < 2; j++)
+				{
+					if (i == rows - 1 && amount % 2 == 1) // Last row, use halfX
+					{
+						sprites[i * 2 + j].Position = new Vector2(halfX, buffer * (i+1) + yOffset);
+						break;
+					}
+					else
+					{
+						sprites[i * 2 + j].Position = new Vector2(thirdX * (j+1), buffer * (i+1) + yOffset);
+					}
+				}
+			}
+		}
+	}
+	
+	private void ScaleSprites(int amount)
+	{
+		int rows = (int)Math.Max(Math.Ceiling(amount / 2.0), 2); // Minimum of 2 rows is needed
+		int buffer = y / (rows + 1); // Buffer is the pixels in the y dimension available for the sprite to fill
+		float scaleFactor;
+		
+		foreach (Sprite2D sprite in sprites)
+		{
+			if (sprite.Texture != null)
+			{
+				scaleFactor = buffer / sprite.Texture.GetHeight(); // Width will always have as much or more room than height
+				sprite.Scale = new Vector2(scaleFactor, scaleFactor);
+			}
+		}
 	}
 	
 	private void UpdateCounterLabel()
@@ -204,6 +266,10 @@ public partial class ShinyHuntScreen : Control
 	private void BackToMenu()
 	{
 		activeHunt = false;
+		foreach (Sprite2D sprite in sprites)
+		{
+			sprite.Texture = null; // Reset textures so there aren't remaining sprites when opening the next hunt
+		}
 		EmitSignal("BackButtonPressed");
 	}
 	
@@ -226,8 +292,18 @@ public partial class ShinyHuntScreen : Control
 		
 		UpdateCounterLabel();
 		UpdateInfoLabel();
-		shiny.Visible = data.showShiny;
-		regular.Visible = data.showRegular;
+		if (data.pokemon.Count == 1)
+		{
+			sprites[0].Visible = data.showRegular;
+			sprites[1].Visible = data.showShiny;
+		}
+		else
+		{
+			for (int i = 0; i < data.pokemon.Count; i++)
+			{
+				sprites[i].Visible = data.showShiny;
+			}
+		}
 		
 		RemoveChild(settingsMenu);
 		settingsMenu.Cleanup();

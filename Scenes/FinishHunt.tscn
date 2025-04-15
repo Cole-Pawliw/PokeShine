@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b0kx3rtce3h8o"]
 
-[ext_resource type="Script" path="res://Scripts/FinishHunt.cs" id="1_km3h5"]
+[ext_resource type="Script" uid="uid://p2sjns1xkxic" path="res://Scripts/FinishHunt.cs" id="1_km3h5"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_pbhrc"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_s238b"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_0xk1e"]

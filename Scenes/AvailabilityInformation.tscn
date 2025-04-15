@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c6sqrm3iu8b4o"]
 
-[ext_resource type="Script" path="res://Scripts/AvailabilityInformation.cs" id="1_l1pir"]
+[ext_resource type="Script" uid="uid://b8m70ktjqrn56" path="res://Scripts/AvailabilityInformation.cs" id="1_l1pir"]
 [ext_resource type="PackedScene" uid="uid://duta7wyqc1c2p" path="res://Scenes/JsonManager.tscn" id="2_414lt"]
 
 [node name="AvailabilityInformation" type="Node"]

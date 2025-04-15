@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://duta7wyqc1c2p"]
 
-[ext_resource type="Script" path="res://Scripts/JsonManager.cs" id="1_2c2sr"]
+[ext_resource type="Script" uid="uid://dete2oq7nkshs" path="res://Scripts/JsonManager.cs" id="1_2c2sr"]
 
 [node name="JsonManager" type="Node"]
 script = ExtResource("1_2c2sr")

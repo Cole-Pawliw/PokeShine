@@ -7,7 +7,8 @@ public partial class OptionSelect : Control
 	[Signal]
 	public delegate void CloseMenuEventHandler(string selected);
 	
-	string selectedValue;
+	public List<string> selectedValues;
+	bool multiselect = false;
 	List<string> allValues;
 	ItemList list;
 	LineEdit searchBar;
@@ -17,20 +18,59 @@ public partial class OptionSelect : Control
 	{
 		list = GetNode<ItemList>("ListContainer/List");
 		searchBar = GetNode<LineEdit>("Search");
+		selectedValues = new List<string>();
 	}
 	
-	public void CreateList(List<string> items)
+	public void CreateList(List<string> items, bool multi)
 	{
 		allValues = items;
+		multiselect = multi;
+		if (multiselect)
+		{
+			list.SelectMode = (ItemList.SelectModeEnum)2; // Allows multi select by toggling items
+		}
+		else
+		{
+			list.SelectMode = (ItemList.SelectModeEnum)0; // Single select mode
+		}
 		foreach (string item in allValues)
 		{
 			list.AddItem(item);
 		}
 	}
 	
-	private void ItemSelected(long index)
+	// Only called in single select mode
+	private void ItemSelected(int index)
 	{
-		selectedValue = list.GetItemText((int)index);
+		selectedValues.Clear();
+		selectedValues.Add(list.GetItemText((int)index));
+	}
+	
+	private void ItemActivated(int index)
+	{
+		if (!multiselect)
+		{
+			ConfirmButtonPressed();
+		}
+	}
+	
+	private void MultiSelected(int index, bool selected)
+	{
+		if (selected)
+		{
+			if (selectedValues.Count == 10) // Max of 10 pokemon can be selected
+			{
+				list.Deselect(index);
+			}
+			else
+			{
+				selectedValues.Add(list.GetItemText((int)index));
+			}
+		}
+		else
+		{
+			selectedValues.Remove(list.GetItemText((int)index));
+		}
 	}
 	
 	private void SearchUpdated(string newText)
@@ -40,7 +80,14 @@ public partial class OptionSelect : Control
 		foreach (string item in allValues)
 		{
 			// Only add the item if the current search text is in the string
-			if (item.ToLower().Contains(newText.ToLower())) { list.AddItem(item); }
+			if (item.ToLower().Contains(newText.ToLower()))
+			{
+				list.AddItem(item);
+				if (selectedValues.Contains(item)) // Make sure selected items remain selected after searching
+				{
+					list.Select(list.ItemCount - 1, false); // Reselect the previously selected pokemon, false indicates multi select
+				}
+			}
 		}
 	}
 	
@@ -51,7 +98,14 @@ public partial class OptionSelect : Control
 	
 	private void ConfirmButtonPressed()
 	{
-		Back(selectedValue); // Return to the previous screen with the newly selected item
+		if (selectedValues.Count > 1)
+		{
+			Back("Various"); // Return to the previous screen indicating that multiple pokemon have been selected
+		}
+		else
+		{
+			Back(selectedValues[0]); // Return to the previous screen with the newly selected item
+		}
 	}
 	
 	private void Back(string itemName)

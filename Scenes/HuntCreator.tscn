@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b4vgfm2j2x2w"]
 
-[ext_resource type="Script" path="res://Scripts/HuntCreator.cs" id="1_qvm6q"]
+[ext_resource type="Script" uid="uid://b6n3gwfs2d0eu" path="res://Scripts/HuntCreator.cs" id="1_qvm6q"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_1gh5o"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_p8t5h"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_bv7v0"]
@@ -35,9 +35,9 @@ text = "Game:"
 visible = false
 layout_mode = 0
 offset_left = 165.0
-offset_top = 270.0
+offset_top = 420.0
 offset_right = 315.0
-offset_bottom = 370.0
+offset_bottom = 520.0
 theme = ExtResource("2_p8t5h")
 text = "Pokemon:"
 
@@ -45,9 +45,9 @@ text = "Pokemon:"
 visible = false
 layout_mode = 0
 offset_left = 165.0
-offset_top = 410.0
+offset_top = 270.0
 offset_right = 315.0
-offset_bottom = 510.0
+offset_bottom = 370.0
 theme = ExtResource("2_p8t5h")
 text = "Method:"
 
@@ -60,6 +60,16 @@ offset_right = 305.0
 offset_bottom = 571.0
 theme = ExtResource("2_p8t5h")
 text = "Shiny Charm"
+
+[node name="MultiHuntButton" type="CheckBox" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 160.0
+offset_top = 380.0
+offset_right = 320.0
+offset_bottom = 411.0
+theme = ExtResource("2_p8t5h")
+text = "Make Multi-hunt"
 
 [node name="StartButton" type="Button" parent="."]
 layout_mode = 0

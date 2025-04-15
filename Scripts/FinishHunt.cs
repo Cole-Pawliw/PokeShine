@@ -160,7 +160,7 @@ public partial class FinishHunt : Control
 			}
 		}
 		
-		selectScreen.CreateList(itemList);
+		selectScreen.CreateList(itemList, false);
 		selectScreen.CloseMenu += UpdateSelection;
 	}
 	
@@ -185,7 +185,7 @@ public partial class FinishHunt : Control
 			charmButton.Visible = false;
 			
 			// Reset other selections so non existent options can't be selected
-			data.pokemonName = "";
+			data.pokemon.Clear();
 			data.huntMethod = "";
 			data.capturedGender = "";
 			data.capturedBall = "";
@@ -195,7 +195,7 @@ public partial class FinishHunt : Control
 			
 			data.huntGame = selectedOption;
 			GameInfo gameInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-			if (gameInfo.methodID >= 5) // Shiny charm introduced in Black2/White2
+			if (gameInfo.methodID >= 6) // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
 			}
@@ -203,7 +203,8 @@ public partial class FinishHunt : Control
 		}
 		else if (optionMode == 2)
 		{
-			data.pokemonName = selectedOption;
+			data.pokemon.Clear();
+			data.pokemon.Add(selectedOption);
 		}
 		else if (optionMode == 3)
 		{
@@ -246,15 +247,17 @@ public partial class FinishHunt : Control
 		charmButton.ButtonPressed = data.charm;
 		
 		Sprite2D shiny = GetNode<Sprite2D>("PokemonSelect/ShinySprite");
-		if (data.pokemonName == "")
+		if (data.pokemon.Count > 1 || data.pokemon[0] == "")
 		{
 			// If no pokemon is selected, remove the texture
 			shiny.Texture = null;
+			pokemonSelect.Text = "Found Pokemon:";
 		}
 		else
 		{
 			// Else set the appropriate texture
-			shiny.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemonName}.png");
+			shiny.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
+			pokemonSelect.Text = "";
 		}
 	}
 	
@@ -266,7 +269,7 @@ public partial class FinishHunt : Control
 	private void ConfirmFinish()
 	{
 		// A pokemon name is needed to finish the hunt, everything else is optional
-		if (data.pokemonName == "")
+		if (data.pokemon.Count > 1 || data.pokemon[0] == "")
 		{
 			return;
 		}

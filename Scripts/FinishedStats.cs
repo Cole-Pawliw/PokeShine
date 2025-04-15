@@ -33,14 +33,14 @@ public partial class FinishedStats : Control
 	
 	private void SetSprite()
 	{
-		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemonName}.png");
+		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
 	}
 	
 	private void SetName()
 	{
 		if (data.nickname == "" || data.nickname == null)
 		{
-			nameLabel.Text = data.pokemonName;
+			nameLabel.Text = data.pokemon[0];
 		}
 		else
 		{

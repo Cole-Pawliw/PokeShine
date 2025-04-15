@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://jiq0ec4wmt54"]
 
-[ext_resource type="Script" path="res://Scripts/OptionSelect.cs" id="1_un06g"]
+[ext_resource type="Script" uid="uid://440ccrg5g5i4" path="res://Scripts/OptionSelect.cs" id="1_un06g"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_pele7"]
 [ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="4_7cp8t"]
 
@@ -54,7 +54,9 @@ offset_top = 411.0
 offset_right = 297.0
 offset_bottom = 447.0
 
+[connection signal="item_activated" from="ListContainer/List" to="." method="ItemActivated"]
 [connection signal="item_selected" from="ListContainer/List" to="." method="ItemSelected"]
+[connection signal="multi_selected" from="ListContainer/List" to="." method="MultiSelected"]
 [connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]
 [connection signal="pressed" from="ConfirmButton" to="." method="ConfirmButtonPressed"]
 [connection signal="text_changed" from="Search" to="." method="SearchUpdated"]
