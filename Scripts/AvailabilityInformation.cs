@@ -25,13 +25,16 @@ public class GameHuntInformation
 	// Stores the repeated GameInfo objects for re-use in gameInfoDict
 	public static GameInfo[] infoStorage = {
 		new GameInfo(0, "GS"), new GameInfo(1, "RS"), new GameInfo(2, "FL"), new GameInfo(3, "DP"), 
-		new GameInfo(4, "HS"), new GameInfo(5, "BW"), new GameInfo(6, "BW"), new GameInfo(7, "Models"),
-		new GameInfo(8, "Models"), new GameInfo(9, "Models"), new GameInfo(10, "Models") };
+		new GameInfo(4, "HS"), new GameInfo(5, "BW"), new GameInfo(6, "BW"), new GameInfo(7, "BankModels"),
+		new GameInfo(8, "BankModels"), new GameInfo(9, "BankModels"), new GameInfo(10, "BankModels"),
+		new GameInfo(11, "BankModels"), new GameInfo(12, "BankModels"), new GameInfo(13, "BankModels"),
+		new GameInfo(14, "BankModels"), new GameInfo(15, "BankModels") };
 		
 	// This dictionary maps the names of pokemon games to corresponding information
 	// The int corresponds with an index to be used in methodAvailabilityDict
 	// The string indicates the folder name used to access the sprites for this game
 	public readonly static Dictionary<string, GameInfo> gameInfoDict = new Dictionary<string, GameInfo>(){
+		{"Gold", infoStorage[0]}, {"Silver", infoStorage[0]}, {"Crystal", infoStorage[0]},
 		{"Ruby", infoStorage[1]}, {"Sapphire", infoStorage[1]}, {"Emerald", infoStorage[1]},
 		{"Fire Red", infoStorage[2]}, {"Leaf Green", infoStorage[2]},
 		{"Diamond", infoStorage[3]}, {"Pearl", infoStorage[3]}, {"Platinum", infoStorage[3]},
@@ -41,7 +44,12 @@ public class GameHuntInformation
 		{"X", infoStorage[7]}, {"Y", infoStorage[7]},
 		{"Alpha Sapphire", infoStorage[8]}, {"Omega Ruby", infoStorage[8]},
 		{"Sun", infoStorage[9]}, {"Moon", infoStorage[9]},
-		{"Ultra Sun", infoStorage[10]}, {"Ultra Moon", infoStorage[10]} };
+		{"Ultra Sun", infoStorage[10]}, {"Ultra Moon", infoStorage[10]},
+		{"Let's Go Pikachu", infoStorage[11]}, {"Let's Go Eeve", infoStorage[11]},
+		{"Sword", infoStorage[12]}, {"Shield", infoStorage[12]},
+		{"Brilliant Diamond", infoStorage[13]}, {"Shining Pearl", infoStorage[13]},
+		{"Legends Arceus", infoStorage[14]},
+		{"Scarlet", infoStorage[15]}, {"Violet", infoStorage[15]} };
 }
 
 public partial class AvailabilityInformation : Node

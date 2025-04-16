@@ -9,9 +9,6 @@ using System.IO;
 
 /*
 KNOWN BUGS:
-- Finish adding support for all pokemon games
-	- Add sprites for different games
-	- Expand gameInfoDict to include all games
 - HuntData needs better constructors
 */
 

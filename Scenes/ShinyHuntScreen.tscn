@@ -69,10 +69,6 @@ scale = Vector2(2.5, 2.5)
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="ShinySprite" type="Sprite2D" parent="."]
-position = Vector2(240, 570)
-scale = Vector2(2.5, 2.5)
-
 [node name="BackButton" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 19.0

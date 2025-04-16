@@ -56,7 +56,9 @@ public partial class ShinyHuntScreen : Control
 		if (data.pokemon.Count == 1) // Single shiny hunt, show regular and shiny sprites
 		{
 			sprites[0].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Regular/{hunt.pokemon[0]}.png");
+			sprites[0].Visible = data.showRegular;
 			sprites[1].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Shiny/{hunt.pokemon[0]}.png");
+			sprites[1].Visible = data.showShiny;
 			PositionSprites(2);
 			ScaleSprites(2);
 		}
@@ -65,6 +67,7 @@ public partial class ShinyHuntScreen : Control
 			for (int i = 0; i < data.pokemon.Count; i++)
 			{
 				sprites[i].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Shiny/{hunt.pokemon[i]}.png");
+				sprites[i].Visible = data.showShiny;
 			}
 			PositionSprites(data.pokemon.Count);
 			ScaleSprites(data.pokemon.Count);
@@ -119,7 +122,7 @@ public partial class ShinyHuntScreen : Control
 		{
 			if (sprite.Texture != null)
 			{
-				scaleFactor = buffer / sprite.Texture.GetHeight(); // Width will always have as much or more room than height
+				scaleFactor = (float)buffer / sprite.Texture.GetHeight(); // Width will always have as much or more room than height
 				sprite.Scale = new Vector2(scaleFactor, scaleFactor);
 			}
 		}

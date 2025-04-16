@@ -124,7 +124,11 @@ public class HuntData
 			_huntGame = value;
 			
 			// Set the containing folder based on the game being hunted in
-			if (value == "Ruby" || value == "Sapphire" || value == "Emerald")
+			if (value == "Gold" || value == "Silver" || value == "Crystal")
+			{
+				huntFolder = "GS";
+			}
+			else if (value == "Ruby" || value == "Sapphire" || value == "Emerald")
 			{
 				huntFolder = "RS";
 			}
@@ -144,9 +148,14 @@ public class HuntData
 			{
 				huntFolder = "BW";
 			}
+			else if (value == "X" || value == "Y" || value == "Alpha Sapphire" || value == "Omega Ruby" || 
+					value == "Sun" || value == "Moon" || value == "Ultra Sun" || value == "Ultra Moon")
+			{
+				huntFolder = "BankModels";
+			}
 			else
 			{
-				huntFolder = "Models";
+				huntFolder = "HomeModels";
 			}
 		}
 	}
