@@ -35,6 +35,39 @@ public partial class HuntCreator : Control
 		pokemonSelected = new List<string>();
 	}
 	
+	public void SetPreSelections(HuntData data)
+	{
+		Button startButton = GetNode<Button>("StartButton");
+		startButton.Text = "Edit Hunt";
+		pokemonSelect.Visible = true;
+		methodSelect.Visible = true;
+		
+		selections[0] = data.huntGame;
+		selections[2] = data.huntMethod;
+		pokemonSelected = data.pokemon;
+		
+		GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
+		if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
+		{
+			charmButton.Visible = true;
+			charmButton.ButtonPressed = data.charm;
+		}
+		if (selections[2] == "Random Encounter" || selections[2] == "Symbol Encounter")
+		{
+			multiButton.Visible = true;
+		}
+		if (pokemonSelected.Count > 1)
+		{
+			selections[1] = "Various";
+			multiButton.ButtonPressed = true;
+		}
+		else
+		{
+			selections[1] = pokemonSelected[0];
+		}
+		UpdateButtonText();
+	}
+	
 	private void GameSelectPressed()
 	{
 		optionMode = 1;
@@ -124,12 +157,14 @@ public partial class HuntCreator : Control
 		if (optionMode == 1 && selections[0] != selectedOption)
 		{
 			charmButton.Visible = false;
+			multiButton.Visible = false;
 			
 			// Reset other selections so non existent options can't be selected
 			selections[1] = "";
 			selections[2] = "";
-			// Make sure user cannot enable shiny charm then change games
+			// Make sure user cannot enable shiny charm or multi hunt then change games
 			charmButton.ButtonPressed = false;
+			multiButton.ButtonPressed = false;
 			
 			
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
@@ -145,13 +180,14 @@ public partial class HuntCreator : Control
 		}
 		else if (optionMode == 3)
 		{
-			if (selectedOption == "Random Encounter")
+			if (selectedOption == "Random Encounter" || selectedOption == "Symbol Encounter")
 			{
 				multiButton.Visible = true;
 			}
 			else
 			{
 				multiButton.Visible = false;
+				multiButton.ButtonPressed = false;
 			}
 		}
 		

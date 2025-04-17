@@ -19,12 +19,20 @@ offset_right = 480.0
 offset_bottom = 720.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
+[node name="EditHuntButton" type="Button" parent="."]
+offset_left = 165.0
+offset_top = 34.0
+offset_right = 315.0
+offset_bottom = 134.0
+theme = ExtResource("2_2d70s")
+text = "Edit Hunt"
+
 [node name="CounterValue" type="SpinBox" parent="."]
 layout_mode = 0
 offset_left = 91.0
-offset_top = 197.0
+offset_top = 252.0
 offset_right = 179.0
-offset_bottom = 228.0
+offset_bottom = 283.0
 rounded = true
 allow_greater = true
 
@@ -40,9 +48,9 @@ text = "Counter Value:"
 [node name="IncrementValue" type="SpinBox" parent="."]
 layout_mode = 0
 offset_left = 292.0
-offset_top = 196.0
+offset_top = 251.0
 offset_right = 380.0
-offset_bottom = 227.0
+offset_bottom = 282.0
 rounded = true
 allow_greater = true
 
@@ -58,9 +66,9 @@ text = "Increment Value:"
 [node name="TimerValue" type="SpinBox" parent="."]
 layout_mode = 0
 offset_left = 193.0
-offset_top = 278.0
+offset_top = 333.0
 offset_right = 281.0
-offset_bottom = 309.0
+offset_bottom = 364.0
 rounded = true
 allow_greater = true
 
@@ -76,45 +84,45 @@ text = "Timer Value:"
 [node name="ShinySprite" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 58.0
-offset_top = 398.0
+offset_top = 433.0
 offset_right = 198.0
-offset_bottom = 429.0
+offset_bottom = 464.0
 theme = ExtResource("2_2d70s")
 text = "Shiny Sprite"
 
 [node name="RegularSprite" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 245.0
-offset_top = 399.0
+offset_top = 434.0
 offset_right = 402.0
-offset_bottom = 430.0
+offset_bottom = 465.0
 theme = ExtResource("2_2d70s")
 text = "Regular Sprite"
 
 [node name="HuntOdds" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 63.0
-offset_top = 521.0
+offset_top = 556.0
 offset_right = 195.0
-offset_bottom = 552.0
+offset_bottom = 587.0
 theme = ExtResource("2_2d70s")
 text = "Hunt Odds"
 
 [node name="EncounterTimer" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 225.0
-offset_top = 457.0
+offset_top = 492.0
 offset_right = 402.0
-offset_bottom = 488.0
+offset_bottom = 523.0
 theme = ExtResource("2_2d70s")
 text = "Encounter Timer"
 
 [node name="HuntTimer" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 62.0
-offset_top = 458.0
+offset_top = 493.0
 offset_right = 198.0
-offset_bottom = 489.0
+offset_bottom = 524.0
 theme = ExtResource("2_2d70s")
 text = "Hunt Timer"
 
@@ -138,21 +146,24 @@ text = "DELETE HUNT"
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 185.0
-offset_top = 129.0
-offset_right = 290.0
-offset_bottom = 155.0
+offset_left = 162.0
+offset_top = 171.0
+offset_right = 319.0
+offset_bottom = 205.0
 theme = ExtResource("2_2d70s")
+theme_override_font_sizes/font_size = 24
 text = "Hunt Settings"
 
 [node name="Label2" type="Label" parent="."]
 layout_mode = 0
-offset_left = 177.0
-offset_top = 360.0
-offset_right = 300.0
-offset_bottom = 386.0
+offset_left = 149.0
+offset_top = 382.0
+offset_right = 332.0
+offset_bottom = 416.0
 theme = ExtResource("2_2d70s")
+theme_override_font_sizes/font_size = 24
 text = "Display Settings"
 
+[connection signal="pressed" from="EditHuntButton" to="." method="OpenHuntCreator"]
 [connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]
 [connection signal="pressed" from="DeleteButton" to="." method="DeleteButtonPressed"]

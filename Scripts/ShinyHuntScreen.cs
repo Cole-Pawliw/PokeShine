@@ -18,7 +18,7 @@ public partial class ShinyHuntScreen : Control
 	[Signal]
 	public delegate void DeleteSignalEventHandler();
 	[Signal]
-	public delegate void FinishHuntEventHandler();
+	public delegate void HuntChangedEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -30,6 +30,12 @@ public partial class ShinyHuntScreen : Control
 		{
 			sprites.Add(GetNode<Sprite2D>($"Sprite{i}"));
 		}
+		
+		
+		
+		Button thing = GetNode<Button>("IncrementCounterButton");
+		StyleBox box = thing.GetThemeStylebox("normal");
+		GD.Print(box.Get("bg_color"));
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -53,11 +59,23 @@ public partial class ShinyHuntScreen : Control
 	{
 		data = hunt;
 		
+		SetSprites();
+		UpdateCounterLabel();
+		
+		resetTimer = 0;
+		secondTimer = 0;
+		UpdateInfoLabel();
+		
+		activeHunt = true;
+	}
+	
+	private void SetSprites()
+	{
 		if (data.pokemon.Count == 1) // Single shiny hunt, show regular and shiny sprites
 		{
-			sprites[0].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Regular/{hunt.pokemon[0]}.png");
+			sprites[0].Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Regular/{data.pokemon[0]}.png");
 			sprites[0].Visible = data.showRegular;
-			sprites[1].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Shiny/{hunt.pokemon[0]}.png");
+			sprites[1].Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
 			sprites[1].Visible = data.showShiny;
 			PositionSprites(2);
 			ScaleSprites(2);
@@ -66,20 +84,12 @@ public partial class ShinyHuntScreen : Control
 		{
 			for (int i = 0; i < data.pokemon.Count; i++)
 			{
-				sprites[i].Texture = (Texture2D)GD.Load($"res://Sprites/{hunt.huntFolder}/Shiny/{hunt.pokemon[i]}.png");
+				sprites[i].Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[i]}.png");
 				sprites[i].Visible = data.showShiny;
 			}
 			PositionSprites(data.pokemon.Count);
 			ScaleSprites(data.pokemon.Count);
 		}
-		
-		UpdateCounterLabel();
-		
-		resetTimer = 0;
-		secondTimer = 0;
-		UpdateInfoLabel();
-		
-		activeHunt = true;
 	}
 	
 	private void PositionSprites(int amount)
@@ -288,13 +298,21 @@ public partial class ShinyHuntScreen : Control
 		settingsMenu.SetInitialSettings(data);
 	}
 	
-	private void CloseSettings()
+	private void CloseSettings(bool importantChange)
 	{
 		HuntSettings settingsMenu = GetNode<HuntSettings>("Settings");
 		data = settingsMenu.settings;
 		
 		UpdateCounterLabel();
 		UpdateInfoLabel();
+		
+		// Setting sprites is a long process, only do it if necessary
+		if (importantChange)
+		{
+			SetSprites();
+			UpdateMainMenu();
+		}
+		
 		if (data.pokemon.Count == 1)
 		{
 			sprites[0].Visible = data.showRegular;
@@ -349,6 +367,11 @@ public partial class ShinyHuntScreen : Control
 		settingsMenu.Cleanup();
 		activeHunt = false;
 		EmitSignal("DeleteSignal");
+	}
+	
+	private void UpdateMainMenu()
+	{
+		EmitSignal("HuntChanged");
 	}
 	
 	// Destroy this UI element

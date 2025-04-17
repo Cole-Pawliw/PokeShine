@@ -17,7 +17,7 @@ Extra features
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
 - Mod support (custom sprites for ROM hacks)
-- Allow for editing the hunt in HuntSettings (method, pokemon, etc.)
+- Sort in the completed tab
 */
 
 public partial class SceneController : Node
@@ -42,6 +42,7 @@ public partial class SceneController : Node
 		mainScreen.TreeExiting += AppClosing;
 		huntScreen.BackButtonPressed += CloseHunt;
 		huntScreen.DeleteSignal += DeleteHunt;
+		huntScreen.HuntChanged += UpdateActiveHunt;
 		
 		Load();
 	}
@@ -125,6 +126,14 @@ public partial class SceneController : Node
 		huntScreen.Visible = false;
 	}
 	
+	private void UpdateActiveHunt()
+	{
+		HuntData data = huntScreen.data;
+		mainScreen.UpdateHunt(data);
+		mainScreen.UpdateHuntSprite(data.huntID);
+		Save();
+	}
+	
 	private void CloseCreator()
 	{
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
@@ -142,9 +151,7 @@ public partial class SceneController : Node
 		mainScreen.AddHunt(huntToAdd);
 		Save(); // Update save file with newly added hunt
 		
-		mainScreen.Visible = true;
-		startHuntScreen.Visible = false;
-		startHuntScreen.Cleanup();
+		CloseCreator();
 	}
 	
 	private void Save()

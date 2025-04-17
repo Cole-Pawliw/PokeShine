@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class HuntSettings : Control
 {
@@ -12,9 +13,10 @@ public partial class HuntSettings : Control
 	Button deleteButton;
 	
 	public HuntData settings;
+	bool huntChanged = false;
 	
 	[Signal]
-	public delegate void CloseSettingsEventHandler();
+	public delegate void CloseSettingsEventHandler(bool importantChange);
 	[Signal]
 	public delegate void DeleteHuntEventHandler();
 	
@@ -58,6 +60,42 @@ public partial class HuntSettings : Control
 		}
 	}
 	
+	private void OpenHuntCreator()
+	{
+		HuntCreator startHuntScreen = (HuntCreator)GD.Load<PackedScene>("res://Scenes/HuntCreator.tscn").Instantiate();
+		AddChild(startHuntScreen);
+		
+		startHuntScreen.StartHunt += ChangeHunt;
+		startHuntScreen.BackButtonPressed += CloseCreator;
+		startHuntScreen.SetPreSelections(settings);
+	}
+	
+	private void ChangeHunt(string gameName, string method, bool charm)
+	{
+		List<string> pokemon = GetNode<HuntCreator>("HuntCreator").pokemonSelected;
+		
+		// A catch-all to tell ShinyHuntScreen that important information has changed
+		if (gameName != settings.huntGame || method != settings.huntMethod || pokemon != settings.pokemon)
+		{
+			huntChanged = true;
+			settings.huntGame = gameName;
+			settings.huntMethod = method;
+			settings.pokemon = pokemon;
+		}
+		
+		// Charm information is a minor change
+		settings.charm = charm;
+		
+		CloseCreator();
+	}
+	
+	private void CloseCreator()
+	{
+		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
+		startHuntScreen.Visible = false;
+		startHuntScreen.Cleanup();
+	}
+	
 	private void BackButtonPressed()
 	{
 		settings.count = (int)counter.Value;
@@ -69,7 +107,7 @@ public partial class HuntSettings : Control
 		settings.showOdds = odds.ButtonPressed;
 		settings.showFullTimer = huntTimer.ButtonPressed;
 		settings.showMiniTimer = encounterTimer.ButtonPressed;
-		EmitSignal("CloseSettings");
+		EmitSignal("CloseSettings", huntChanged);
 	}
 	
 	private void DeleteButtonPressed()

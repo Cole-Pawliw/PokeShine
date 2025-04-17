@@ -55,21 +55,28 @@ public class HuntData
 		isComplete = src.isComplete;
 		startDate = src.startDate;
 		endDate = src.endDate;
+		
 		pokemon = src.pokemon;
 		nickname = src.nickname;
+		
 		huntGame = src.huntGame;
+		
 		huntMethod = src.huntMethod;
+		huntRoute = src.huntRoute;
 		capturedGender = src.capturedGender;
 		capturedBall = src.capturedBall;
 		charm = src.charm;
 		count = src.count;
 		incrementValue = src.incrementValue;
 		timeSpent = src.timeSpent;
+		
 		showShiny = src.showShiny;
 		showRegular = src.showRegular;
 		showOdds = src.showOdds;
 		showFullTimer = src.showFullTimer;
 		showMiniTimer = src.showMiniTimer;
+		
+		huntIndex = src.huntIndex;
 		huntID = src.huntID;
 	}
 	
@@ -161,6 +168,7 @@ public class HuntData
 	}
 	
 	public string huntMethod { get; set; } // The method being performed for the hunt, used to determine odds
+	public string huntRoute { get; set; } // Unused for now, will help to creat multi hunts
 	public string capturedGender { get; set; } // The gender of the pokemon
 	public string capturedBall { get; set; } // The ball used to catch the pokemon
 	public bool charm { get; set; } = false; // An item that increases shiny odds
@@ -175,6 +183,7 @@ public class HuntData
 	public bool showFullTimer { get; set; } = true; // Toggles the visibility of the hunt timer in hunt screen
 	public bool showMiniTimer { get; set; } = true; // Toggles the visibility of the encounter timer in hunt screen
 	
+	public int huntIndex { get; set; } // An index used for sorting the hunts, indexing is separate for active and completed hunts
 	public int huntID { get; private set; } // Unique identifier for each HuntData
 	public static int instances;
 }

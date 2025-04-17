@@ -11,6 +11,10 @@ public partial class MainMenu : Control
 	TabContainer tabContainer;
 	Panel huntPanel;
 	Panel completedPanel;
+	Button mainButton;
+	Button completedButton;
+	TextureButton newHuntButton;
+	TextureButton sortButton;
 	
 	int x = 7, y = 10, huntY = 84, halfHuntY = 42;
 	
@@ -37,6 +41,10 @@ public partial class MainMenu : Control
 		tabContainer = GetNode<TabContainer>("TabContainer");
 		huntPanel = GetNode<Panel>("TabContainer/HuntContainer/HuntPanel");
 		completedPanel = GetNode<Panel>("TabContainer/CompletedContainer/CompletedPanel");
+		mainButton = GetNode<Button>("MainButton");
+		completedButton = GetNode<Button>("CompletedButton");
+		newHuntButton = GetNode<TextureButton>("NewHuntButton");
+		sortButton = GetNode<TextureButton>("ToggleSortButton");
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -106,7 +114,16 @@ public partial class MainMenu : Control
 	{
 		// Add a new scene to hold the HuntData
 		ActiveHunt newHuntScene = (ActiveHunt)GD.Load<PackedScene>("res://Scenes/ActiveHunt.tscn").Instantiate();
-		activeHunts.Add(newHuntScene);
+		
+		// Insert at the right location
+		if (hunt.huntIndex >= hunts.Count)
+		{
+			activeHunts.Add(newHuntScene);
+		}
+		else
+		{
+			activeHunts.Insert(hunt.huntIndex, newHuntScene);
+		}
 		
 		// Add the hunt to the current scene at the bottom of the list
 		huntPanel.AddChild(newHuntScene);
@@ -123,9 +140,18 @@ public partial class MainMenu : Control
 	{
 		// Add a new scene to hold the HuntData
 		Captured newHuntScene = (Captured)GD.Load<PackedScene>("res://Scenes/Captured.tscn").Instantiate();
-		completedHunts.Add(newHuntScene);
 		
-		// Add the hunt to the current scene at the bottom of the list
+		// Insert at the right location
+		if (hunt.huntIndex >= hunts.Count)
+		{
+			completedHunts.Add(newHuntScene);
+		}
+		else
+		{
+			completedHunts.Insert(hunt.huntIndex, newHuntScene);
+		}
+		
+		// Add the hunt to the current scene in the right position
 		completedPanel.AddChild(newHuntScene);
 		UpdateCompletedPositions();
 		
@@ -141,7 +167,16 @@ public partial class MainMenu : Control
 			return; // Return to prevent adding the same hunt twice
 		}
 		
-		hunts.Add(hunt);
+		// Insert at the right location
+		if (hunt.huntIndex > hunts.Count)
+		{
+			hunts.Add(hunt);
+		}
+		else
+		{
+			hunts.Insert(hunt.huntIndex, hunt);
+		}
+		
 		
 		if (hunt.isComplete)
 		{
@@ -151,6 +186,7 @@ public partial class MainMenu : Control
 		{
 			AddActiveHunt(hunt);
 		}
+		UpdateHuntIndices();
 	}
 	
 	public bool UpdateHunt(HuntData updatedHunt)
@@ -167,10 +203,12 @@ public partial class MainMenu : Control
 				else if (updatedHunt.isComplete && !hunts[i].isComplete)
 				{
 					hunts[i] = updatedHunt; // Update the list of hunts
+					hunts[i].huntIndex = 0; // Place at the start of the completed hunts
 					RemoveActiveHunt(hunts[i].huntID);// Remove the hunt from the active panel
 					AddCompletedHunt(hunts[i]);// Add the hunt to the completed panel
 					
 					// Update display information
+					UpdateHuntIndices();
 					UpdateActivePositions();
 					UpdateCompletedPositions();
 				}
@@ -225,6 +263,7 @@ public partial class MainMenu : Control
 				return;
 			}
 		}
+		UpdateHuntIndices();
 	}
 	
 	private void RemoveActiveHunt(int deletedHuntID)
@@ -268,6 +307,36 @@ public partial class MainMenu : Control
 		}
 		
 		return null;
+	}
+	
+	public void UpdateHuntIndices()
+	{
+		int i = 0;
+		foreach (ActiveHunt hunt in activeHunts)
+		{
+			hunt.data.huntIndex = i;
+			i++;
+		}
+		
+		foreach (Captured hunt in completedHunts)
+		{
+			hunt.data.huntIndex = i; // Completed hunts come after active ones in the list
+			i++;
+		}
+	}
+	
+	public void UpdateHuntSprite(int id)
+	{
+		int index = GetActiveHuntIndex(id);
+		ActiveHunt hunt = activeHunts[index];
+		// This is bad but it saves writing a function that does 90% of this function
+		// Basically jump starts the ActiveHunt to change its sprite
+		hunt.InitializeHunt(hunt.data);
+	}
+	
+	public void SortHunts()
+	{
+		hunts.Sort((x, y) => x.huntIndex.CompareTo(y.huntIndex));
 	}
 	
 	public int GetHuntIndex(int id)
@@ -348,6 +417,7 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 0;
 		}
+		sortButton.Visible = true;
 	}
 	
 	private void SetCompletedPanel(bool button_pressed)
@@ -355,20 +425,25 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 1;
 		}
+		sortButton.Visible = false;
 	}
 	
 	private void ToggleSortMode()
 	{
-		TextureButton button = GetNode<TextureButton>("ToggleSortButton");
-		
 		sortMode = !sortMode;
 		if (sortMode)
 		{
-			button.TextureNormal = (Texture2D)GD.Load($"res://Assets/filter.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/filter.png");
+			mainButton.Disabled = true;
+			completedButton.Disabled = true;
+			newHuntButton.Disabled = true;
 		}
 		else
 		{
-			button.TextureNormal = (Texture2D)GD.Load($"res://Assets/filter_off.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/filter_off.png");
+			mainButton.Disabled = false;
+			completedButton.Disabled = false;
+			newHuntButton.Disabled = false;
 		}
 		
 		// Iterate through all ActiveHunts and call ToggleSort()
@@ -400,9 +475,15 @@ public partial class MainMenu : Control
 			return;
 		}
 		
+		// Swap positions in the activeHunts list
 		ActiveHunt temp = activeHunts[index];
 		activeHunts[index] = activeHunts[index + change];
 		activeHunts[index + change] = temp;
+		
+		// Swap HuntData indices
+		int tempI = activeHunts[index].data.huntIndex;
+		activeHunts[index].data.huntIndex = activeHunts[index + change].data.huntIndex;
+		activeHunts[index + change].data.huntIndex = tempI;
 	}
 	
 	private void AdjustPositions()

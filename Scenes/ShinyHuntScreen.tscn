@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://ugxewxi8b38p"]
+[gd_scene load_steps=9 format=3 uid="uid://ugxewxi8b38p"]
 
 [ext_resource type="Script" uid="uid://bmthsl75yon5c" path="res://Scripts/ShinyHuntScreen.cs" id="1_3hrlr"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_dwvgu"]
+[ext_resource type="StyleBox" uid="uid://dos6ncolrg4g7" path="res://DefaultColorStylebox.tres" id="2_impdu"]
 [ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="3_hjc35"]
 [ext_resource type="Texture2D" uid="uid://b8dikjnfmu4dg" path="res://Assets/settings.png" id="4_vw1h5"]
 [ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/minus.png" id="5_su54o"]
@@ -24,10 +25,8 @@ layout_mode = 0
 offset_top = 120.0
 offset_right = 480.0
 offset_bottom = 720.0
-theme_override_colors/icon_hover_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/icon_hover_color = Color(0, 0, 0, 0)
-theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
+theme_override_styles/hover = ExtResource("2_impdu")
+theme_override_styles/pressed = ExtResource("2_impdu")
 
 [node name="Sprite1" type="Sprite2D" parent="."]
 position = Vector2(240, 330)
