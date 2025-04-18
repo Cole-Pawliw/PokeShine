@@ -14,10 +14,11 @@ KNOWN BUGS:
 
 /*
 Extra features
+- Sort in the completed tab
+- Add hunts straight to completed tab
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
 - Mod support (custom sprites for ROM hacks)
-- Sort in the completed tab
 */
 
 public partial class SceneController : Node
@@ -42,7 +43,8 @@ public partial class SceneController : Node
 		mainScreen.TreeExiting += AppClosing;
 		huntScreen.BackButtonPressed += CloseHunt;
 		huntScreen.DeleteSignal += DeleteHunt;
-		huntScreen.HuntChanged += UpdateActiveHunt;
+		huntScreen.HuntChanged += UpdateActiveSprite;
+		huntScreen.FinishHunt += FinishHunt;
 		
 		Load();
 	}
@@ -76,11 +78,11 @@ public partial class SceneController : Node
 	
 	private void OpenStats(int selectedHuntID)
 	{
-		HuntData selectedHunt = mainScreen.GetHunt(selectedHuntID);
+		CapturedData selectedHunt = mainScreen.GetCaptured(selectedHuntID);
 		FinishedStats statsScreen = (FinishedStats)GD.Load<PackedScene>("res://Scenes/FinishedStats.tscn").Instantiate();
 		AddChild(statsScreen);
 		statsScreen.BackButtonPressed += CloseStats;
-		statsScreen.InitializeStats(new HuntData(selectedHunt));
+		statsScreen.InitializeStats(new CapturedData(selectedHunt));
 		
 		statsScreen.Visible = true;
 		mainScreen.Visible = false;
@@ -126,7 +128,7 @@ public partial class SceneController : Node
 		huntScreen.Visible = false;
 	}
 	
-	private void UpdateActiveHunt()
+	private void UpdateActiveSprite()
 	{
 		HuntData data = huntScreen.data;
 		mainScreen.UpdateHunt(data);
@@ -154,9 +156,21 @@ public partial class SceneController : Node
 		CloseCreator();
 	}
 	
+	private void FinishHunt(string nickname, string ball, string gender)
+	{
+		string endDT = Time.GetDatetimeStringFromSystem();
+		CapturedData finishedHunt = new CapturedData(huntScreen.data, endDT, nickname, ball, gender);
+		mainScreen.RemoveHunt(huntScreen.data);
+		mainScreen.AddCaptured(finishedHunt);
+		Save();
+		mainScreen.Visible = true;
+		huntScreen.Visible = false;
+	}
+	
 	private void Save()
 	{
 		List<HuntData> allHunts = mainScreen.GetHunts();
+		List<CapturedData> allCaptured = mainScreen.GetFinished();
 		
 		var options = new JsonSerializerOptions
 		{
@@ -164,29 +178,39 @@ public partial class SceneController : Node
 		};
 		
 		string huntData = JsonSerializer.Serialize<List<HuntData>>(allHunts, options);
+		string capturedData = JsonSerializer.Serialize<List<CapturedData>>(allCaptured, options);
+		string fullSave = huntData + "\n" + capturedData;
 		string path = ProjectSettings.GlobalizePath("user://");
-		json.SaveJsonToFile(path, saveFileName, huntData);
+		json.SaveJsonToFile(path, saveFileName, fullSave);
 	}
 	
 	private void Load()
 	{
 		string path = ProjectSettings.GlobalizePath("user://");
-		string huntData = json.LoadJsonFromFile(path, saveFileName);
+		string fullLoad = json.LoadJsonFromFile(path, saveFileName);
 		
-		if (huntData == null)
+		if (fullLoad == null)
 		{
 			return;
 		}
+		
+		string[] datas = fullLoad.Split("\n");
 		
 		var options = new JsonSerializerOptions
 		{
 			IncludeFields = true,
 		};
-		List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(huntData, options)!;
+		List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(datas[0], options)!;
+		List<CapturedData> allCaptures = JsonSerializer.Deserialize<List<CapturedData>>(datas[1], options)!;
 		
 		foreach (HuntData hunt in allHunts)
 		{
 			mainScreen.AddHunt(hunt);
+		}
+		
+		foreach (CapturedData hunt in allCaptures)
+		{
+			mainScreen.AddCaptured(hunt);
 		}
 	}
 	

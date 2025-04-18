@@ -1,0 +1,141 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnm6ue8flowug"]
+
+[ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_bdfeo"]
+[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_x5ic5"]
+
+[node name="CapturedCreator" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_74s7v")
+
+[node name="Background" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(480, 720)
+layout_mode = 2
+offset_right = 480.0
+offset_bottom = 720.0
+color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="BackButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 106.0
+offset_bottom = 106.0
+texture_normal = ExtResource("2_bdfeo")
+stretch_mode = 0
+
+[node name="GameSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 144.0
+offset_right = 245.0
+offset_bottom = 195.0
+theme = ExtResource("3_x5ic5")
+text = "Game:"
+
+[node name="RouteSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 146.0
+offset_right = 402.0
+offset_bottom = 197.0
+theme = ExtResource("3_x5ic5")
+text = "Route:"
+
+[node name="MethodSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 234.0
+offset_right = 241.0
+offset_bottom = 285.0
+theme = ExtResource("3_x5ic5")
+text = "Method:"
+
+[node name="PokemonSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 254.0
+offset_top = 234.0
+offset_right = 396.0
+offset_bottom = 285.0
+theme = ExtResource("3_x5ic5")
+text = "Pokemon:"
+
+[node name="BallSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 305.0
+offset_right = 241.0
+offset_bottom = 356.0
+theme = ExtResource("3_x5ic5")
+text = "Ball:"
+
+[node name="GenderSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 258.0
+offset_top = 306.0
+offset_right = 400.0
+offset_bottom = 357.0
+theme = ExtResource("3_x5ic5")
+text = "Gender:"
+
+[node name="CharmButton" type="CheckBox" parent="."]
+layout_mode = 0
+offset_left = 172.0
+offset_top = 373.0
+offset_right = 322.0
+offset_bottom = 408.0
+theme = ExtResource("3_x5ic5")
+text = "Shiny Charm"
+
+[node name="StartDate" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 426.0
+offset_right = 229.0
+offset_bottom = 466.0
+placeholder_text = "Start Date"
+
+[node name="EndDate" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 261.0
+offset_top = 422.0
+offset_right = 390.0
+offset_bottom = 462.0
+placeholder_text = "End Date"
+
+[node name="Nickname" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 488.0
+offset_right = 227.0
+offset_bottom = 528.0
+placeholder_text = "Nickname"
+
+[node name="CounterValue" type="SpinBox" parent="."]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 487.0
+offset_right = 387.0
+offset_bottom = 527.0
+
+[node name="TimerValue" type="SpinBox" parent="."]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 547.0
+offset_right = 228.0
+offset_bottom = 587.0
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 199.0
+offset_top = 630.0
+offset_right = 289.0
+offset_bottom = 680.0
+theme = ExtResource("3_x5ic5")
+disabled = true
+text = "Start Hunt"

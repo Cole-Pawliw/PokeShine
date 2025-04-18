@@ -19,6 +19,8 @@ public partial class ShinyHuntScreen : Control
 	public delegate void DeleteSignalEventHandler();
 	[Signal]
 	public delegate void HuntChangedEventHandler();
+	[Signal]
+	public delegate void FinishHuntEventHandler(string nickname, string ball, string gender);
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -30,12 +32,6 @@ public partial class ShinyHuntScreen : Control
 		{
 			sprites.Add(GetNode<Sprite2D>($"Sprite{i}"));
 		}
-		
-		
-		
-		Button thing = GetNode<Button>("IncrementCounterButton");
-		StyleBox box = thing.GetThemeStylebox("normal");
-		GD.Print(box.Get("bg_color"));
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -279,11 +275,16 @@ public partial class ShinyHuntScreen : Control
 	private void BackToMenu()
 	{
 		activeHunt = false;
+		ClearSprites();
+		EmitSignal("BackButtonPressed");
+	}
+	
+	private void ClearSprites()
+	{
 		foreach (Sprite2D sprite in sprites)
 		{
 			sprite.Texture = null; // Reset textures so there aren't remaining sprites when opening the next hunt
 		}
-		EmitSignal("BackButtonPressed");
 	}
 	
 	private void OpenSettings()
@@ -336,7 +337,6 @@ public partial class ShinyHuntScreen : Control
 		activeHunt = false;
 		FinishHunt finishMenu = (FinishHunt)GD.Load<PackedScene>("res://Scenes/FinishHunt.tscn").Instantiate();
 		AddChild(finishMenu);
-		finishMenu.Name = "Finish";
 		finishMenu.SetInitialSettings(new HuntData(data));
 		
 		finishMenu.BackButtonPressed += CloseFinishScreen;
@@ -345,19 +345,20 @@ public partial class ShinyHuntScreen : Control
 	
 	private void CloseFinishScreen()
 	{
-		FinishHunt finishMenu = GetNode<FinishHunt>("Finish");
+		FinishHunt finishMenu = GetNode<FinishHunt>("FinishHunt");
 		RemoveChild(finishMenu);
 		finishMenu.Cleanup();
 		activeHunt = true;
 	}
 	
-	private void HuntCompleted()
+	private void HuntCompleted(string nickname, string ball, string gender)
 	{
-		FinishHunt finishMenu = GetNode<FinishHunt>("Finish");
+		FinishHunt finishMenu = GetNode<FinishHunt>("FinishHunt");
 		data = finishMenu.data;
 		RemoveChild(finishMenu);
 		finishMenu.Cleanup();
-		BackToMenu();
+		ClearSprites();
+		EmitSignal("FinishHunt", nickname, ball, gender);
 	}
 	
 	private void DeleteHunt()

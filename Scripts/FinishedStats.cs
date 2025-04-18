@@ -4,7 +4,7 @@ using System;
 public partial class FinishedStats : Control
 {
 	
-	public HuntData data;
+	public CapturedData data;
 	Label statsLabel;
 	Label countLabel;
 	Label nameLabel;
@@ -22,7 +22,7 @@ public partial class FinishedStats : Control
 		sprite = GetNode<Sprite2D>("ScrollContainer/Background/ShinySprite");
 	}
 	
-	public void InitializeStats(HuntData hunt)
+	public void InitializeStats(CapturedData hunt)
 	{
 		data = hunt;
 		SetSprite();
@@ -33,14 +33,14 @@ public partial class FinishedStats : Control
 	
 	private void SetSprite()
 	{
-		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
+		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon}.png");
 	}
 	
 	private void SetName()
 	{
 		if (data.nickname == "" || data.nickname == null)
 		{
-			nameLabel.Text = data.pokemon[0];
+			nameLabel.Text = data.pokemon;
 		}
 		else
 		{

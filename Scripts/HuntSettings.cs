@@ -42,7 +42,7 @@ public partial class HuntSettings : Control
 		settings = data;
 		counter.Value = settings.count;
 		increment.Value = settings.incrementValue;
-		timer.Value = settings.timeSpent;
+		timer.Value = settings.timeSpent / 60;
 		
 		shiny.ButtonPressed = settings.showShiny;
 		regular.ButtonPressed = settings.showRegular;
@@ -100,7 +100,7 @@ public partial class HuntSettings : Control
 	{
 		settings.count = (int)counter.Value;
 		settings.incrementValue = (int)increment.Value;
-		settings.timeSpent = (int)timer.Value;
+		settings.timeSpent = (int)timer.Value * 60;
 		
 		settings.showShiny = shiny.ButtonPressed;
 		settings.showRegular = regular.ButtonPressed;

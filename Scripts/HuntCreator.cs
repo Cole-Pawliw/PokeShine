@@ -9,6 +9,7 @@ public partial class HuntCreator : Control
 	Button gameSelect;
 	Button pokemonSelect;
 	Button methodSelect;
+	Button startButton;
 	CheckBox charmButton;
 	CheckBox multiButton;
 	
@@ -28,6 +29,7 @@ public partial class HuntCreator : Control
 		gameSelect = GetNode<Button>("GameSelect");
 		pokemonSelect = GetNode<Button>("PokemonSelect");
 		methodSelect = GetNode<Button>("MethodSelect");
+		startButton = GetNode<Button>("StartButton");
 		charmButton = GetNode<CheckBox>("CharmButton");
 		multiButton = GetNode<CheckBox>("MultiHuntButton");
 		
@@ -201,6 +203,16 @@ public partial class HuntCreator : Control
 		gameSelect.Visible = true;
 		pokemonSelect.Visible = true;
 		methodSelect.Visible = true;
+		
+		// Allow user to start the hunt
+		if (selections[0] != "" && selections[1] != "" && selections[2] != "")
+		{
+			startButton.Disabled = false;
+		}
+		else
+		{
+			startButton.Disabled = true;
+		}
 	}
 	
 	private void CloseSelector()

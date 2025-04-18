@@ -63,9 +63,9 @@ text = "Shiny Charm"
 
 [node name="BackButton" type="TextureButton" parent="."]
 layout_mode = 0
-offset_left = 11.0
+offset_left = 10.0
 offset_top = 10.0
-offset_right = 107.0
+offset_right = 106.0
 offset_bottom = 106.0
 texture_normal = ExtResource("4_l8w8v")
 stretch_mode = 0

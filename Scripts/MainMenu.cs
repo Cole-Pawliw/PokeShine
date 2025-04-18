@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public partial class MainMenu : Control
 {
 	List<HuntData> hunts;
+	List<CapturedData> finished;
 	List<ActiveHunt> activeHunts;
 	List<Captured> completedHunts;
 	
@@ -34,6 +35,7 @@ public partial class MainMenu : Control
 	public override void _Ready()
 	{
 		hunts = new List<HuntData>();
+		finished = new List<CapturedData>();
 		activeHunts = new List<ActiveHunt>();
 		completedHunts = new List<Captured>();
 		flags = new List<int>();
@@ -110,13 +112,19 @@ public partial class MainMenu : Control
 		return list;
 	}
 	
+	public List<CapturedData> GetFinished()
+	{
+		List<CapturedData> list = new List<CapturedData>(finished);
+		return list;
+	}
+	
 	private void AddActiveHunt(HuntData hunt)
 	{
 		// Add a new scene to hold the HuntData
 		ActiveHunt newHuntScene = (ActiveHunt)GD.Load<PackedScene>("res://Scenes/ActiveHunt.tscn").Instantiate();
 		
 		// Insert at the right location
-		if (hunt.huntIndex >= hunts.Count)
+		if (hunt.huntIndex >= activeHunts.Count)
 		{
 			activeHunts.Add(newHuntScene);
 		}
@@ -136,13 +144,13 @@ public partial class MainMenu : Control
 		newHuntScene.InitializeHunt(hunt);
 	}
 	
-	private void AddCompletedHunt(HuntData hunt)
+	private void AddCompletedHunt(CapturedData hunt)
 	{
 		// Add a new scene to hold the HuntData
 		Captured newHuntScene = (Captured)GD.Load<PackedScene>("res://Scenes/Captured.tscn").Instantiate();
 		
 		// Insert at the right location
-		if (hunt.huntIndex >= hunts.Count)
+		if (hunt.huntIndex >= completedHunts.Count)
 		{
 			completedHunts.Add(newHuntScene);
 		}
@@ -177,15 +185,28 @@ public partial class MainMenu : Control
 			hunts.Insert(hunt.huntIndex, hunt);
 		}
 		
+		AddActiveHunt(hunt);
+		UpdateHuntIndices();
+	}
+	
+	public void AddCaptured(CapturedData hunt)
+	{
+		// Check if the hunt already exists, and update if it does
+		if (UpdateCaptured(hunt)) {
+			return; // Return to prevent adding the same hunt twice
+		}
 		
-		if (hunt.isComplete)
+		// Insert at the right location
+		if (hunt.huntIndex > finished.Count)
 		{
-			AddCompletedHunt(hunt);
+			finished.Add(hunt);
 		}
 		else
 		{
-			AddActiveHunt(hunt);
+			finished.Insert(hunt.huntIndex, hunt);
 		}
+		
+		AddCompletedHunt(hunt);
 		UpdateHuntIndices();
 	}
 	
@@ -195,17 +216,19 @@ public partial class MainMenu : Control
 		{
 			if (hunts[i].huntID == updatedHunt.huntID)
 			{
-				if (updatedHunt.isComplete == hunts[i].isComplete)
+				if (updatedHunt.isComplete == false)
 				{
 					hunts[i] = updatedHunt;
 					UpdateHuntLabel(i);
 				}
-				else if (updatedHunt.isComplete && !hunts[i].isComplete)
+				else
 				{
-					hunts[i] = updatedHunt; // Update the list of hunts
-					hunts[i].huntIndex = 0; // Place at the start of the completed hunts
+					CapturedData finish = new CapturedData(updatedHunt);
+					finish.huntIndex = 0; // Place at the start of the completed hunts
 					RemoveActiveHunt(hunts[i].huntID);// Remove the hunt from the active panel
-					AddCompletedHunt(hunts[i]);// Add the hunt to the completed panel
+					AddCompletedHunt(finish);// Add the hunt to the completed panel
+					hunts.Remove(updatedHunt); // Update the list of hunts
+					AddCaptured(finish); // Update the list of finished hunts
 					
 					// Update display information
 					UpdateHuntIndices();
@@ -219,28 +242,41 @@ public partial class MainMenu : Control
 		return false;
 	}
 	
-	public void UpdateHuntLabel(int huntIndex)
+	public bool UpdateCaptured(CapturedData updatedHunt)
 	{
-		if (hunts[huntIndex].isComplete)
+		for (int i = 0; i < finished.Count; i++)
 		{
-			foreach (Captured hunt in completedHunts)
+			if (finished[i].huntID == updatedHunt.huntID)
 			{
-				if (hunt.data.huntID == hunts[huntIndex].huntID)
-				{
-					hunt.data = hunts[huntIndex];
-					hunt.UpdateLabel();
-				}
+				finished[i] = updatedHunt;
+				UpdateCapturedLabel(i);
+				return true;
 			}
 		}
-		else
+		
+		return false;
+	}
+	
+	public void UpdateHuntLabel(int huntIndex)
+	{
+		foreach (ActiveHunt hunt in activeHunts)
 		{
-			foreach (ActiveHunt hunt in activeHunts)
+			if (hunt.data.huntID == hunts[huntIndex].huntID)
 			{
-				if (hunt.data.huntID == hunts[huntIndex].huntID)
-				{
-					hunt.data = hunts[huntIndex];
-					hunt.UpdateLabel();
-				}
+				hunt.data = hunts[huntIndex];
+				hunt.UpdateLabel();
+			}
+		}
+	}
+	
+	public void UpdateCapturedLabel(int huntIndex)
+	{
+		foreach (Captured hunt in completedHunts)
+		{
+			if (hunt.data.huntID == finished[huntIndex].huntID)
+			{
+				hunt.data = finished[huntIndex];
+				hunt.UpdateLabel();
 			}
 		}
 	}
@@ -251,15 +287,22 @@ public partial class MainMenu : Control
 		{
 			if (hunt.huntID == deletedHunt.huntID)
 			{
-				if (hunt.isComplete)
-				{
-					RemoveCompletedHunt(hunt.huntID);
-				}
-				else
-				{
-					RemoveActiveHunt(hunt.huntID);
-				}
+				RemoveActiveHunt(hunt.huntID);
 				hunts.Remove(hunt);
+				return;
+			}
+		}
+		UpdateHuntIndices();
+	}
+	
+	public void RemoveCaptured(CapturedData deletedHunt)
+	{
+		foreach (CapturedData hunt in finished)
+		{
+			if (hunt.huntID == deletedHunt.huntID)
+			{
+				RemoveCompletedHunt(hunt.huntID);
+				finished.Remove(hunt);
 				return;
 			}
 		}
@@ -309,6 +352,19 @@ public partial class MainMenu : Control
 		return null;
 	}
 	
+	public CapturedData GetCaptured(int id)
+	{
+		foreach (CapturedData hunt in finished)
+		{
+			if (hunt.huntID == id)
+			{
+				return hunt;
+			}
+		}
+		
+		return null;
+	}
+	
 	public void UpdateHuntIndices()
 	{
 		int i = 0;
@@ -318,9 +374,10 @@ public partial class MainMenu : Control
 			i++;
 		}
 		
+		i = 0;
 		foreach (Captured hunt in completedHunts)
 		{
-			hunt.data.huntIndex = i; // Completed hunts come after active ones in the list
+			hunt.data.huntIndex = i;
 			i++;
 		}
 	}
@@ -344,6 +401,19 @@ public partial class MainMenu : Control
 		for (int i = 0; i < hunts.Count; i++)
 		{
 			if (hunts[i].huntID == id)
+			{
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public int GetCapturedIndex(int id)
+	{
+		for (int i = 0; i < finished.Count; i++)
+		{
+			if (finished[i].huntID == id)
 			{
 				return i;
 			}
@@ -401,7 +471,7 @@ public partial class MainMenu : Control
 		int yTracker = y; // The y coordinate for the position of the next ActiveHunt to be placed
 		foreach (Captured hunt in completedHunts)
 		{
-			hunt.Position = new Vector2(x, y);
+			hunt.Position = new Vector2(x, yTracker);
 			yTracker += increment;
 		}
 		

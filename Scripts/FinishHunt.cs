@@ -14,16 +14,18 @@ public partial class FinishHunt : Control
 	CheckBox charmButton;
 	Label info;
 	TextEdit nickname;
+	TextureButton finishButton;
 	
 	AvailabilityInformation dicts;
 	
 	public HuntData data;
 	int optionMode = 0;
+	string[] altSelections = {"", ""};
 	
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
 	[Signal]
-	public delegate void FinishButtonPressedEventHandler();
+	public delegate void FinishButtonPressedEventHandler(string nickname, string ball, string gender);
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -36,6 +38,7 @@ public partial class FinishHunt : Control
 		charmButton = GetNode<CheckBox>("CharmButton");
 		info = GetNode<Label>("Info");
 		nickname = GetNode<TextEdit>("Nickname");
+		finishButton = GetNode<TextureButton>("FinishButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
 	}
@@ -54,10 +57,7 @@ public partial class FinishHunt : Control
 		int minutes = fullTime / 60;
 		int seconds = fullTime % 60;
 		string timerInHourFormat = $"{hours:00}:{minutes:00}:{seconds:00}"; // :00 pads 2 zeros to everything
-		
-		string endDT = Time.GetDatetimeStringFromSystem();
-		string endDate = endDT.Split('T')[0];
-		data.endDate = endDT;
+		string date = data.startDate.Split('T')[0];
 		
 		GameInfo gameInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
 		if (gameInfo.methodID >= 5) // Shiny charm introduced in Black2/White2
@@ -65,7 +65,12 @@ public partial class FinishHunt : Control
 			charmButton.Visible = true;
 		}
 		
-		info.Text = $"{data.count}\n{timerInHourFormat}\n{endDate}";
+		info.Text = $"{data.count}\n{timerInHourFormat}\n{date}";
+		
+		if (data.pokemon.Count > 1)
+		{
+			finishButton.Disabled = true;
+		}
 	}
 	
 	private void GameSelectPressed()
@@ -187,8 +192,8 @@ public partial class FinishHunt : Control
 			// Reset other selections so non existent options can't be selected
 			data.pokemon.Clear();
 			data.huntMethod = "";
-			data.capturedGender = "";
-			data.capturedBall = "";
+			altSelections[0] = "";
+			altSelections[1] = "";
 			data.charm = false;
 			// Make sure user cannot enable shiny charm then change games
 			charmButton.ButtonPressed = false;
@@ -205,6 +210,7 @@ public partial class FinishHunt : Control
 		{
 			data.pokemon.Clear();
 			data.pokemon.Add(selectedOption);
+			finishButton.Disabled = false;
 		}
 		else if (optionMode == 3)
 		{
@@ -212,11 +218,11 @@ public partial class FinishHunt : Control
 		}
 		else if (optionMode == 4)
 		{
-			data.capturedGender = selectedOption;
+			altSelections[1] = selectedOption;
 		}
 		else if (optionMode == 5)
 		{
-			data.capturedBall = selectedOption;
+			altSelections[0] = selectedOption;
 		}
 		
 		UpdateButtons();
@@ -242,8 +248,8 @@ public partial class FinishHunt : Control
 	{
 		gameSelect.Text = "Game:\n" + data.huntGame;
 		methodSelect.Text = "Method:\n" + data.huntMethod;
-		genderSelect.Text = "Gender:\n" + data.capturedGender;
-		ballSelect.Text = "Ball:\n" + data.capturedBall;
+		genderSelect.Text = "Gender:\n" + altSelections[1];
+		ballSelect.Text = "Ball:\n" + altSelections[0];
 		charmButton.ButtonPressed = data.charm;
 		
 		Sprite2D shiny = GetNode<Sprite2D>("PokemonSelect/ShinySprite");
@@ -273,13 +279,9 @@ public partial class FinishHunt : Control
 		{
 			return;
 		}
-		if (nickname.Text != "")
-		{
-			data.nickname = nickname.Text; // Use default pokemon name if no nickname is set
-		}
 		
 		data.isComplete = true;
-		EmitSignal("FinishButtonPressed");
+		EmitSignal("FinishButtonPressed", nickname.Text, altSelections[1], altSelections[0]);
 	}
 	
 	public void Cleanup()

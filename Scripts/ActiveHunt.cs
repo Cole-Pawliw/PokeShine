@@ -35,13 +35,12 @@ public class HuntData
 		startDate = time;
 		huntID = ++instances;
 	}
-	public HuntData(bool comp, string start, string end, string name,
+	public HuntData(bool comp, string start, string name,
 					string game, string method, bool shinyCharm, int c, int inc)
 	{
 		pokemon = new List<string>();
 		isComplete = comp;
 		startDate = start;
-		endDate = end;
 		pokemon.Add(name);
 		huntGame = game;
 		huntMethod = method;
@@ -54,17 +53,13 @@ public class HuntData
 	{
 		isComplete = src.isComplete;
 		startDate = src.startDate;
-		endDate = src.endDate;
 		
 		pokemon = src.pokemon;
-		nickname = src.nickname;
 		
 		huntGame = src.huntGame;
 		
 		huntMethod = src.huntMethod;
 		huntRoute = src.huntRoute;
-		capturedGender = src.capturedGender;
-		capturedBall = src.capturedBall;
 		charm = src.charm;
 		count = src.count;
 		incrementValue = src.incrementValue;
@@ -92,13 +87,13 @@ public class HuntData
 		}
 		
 		var other = (HuntData)obj;
-		return (other.isComplete, other.startDate, other.endDate, other.pokemon, other.huntGame, other.count,
-				other.incrementValue).Equals((isComplete, startDate, endDate, pokemon, huntGame, count, incrementValue));
+		return (other.isComplete, other.startDate, other.pokemon, other.huntGame, other.count,
+				other.incrementValue).Equals((isComplete, startDate, pokemon, huntGame, count, incrementValue));
 	}
 	
 	public override int GetHashCode()
 	{
-		return (isComplete, startDate, endDate, pokemon, huntGame, count, incrementValue).GetHashCode();
+		return (isComplete, startDate, pokemon, huntGame, count, incrementValue).GetHashCode();
 	}
 	
 	public static bool operator ==(HuntData hunt1, HuntData hunt2)
@@ -113,10 +108,8 @@ public class HuntData
 	
 	public bool isComplete { get; set; } = false; // Marked true if the hunt is completed
 	public string startDate { get; set; } // Datetime formatted string storing when the hunt was created
-	public string endDate { get; set; } // Datetime formatted string storing when the hunt ended
 	
 	public List<string> pokemon { get; set; } // The name of the pokemon being hunted
-	public string nickname { get; set; } = ""; // The user set nickname after catching the pokemon
 	
 	public string huntFolder { get; private set; } // The folder to be used to access the sprites for this game
 	private string _huntGame; // The game the pokemon is being hunted in
@@ -169,8 +162,6 @@ public class HuntData
 	
 	public string huntMethod { get; set; } // The method being performed for the hunt, used to determine odds
 	public string huntRoute { get; set; } // Unused for now, will help to creat multi hunts
-	public string capturedGender { get; set; } // The gender of the pokemon
-	public string capturedBall { get; set; } // The ball used to catch the pokemon
 	public bool charm { get; set; } = false; // An item that increases shiny odds
 	public int count { get; set; } = 0; // The current number of encounters/resets for the pokemon
 	public int incrementValue { get; set; } = 1; // The number to increase the counter by
