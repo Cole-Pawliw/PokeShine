@@ -10,12 +10,13 @@ using System.IO;
 /*
 KNOWN BUGS:
 - HuntData needs better constructors
+- Sprite sizes are a little buggy
+- Setting startDate and endDate in CapturedCreator doesn't work
 */
 
 /*
 Extra features
 - Sort in the completed tab
-- Add hunts straight to completed tab
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
 - Mod support (custom sprites for ROM hacks)
@@ -82,6 +83,8 @@ public partial class SceneController : Node
 		FinishedStats statsScreen = (FinishedStats)GD.Load<PackedScene>("res://Scenes/FinishedStats.tscn").Instantiate();
 		AddChild(statsScreen);
 		statsScreen.BackButtonPressed += CloseStats;
+		statsScreen.HuntChanged += UpdateCaptured;
+		statsScreen.DeleteHunt += DeleteCaptured;
 		statsScreen.InitializeStats(new CapturedData(selectedHunt));
 		
 		statsScreen.Visible = true;
@@ -106,17 +109,32 @@ public partial class SceneController : Node
 		statsScreen.Cleanup();
 	}
 	
-	private void CreateNewHunt()
+	private void CreateNewHunt(int mode)
 	{
-		HuntCreator startHuntScreen = (HuntCreator)GD.Load<PackedScene>("res://Scenes/HuntCreator.tscn").Instantiate();
-		AddChild(startHuntScreen);
-		
-		startHuntScreen.Visible = true;
-		mainScreen.Visible = false;
-		huntScreen.Visible = false;
-		
-		startHuntScreen.StartHunt += StartHuntSignalReceiver;
-		startHuntScreen.BackButtonPressed += CloseCreator;
+		if (mode == 0)
+		{
+			HuntCreator startHuntScreen = (HuntCreator)GD.Load<PackedScene>("res://Scenes/HuntCreator.tscn").Instantiate();
+			AddChild(startHuntScreen);
+			
+			startHuntScreen.Visible = true;
+			mainScreen.Visible = false;
+			huntScreen.Visible = false;
+			
+			startHuntScreen.StartHunt += StartHuntSignalReceiver;
+			startHuntScreen.BackButtonPressed += CloseHuntCreator;
+		}
+		else
+		{
+			CapturedCreator startHuntScreen = (CapturedCreator)GD.Load<PackedScene>("res://Scenes/CapturedCreator.tscn").Instantiate();
+			AddChild(startHuntScreen);
+			
+			startHuntScreen.Visible = true;
+			mainScreen.Visible = false;
+			huntScreen.Visible = false;
+			
+			startHuntScreen.AddHunt += AddCaptured;
+			startHuntScreen.BackButtonPressed += CloseCapturedCreator;
+		}
 	}
 	
 	private void DeleteHunt()
@@ -128,6 +146,17 @@ public partial class SceneController : Node
 		huntScreen.Visible = false;
 	}
 	
+	private void DeleteCaptured()
+	{
+		FinishedStats screen = GetNode<FinishedStats>("FinishedStats");
+		CapturedData data = screen.data;
+		mainScreen.RemoveCaptured(data);
+		Save();
+		mainScreen.Visible = true;
+		screen.Visible = false;
+		screen.Cleanup();
+	}
+	
 	private void UpdateActiveSprite()
 	{
 		HuntData data = huntScreen.data;
@@ -136,7 +165,15 @@ public partial class SceneController : Node
 		Save();
 	}
 	
-	private void CloseCreator()
+	private void UpdateCaptured()
+	{
+		FinishedStats screen = GetNode<FinishedStats>("FinishedStats");
+		CapturedData data = screen.data;
+		mainScreen.UpdateCaptured(data);
+		Save();
+	}
+	
+	private void CloseHuntCreator()
 	{
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		mainScreen.Visible = true;
@@ -153,7 +190,41 @@ public partial class SceneController : Node
 		mainScreen.AddHunt(huntToAdd);
 		Save(); // Update save file with newly added hunt
 		
-		CloseCreator();
+		CloseHuntCreator();
+	}
+	
+	private void CloseCapturedCreator()
+	{
+		CapturedCreator startHuntScreen = GetNode<CapturedCreator>("CapturedCreator");
+		mainScreen.Visible = true;
+		startHuntScreen.Visible = false;
+		startHuntScreen.Cleanup();
+	}
+	
+	private void AddCaptured()
+	{
+		// s short for startHuntScreen so that initializing the CapturedData isn't 10 lines long
+		CapturedCreator s = GetNode<CapturedCreator>("CapturedCreator");
+		CapturedData huntToAdd = new CapturedData(s.startDate.Text, s.endDate.Text, s.selections[0], s.selections[1],
+												s.selections[2], s.selections[3], s.selections[4], s.selections[5],
+												s.nickname.Text, s.charmButton.ButtonPressed,
+												(int)s.counter.Value, (int)s.timer.Value * 60);
+		
+		// Fill empty values
+		string DT = Time.GetDatetimeStringFromSystem();
+		if (huntToAdd.startDate == "")
+		{
+			huntToAdd.startDate = DT;
+		}
+		if (huntToAdd.endDate == "")
+		{
+			huntToAdd.endDate = DT;
+		}
+		
+		mainScreen.AddCaptured(huntToAdd);
+		Save(); // Update save file with newly added hunt
+		
+		CloseCapturedCreator();
 	}
 	
 	private void FinishHunt(string nickname, string ball, string gender)

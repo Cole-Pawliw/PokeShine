@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://r7si871pi6oj"]
+[gd_scene load_steps=6 format=3 uid="uid://r7si871pi6oj"]
 
 [ext_resource type="Script" uid="uid://bmkd40tj8qcb7" path="res://Scripts/FinishedStats.cs" id="1_071mg"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_j7nrf"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_t1ssc"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="4_eoea3"]
+[ext_resource type="PackedScene" uid="uid://c1fphqg4nagq8" path="res://Scenes/Verify.tscn" id="5_l1512"]
 
 [node name="FinishedStats" type="Control"]
 layout_mode = 3
@@ -45,6 +46,7 @@ theme_override_font_sizes/font_size = 25
 text = "Started on:
 Ended on:
 Hunted in:
+Found at:
 Method:
 Gender:
 Ball:
@@ -75,4 +77,30 @@ position = Vector2(236, 125)
 scale = Vector2(1.55, 1.55)
 texture = ExtResource("4_eoea3")
 
+[node name="EditButton" type="Button" parent="ScrollContainer/Background"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 660.0
+offset_right = 200.0
+offset_bottom = 700.0
+theme = ExtResource("2_j7nrf")
+text = "Edit"
+
+[node name="DeleteButton" type="Button" parent="ScrollContainer/Background"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 660.0
+offset_right = 355.0
+offset_bottom = 700.0
+theme = ExtResource("2_j7nrf")
+text = "Delete"
+
+[node name="Verify" parent="ScrollContainer/Background" instance=ExtResource("5_l1512")]
+visible = false
+anchors_preset = 0
+grow_horizontal = 1
+grow_vertical = 1
+
 [connection signal="pressed" from="ScrollContainer/Background/BackButton" to="." method="BackToMenu"]
+[connection signal="pressed" from="ScrollContainer/Background/EditButton" to="." method="EditHunt"]
+[connection signal="pressed" from="ScrollContainer/Background/DeleteButton" to="." method="DeleteButtonPressed"]

@@ -6,12 +6,8 @@ using System.IO;
 
 public partial class HuntCreator : Control
 {
-	Button gameSelect;
-	Button pokemonSelect;
-	Button methodSelect;
-	Button startButton;
-	CheckBox charmButton;
-	CheckBox multiButton;
+	Button gameSelect, pokemonSelect, methodSelect, routeSelect, startButton;
+	CheckBox charmButton, multiButton;
 	
 	AvailabilityInformation dicts;
 	
@@ -29,6 +25,7 @@ public partial class HuntCreator : Control
 		gameSelect = GetNode<Button>("GameSelect");
 		pokemonSelect = GetNode<Button>("PokemonSelect");
 		methodSelect = GetNode<Button>("MethodSelect");
+		routeSelect = GetNode<Button>("RouteSelect");
 		startButton = GetNode<Button>("StartButton");
 		charmButton = GetNode<CheckBox>("CharmButton");
 		multiButton = GetNode<CheckBox>("MultiHuntButton");
@@ -43,6 +40,7 @@ public partial class HuntCreator : Control
 		startButton.Text = "Edit Hunt";
 		pokemonSelect.Visible = true;
 		methodSelect.Visible = true;
+		routeSelect.Visible = true;
 		
 		selections[0] = data.huntGame;
 		selections[2] = data.huntMethod;
@@ -155,6 +153,7 @@ public partial class HuntCreator : Control
 		gameSelect.Visible = false;
 		pokemonSelect.Visible = false;
 		methodSelect.Visible = false;
+		routeSelect.Visible = false;
 		
 		if (optionMode == 1 && selections[0] != selectedOption)
 		{
@@ -203,6 +202,7 @@ public partial class HuntCreator : Control
 		gameSelect.Visible = true;
 		pokemonSelect.Visible = true;
 		methodSelect.Visible = true;
+		routeSelect.Visible = true;
 		
 		// Allow user to start the hunt
 		if (selections[0] != "" && selections[1] != "" && selections[2] != "")

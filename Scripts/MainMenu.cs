@@ -27,7 +27,7 @@ public partial class MainMenu : Control
 	[Signal]
 	public delegate void HuntButtonPressedEventHandler(int selectedHuntID);
 	[Signal]
-	public delegate void NewHuntButtonPressedEventHandler();
+	public delegate void NewHuntButtonPressedEventHandler(int tab);
 	[Signal]
 	public delegate void CapturedButtonPressedEventHandler(int selectedHuntID);
 	
@@ -590,7 +590,7 @@ public partial class MainMenu : Control
 	
 	private void OpenNewHuntScreen()
 	{
-		EmitSignal("NewHuntButtonPressed");
+		EmitSignal("NewHuntButtonPressed", tabContainer.CurrentTab);
 	}
 	
 	// Destroy this UI element

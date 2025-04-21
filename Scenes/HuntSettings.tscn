@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3qi3h4bxksep"]
+[gd_scene load_steps=5 format=3 uid="uid://d3qi3h4bxksep"]
 
 [ext_resource type="Script" uid="uid://ds3y0ftoqp57" path="res://Scripts/HuntSettings.cs" id="1_ud68x"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_2d70s"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_81ucq"]
+[ext_resource type="PackedScene" uid="uid://c1fphqg4nagq8" path="res://Scenes/Verify.tscn" id="4_2xfiw"]
 
 [node name="HuntSettings" type="Control"]
 layout_mode = 3
@@ -164,6 +165,15 @@ offset_bottom = 416.0
 theme = ExtResource("2_2d70s")
 theme_override_font_sizes/font_size = 24
 text = "Display Settings"
+
+[node name="Verify" parent="." instance=ExtResource("4_2xfiw")]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [connection signal="pressed" from="EditHuntButton" to="." method="OpenHuntCreator"]
 [connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]

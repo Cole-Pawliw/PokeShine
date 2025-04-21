@@ -22,16 +22,22 @@ public class CapturedData
 		startDate = time;
 		huntID = ++instances;
 	}
-	public CapturedData(string start, string end, string name,
-					string game, string method, bool shinyCharm, int c)
+	public CapturedData(string start, string end, string game, string pokemonName,
+						string method, string gender, string ball, string route,
+						string name, bool shinyCharm, int c, int time)
 	{
 		startDate = start;
 		endDate = end;
-		pokemon = name;
+		pokemon = pokemonName;
 		huntGame = game;
 		huntMethod = method;
+		huntRoute = route;
+		capturedBall = ball;
+		capturedGender = gender;
+		nickname = name;
 		charm = shinyCharm;
 		count = c;
+		timeSpent = time;
 		huntID = ++instances;
 	}
 	public CapturedData(CapturedData src)

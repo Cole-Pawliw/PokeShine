@@ -12,6 +12,8 @@ public partial class HuntSettings : Control
 	TextureButton backButton;
 	Button deleteButton;
 	
+	Control verify;
+	
 	public HuntData settings;
 	bool huntChanged = false;
 	
@@ -35,6 +37,12 @@ public partial class HuntSettings : Control
 	
 		backButton = GetNode<TextureButton>("BackButton");
 		deleteButton = GetNode<Button>("DeleteButton");
+		
+		verify = GetNode<Control>("Verify");
+		Button cancel = GetNode<Button>("Verify/CancelButton");
+		cancel.Pressed += VerifyCancelPressed;
+		Button confirm = GetNode<Button>("Verify/ConfirmButton");
+		confirm.Pressed += VerifyDeletePressed;
 	}
 	
 	public void SetInitialSettings(HuntData data)
@@ -111,6 +119,16 @@ public partial class HuntSettings : Control
 	}
 	
 	private void DeleteButtonPressed()
+	{
+		verify.Visible = true;
+	}
+	
+	private void VerifyCancelPressed()
+	{
+		verify.Visible = false;
+	}
+	
+	private void VerifyDeletePressed()
 	{
 		EmitSignal("DeleteHunt");
 	}

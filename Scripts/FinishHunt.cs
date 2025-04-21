@@ -9,6 +9,7 @@ public partial class FinishHunt : Control
 	Button pokemonSelect;
 	Button gameSelect;
 	Button methodSelect;
+	Button routeSelect;
 	Button genderSelect;
 	Button ballSelect;
 	CheckBox charmButton;
@@ -33,6 +34,7 @@ public partial class FinishHunt : Control
 		pokemonSelect = GetNode<Button>("PokemonSelect");
 		gameSelect = GetNode<Button>("GameSelect");
 		methodSelect = GetNode<Button>("MethodSelect");
+		routeSelect = GetNode<Button>("RouteSelect");
 		genderSelect = GetNode<Button>("GenderSelect");
 		ballSelect = GetNode<Button>("BallSelect");
 		charmButton = GetNode<CheckBox>("CharmButton");
@@ -103,6 +105,12 @@ public partial class FinishHunt : Control
 		OpenSelector();
 	}
 	
+	private void RouteSelectPressed()
+	{
+		optionMode = 6;
+		OpenSelector();
+	}
+	
 	private void CharmButtonToggled()
 	{
 		data.charm = charmButton.ButtonPressed;
@@ -164,6 +172,11 @@ public partial class FinishHunt : Control
 				}
 			}
 		}
+		else if (optionMode == 6) // Send list of routes
+		{
+			dicts.SetRoutes(data.huntGame); // Initialize the dictionary of routes
+			itemList = new List<string>(dicts.pokemonRouteAvailabilityDict.Keys);
+		}
 		
 		selectScreen.CreateList(itemList, false);
 		selectScreen.CloseMenu += UpdateSelection;
@@ -188,6 +201,7 @@ public partial class FinishHunt : Control
 		if (optionMode == 1 && data.huntGame != selectedOption)
 		{
 			charmButton.Visible = false;
+			finishButton.Disabled = true;
 			
 			// Reset other selections so non existent options can't be selected
 			data.pokemon.Clear();
@@ -204,7 +218,6 @@ public partial class FinishHunt : Control
 			{
 				charmButton.Visible = true;
 			}
-			
 		}
 		else if (optionMode == 2)
 		{
@@ -223,6 +236,10 @@ public partial class FinishHunt : Control
 		else if (optionMode == 5)
 		{
 			altSelections[0] = selectedOption;
+		}
+		else if (optionMode == 6)
+		{
+			data.huntRoute = selectedOption;
 		}
 		
 		UpdateButtons();
@@ -248,6 +265,7 @@ public partial class FinishHunt : Control
 	{
 		gameSelect.Text = "Game:\n" + data.huntGame;
 		methodSelect.Text = "Method:\n" + data.huntMethod;
+		routeSelect.Text = "Route:\n" + data.huntRoute;
 		genderSelect.Text = "Gender:\n" + altSelections[1];
 		ballSelect.Text = "Ball:\n" + altSelections[0];
 		charmButton.ButtonPressed = data.charm;

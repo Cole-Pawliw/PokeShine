@@ -82,38 +82,47 @@ stretch_mode = 0
 [node name="GameSelect" type="Button" parent="."]
 layout_mode = 0
 offset_left = 70.0
-offset_top = 349.0
+offset_top = 350.0
 offset_right = 220.0
-offset_bottom = 449.0
+offset_bottom = 420.0
 theme = ExtResource("3_0xk1e")
 text = "Game:"
 
 [node name="MethodSelect" type="Button" parent="."]
 layout_mode = 0
-offset_left = 257.0
-offset_top = 349.0
-offset_right = 407.0
-offset_bottom = 449.0
+offset_left = 260.0
+offset_top = 350.0
+offset_right = 410.0
+offset_bottom = 420.0
 theme = ExtResource("3_0xk1e")
 text = "Method:"
+
+[node name="RouteSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 435.0
+offset_right = 220.0
+offset_bottom = 505.0
+theme = ExtResource("3_0xk1e")
+text = "Route:"
+
+[node name="BallSelect" type="Button" parent="."]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 435.0
+offset_right = 410.0
+offset_bottom = 505.0
+theme = ExtResource("3_0xk1e")
+text = "Ball:"
 
 [node name="GenderSelect" type="Button" parent="."]
 layout_mode = 0
 offset_left = 70.0
-offset_top = 472.0
+offset_top = 520.0
 offset_right = 220.0
-offset_bottom = 572.0
+offset_bottom = 590.0
 theme = ExtResource("3_0xk1e")
 text = "Gender:"
-
-[node name="BallSelect" type="Button" parent="."]
-layout_mode = 0
-offset_left = 258.0
-offset_top = 471.0
-offset_right = 408.0
-offset_bottom = 571.0
-theme = ExtResource("3_0xk1e")
-text = "Ball:"
 
 [node name="Nickname" type="TextEdit" parent="."]
 layout_mode = 0
@@ -129,5 +138,6 @@ placeholder_text = "Nickname:"
 [connection signal="pressed" from="FinishButton" to="." method="ConfirmFinish"]
 [connection signal="pressed" from="GameSelect" to="." method="GameSelectPressed"]
 [connection signal="pressed" from="MethodSelect" to="." method="MethodSelectPressed"]
-[connection signal="pressed" from="GenderSelect" to="." method="GenderSelectPressed"]
+[connection signal="pressed" from="RouteSelect" to="." method="RouteSelectPressed"]
 [connection signal="pressed" from="BallSelect" to="." method="BallSelectPressed"]
+[connection signal="pressed" from="GenderSelect" to="." method="GenderSelectPressed"]

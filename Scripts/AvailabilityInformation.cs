@@ -54,6 +54,8 @@ public class GameHuntInformation
 
 public partial class AvailabilityInformation : Node
 {
+	JsonManager json;
+	
 	// Stores the method name as the key and an array of booleans indicating if it's in a specific game
 	public Dictionary<string, bool[]> methodAvailabilityDict;
 	
@@ -63,10 +65,14 @@ public partial class AvailabilityInformation : Node
 	// Stores every pokemon with an array of availability in different games
 	public Dictionary<string, bool[]> pokemonAvailabilityDict;
 	
+	// Stores the routes for a specific game and all the pokemon that can be seen in that route
+	// Currently it does not store any pokemon, that will be added in the future
+	public Dictionary<string, string[]> pokemonRouteAvailabilityDict;
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		JsonManager json = GetNode<JsonManager>("JsonManager");
+		json = GetNode<JsonManager>("JsonManager");
 		string path = "res://Jsons/";
 		
 		string methods = json.LoadResourceFromFile(path, "methods.json");
@@ -80,5 +86,19 @@ public partial class AvailabilityInformation : Node
 		methodAvailabilityDict = JsonSerializer.Deserialize<Dictionary<string, bool[]>>(methods, options)!;
 		ballAvailabilityDict = JsonSerializer.Deserialize<Dictionary<string, bool[]>>(balls, options)!;
 		pokemonAvailabilityDict = JsonSerializer.Deserialize<Dictionary<string, bool[]>>(pokemon, options)!;
+	}
+	
+	public void SetRoutes(string game)
+	{
+		string path = "res://Jsons/Games/";
+		
+		// Load the json for the specified game
+		string routes = json.LoadResourceFromFile(path, game + ".json");
+		
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		pokemonRouteAvailabilityDict = JsonSerializer.Deserialize<Dictionary<string, string[]>>(routes, options)!;
 	}
 }
