@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3qi3h4bxksep"]
+[gd_scene load_steps=6 format=3 uid="uid://d3qi3h4bxksep"]
 
 [ext_resource type="Script" uid="uid://ds3y0ftoqp57" path="res://Scripts/HuntSettings.cs" id="1_ud68x"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_2d70s"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_81ucq"]
+[ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="3_82xdn"]
 [ext_resource type="PackedScene" uid="uid://c1fphqg4nagq8" path="res://Scenes/Verify.tscn" id="4_2xfiw"]
 
 [node name="HuntSettings" type="Control"]
@@ -29,57 +30,63 @@ offset_bottom = 134.0
 theme = ExtResource("2_2d70s")
 text = "Edit Hunt"
 
-[node name="CounterValue" type="SpinBox" parent="."]
+[node name="CounterValue" parent="." instance=ExtResource("3_82xdn")]
 layout_mode = 0
-offset_left = 91.0
-offset_top = 252.0
-offset_right = 179.0
-offset_bottom = 283.0
-rounded = true
-allow_greater = true
+anchors_preset = 0
+offset_left = 77.0
+offset_top = 245.0
+offset_right = 173.0
+offset_bottom = 281.0
+grow_horizontal = 1
+grow_vertical = 1
+AllowGreater = true
 
-[node name="Label" type="Label" parent="CounterValue"]
+[node name="CounterLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = -14.0
-offset_top = -33.0
-offset_right = 101.0
-offset_bottom = -7.0
+offset_left = 77.0
+offset_top = 219.0
+offset_right = 192.0
+offset_bottom = 245.0
 theme = ExtResource("2_2d70s")
 text = "Counter Value:"
 
-[node name="IncrementValue" type="SpinBox" parent="."]
+[node name="IncrementValue" parent="." instance=ExtResource("3_82xdn")]
 layout_mode = 0
-offset_left = 292.0
-offset_top = 251.0
-offset_right = 380.0
-offset_bottom = 282.0
-rounded = true
-allow_greater = true
+anchors_preset = 0
+offset_left = 273.0
+offset_top = 245.0
+offset_right = 369.0
+offset_bottom = 281.0
+grow_horizontal = 1
+grow_vertical = 1
+AllowGreater = true
 
-[node name="Label" type="Label" parent="IncrementValue"]
+[node name="IncrementLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = -19.0
-offset_top = -34.0
-offset_right = 113.0
-offset_bottom = -8.0
+offset_left = 273.0
+offset_top = 217.0
+offset_right = 405.0
+offset_bottom = 243.0
 theme = ExtResource("2_2d70s")
 text = "Increment Value:"
 
-[node name="TimerValue" type="SpinBox" parent="."]
+[node name="TimerValue" parent="." instance=ExtResource("3_82xdn")]
 layout_mode = 0
-offset_left = 193.0
-offset_top = 333.0
-offset_right = 281.0
-offset_bottom = 364.0
-rounded = true
-allow_greater = true
+anchors_preset = 0
+offset_left = 183.0
+offset_top = 327.0
+offset_right = 279.0
+offset_bottom = 363.0
+grow_horizontal = 1
+grow_vertical = 1
+AllowGreater = true
 
-[node name="Label" type="Label" parent="TimerValue"]
+[node name="TimerLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = -10.0
-offset_top = -32.0
-offset_right = 105.0
-offset_bottom = -6.0
+offset_left = 183.0
+offset_top = 301.0
+offset_right = 298.0
+offset_bottom = 327.0
 theme = ExtResource("2_2d70s")
 text = "Timer Value:"
 

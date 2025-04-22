@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public partial class HuntSettings : Control
 {
 	// Hunt Settings
-	SpinBox counter, increment, timer;
+	NumberInputField counter, increment, timer;
 	CheckButton shiny, regular, odds, huntTimer, encounterTimer;
 	
 	// Functional Buttons
@@ -25,9 +25,9 @@ public partial class HuntSettings : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		counter = GetNode<SpinBox>("CounterValue");
-		increment = GetNode<SpinBox>("IncrementValue");
-		timer = GetNode<SpinBox>("TimerValue");
+		counter = GetNode<NumberInputField>("CounterValue");
+		increment = GetNode<NumberInputField>("IncrementValue");
+		timer = GetNode<NumberInputField>("TimerValue");
 	
 		shiny = GetNode<CheckButton>("ShinySprite");
 		regular = GetNode<CheckButton>("RegularSprite");
@@ -48,9 +48,9 @@ public partial class HuntSettings : Control
 	public void SetInitialSettings(HuntData data)
 	{
 		settings = data;
-		counter.Value = settings.count;
-		increment.Value = settings.incrementValue;
-		timer.Value = settings.timeSpent / 60;
+		counter.Text = $"{settings.count}";
+		increment.Text = $"{settings.incrementValue}";
+		timer.Text = $"{settings.timeSpent}";
 		
 		shiny.ButtonPressed = settings.showShiny;
 		regular.ButtonPressed = settings.showRegular;
@@ -108,7 +108,7 @@ public partial class HuntSettings : Control
 	{
 		settings.count = (int)counter.Value;
 		settings.incrementValue = (int)increment.Value;
-		settings.timeSpent = (int)timer.Value * 60;
+		settings.timeSpent = (int)timer.Value;
 		
 		settings.showShiny = shiny.ButtonPressed;
 		settings.showRegular = regular.ButtonPressed;

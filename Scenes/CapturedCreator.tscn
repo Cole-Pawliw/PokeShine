@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnm6ue8flowug"]
+[gd_scene load_steps=6 format=3 uid="uid://cnm6ue8flowug"]
 
 [ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_bdfeo"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_tsjlh"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_x5ic5"]
+[ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="5_ru4jw"]
 
 [node name="CapturedCreator" type="Control"]
 layout_mode = 3
@@ -95,15 +96,49 @@ offset_bottom = 375.0
 theme = ExtResource("3_x5ic5")
 text = "Shiny Charm"
 
-[node name="StartDate" type="TextEdit" parent="."]
+[node name="StartDateDay" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-offset_left = 90.0
+anchors_preset = 0
+offset_left = 190.0
 offset_top = 420.0
 offset_right = 220.0
 offset_bottom = 460.0
-placeholder_text = "DD-MM-YYYY"
+grow_horizontal = 1
+grow_vertical = 1
+text = "31"
+MaxValue = 31
+MinValue = 1
+Value = 31
 
-[node name="Label" type="Label" parent="."]
+[node name="StartDateMonth" parent="." instance=ExtResource("5_ru4jw")]
+layout_mode = 0
+anchors_preset = 0
+offset_left = 150.0
+offset_top = 420.0
+offset_right = 180.0
+offset_bottom = 460.0
+grow_horizontal = 1
+grow_vertical = 1
+text = "12"
+MaxValue = 12
+MinValue = 1
+Value = 12
+
+[node name="StartDateYear" parent="." instance=ExtResource("5_ru4jw")]
+layout_mode = 0
+anchors_preset = 0
+offset_left = 90.0
+offset_top = 420.0
+offset_right = 140.0
+offset_bottom = 460.0
+grow_horizontal = 1
+grow_vertical = 1
+text = "1900"
+MaxValue = 3000
+Value = 1900
+
+[node name="StartDateLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 90.0
 offset_top = 390.0
 offset_right = 205.0
@@ -111,15 +146,49 @@ offset_bottom = 416.0
 theme = ExtResource("3_x5ic5")
 text = "Start Date:"
 
-[node name="EndDate" type="TextEdit" parent="."]
+[node name="EndDateDay" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-offset_left = 260.0
+anchors_preset = 0
+offset_left = 360.0
 offset_top = 420.0
 offset_right = 390.0
 offset_bottom = 460.0
-placeholder_text = "End Date"
+grow_horizontal = 1
+grow_vertical = 1
+text = "31"
+MaxValue = 31
+MinValue = 1
+Value = 31
 
-[node name="Label2" type="Label" parent="."]
+[node name="EndDateMonth" parent="." instance=ExtResource("5_ru4jw")]
+layout_mode = 0
+anchors_preset = 0
+offset_left = 320.0
+offset_top = 420.0
+offset_right = 350.0
+offset_bottom = 460.0
+grow_horizontal = 1
+grow_vertical = 1
+text = "12"
+MaxValue = 12
+MinValue = 1
+Value = 12
+
+[node name="EndDateYear" parent="." instance=ExtResource("5_ru4jw")]
+layout_mode = 0
+anchors_preset = 0
+offset_left = 260.0
+offset_top = 420.0
+offset_right = 310.0
+offset_bottom = 460.0
+grow_horizontal = 1
+grow_vertical = 1
+text = "1900"
+MaxValue = 3000
+Value = 1900
+
+[node name="EndDateLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 260.0
 offset_top = 390.0
 offset_right = 375.0
@@ -134,7 +203,8 @@ offset_top = 500.0
 offset_right = 220.0
 offset_bottom = 540.0
 
-[node name="Label3" type="Label" parent="."]
+[node name="NicknameLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 90.0
 offset_top = 470.0
 offset_right = 205.0
@@ -142,36 +212,43 @@ offset_bottom = 496.0
 theme = ExtResource("3_x5ic5")
 text = "Nickname:"
 
-[node name="CounterValue" type="SpinBox" parent="."]
+[node name="CounterValue" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
+anchors_preset = 0
 offset_left = 90.0
 offset_top = 580.0
-offset_right = 215.0
+offset_right = 220.0
 offset_bottom = 620.0
-rounded = true
-allow_greater = true
+grow_horizontal = 1
+grow_vertical = 1
+AllowGreater = true
 
-[node name="Label" type="Label" parent="CounterValue"]
-offset_top = -30.0
-offset_right = 120.0
-offset_bottom = -4.0
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 550.0
+offset_right = 210.0
+offset_bottom = 576.0
 theme = ExtResource("3_x5ic5")
 text = "Pokemon Seen:"
 
-[node name="TimerValue" type="SpinBox" parent="."]
+[node name="TimerValue" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
+anchors_preset = 0
 offset_left = 260.0
 offset_top = 580.0
-offset_right = 385.0
+offset_right = 390.0
 offset_bottom = 620.0
-rounded = true
-allow_greater = true
-suffix = "Mins"
+grow_horizontal = 1
+grow_vertical = 1
+AllowGreater = true
 
-[node name="Label" type="Label" parent="TimerValue"]
-offset_top = -30.0
-offset_right = 101.0
-offset_bottom = -4.0
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 550.0
+offset_right = 361.0
+offset_bottom = 576.0
 theme = ExtResource("3_x5ic5")
 text = "Time Spent:"
 

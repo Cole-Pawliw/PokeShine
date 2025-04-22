@@ -11,7 +11,7 @@ using System.IO;
 KNOWN BUGS:
 - HuntData needs better constructors
 - Sprite sizes are a little buggy
-- Setting startDate and endDate in CapturedCreator doesn't work
+- Check if null values ever get assigned when making CapturedData
 */
 
 /*
@@ -183,7 +183,7 @@ public partial class SceneController : Node
 	
 	private void StartHuntSignalReceiver(string gameName, string method, bool charm)
 	{
-		string startDT = Time.GetDatetimeStringFromSystem();
+		string startDT = Time.GetDatetimeStringFromSystem().Split('T')[0];
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		HuntData huntToAdd = new HuntData(startHuntScreen.pokemonSelected, gameName, method, charm, startDT);
 		
@@ -205,7 +205,9 @@ public partial class SceneController : Node
 	{
 		// s short for startHuntScreen so that initializing the CapturedData isn't 10 lines long
 		CapturedCreator s = GetNode<CapturedCreator>("CapturedCreator");
-		CapturedData huntToAdd = new CapturedData(s.startDate.Text, s.endDate.Text, s.selections[0], s.selections[1],
+		string startDate = $"{s.startYear.Value}-{s.startMon.Value}-{s.startDay.Value}";
+		string endDate = $"{s.endYear.Value}-{s.endMon.Value}-{s.endDay.Value}";
+		CapturedData huntToAdd = new CapturedData(startDate, endDate, s.selections[0], s.selections[1],
 												s.selections[2], s.selections[3], s.selections[4], s.selections[5],
 												s.nickname.Text, s.charmButton.ButtonPressed,
 												(int)s.counter.Value, (int)s.timer.Value * 60);
@@ -229,7 +231,7 @@ public partial class SceneController : Node
 	
 	private void FinishHunt(string nickname, string ball, string gender)
 	{
-		string endDT = Time.GetDatetimeStringFromSystem();
+		string endDT = Time.GetDatetimeStringFromSystem().Split('T')[0];
 		CapturedData finishedHunt = new CapturedData(huntScreen.data, endDT, nickname, ball, gender);
 		mainScreen.RemoveHunt(huntScreen.data);
 		mainScreen.AddCaptured(finishedHunt);

@@ -1,13 +1,15 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 public partial class CapturedCreator : Control
 {
 	Button pokemonSelect, gameSelect, methodSelect, routeSelect, genderSelect, ballSelect;
 	public CheckBox charmButton;
-	public TextEdit startDate, endDate, nickname;
-	public SpinBox counter, timer;
+	public NumberInputField startDay, startMon, startYear, endDay, endMon, endYear;
+	public NumberInputField counter, timer;
+	public TextEdit nickname;
 	Button addButton;
 	
 	AvailabilityInformation dicts;
@@ -31,14 +33,26 @@ public partial class CapturedCreator : Control
 		genderSelect = GetNode<Button>("GenderSelect");
 		ballSelect = GetNode<Button>("BallSelect");
 		charmButton = GetNode<CheckBox>("CharmButton");
-		startDate = GetNode<TextEdit>("StartDate");
-		endDate = GetNode<TextEdit>("EndDate");
+		startDay = GetNode<NumberInputField>("StartDateDay");
+		startMon = GetNode<NumberInputField>("StartDateMonth");
+		startYear = GetNode<NumberInputField>("StartDateYear");
+		endDay = GetNode<NumberInputField>("EndDateDay");
+		endMon = GetNode<NumberInputField>("EndDateMonth");
+		endYear = GetNode<NumberInputField>("EndDateYear");
 		nickname = GetNode<TextEdit>("Nickname");
-		counter = GetNode<SpinBox>("CounterValue");
-		timer = GetNode<SpinBox>("TimerValue");
+		counter = GetNode<NumberInputField>("CounterValue");
+		timer = GetNode<NumberInputField>("TimerValue");
 		addButton = GetNode<Button>("AddButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
+		
+		// Set default start and end dates so the user knows what format they use
+		// Current date is an easy default
+		string date = Time.GetDatetimeStringFromSystem().Split('T')[0];
+		string[] dateInfo = date.Split('-');
+		startYear.Text = endYear.Text = dateInfo[0];
+		startMon.Text = endMon.Text = dateInfo[1];
+		startDay.Text = endDay.Text = dateInfo[2];
 	}
 	
 	public void SetPreSelections(CapturedData data)
@@ -61,8 +75,17 @@ public partial class CapturedCreator : Control
 		// startDate.Text = data.startDate;
 		// endDate.Text = data.endDate;
 		nickname.Text = data.nickname;
-		counter.Value = data.count;
-		timer.Value = data.timeSpent / 60;
+		counter.Text = $"{data.count}";
+		timer.Text = $"{data.timeSpent / 60}";
+		
+		string[] startDateInfo = data.startDate.Split('-');
+		string[] endDateInfo = data.endDate.Split('-');
+		startYear.Text = startDateInfo[0];
+		startMon.Text = startDateInfo[1];
+		startDay.Text = startDateInfo[2];
+		endYear.Text = endDateInfo[0];
+		endMon.Text = endDateInfo[1];
+		endDay.Text = endDateInfo[2];
 		
 		GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
 		if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
