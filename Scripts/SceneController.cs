@@ -38,6 +38,7 @@ public partial class SceneController : Node
 		mainScreen.HuntButtonPressed += OpenHunt;
 		mainScreen.CapturedButtonPressed += OpenStats;
 		mainScreen.NewHuntButtonPressed += CreateNewHunt;
+		mainScreen.InfoButtonPressed += OpenAppInfo;
 		mainScreen.TreeExiting += AppClosing;
 		huntScreen.BackButtonPressed += CloseHunt;
 		huntScreen.DeleteSignal += DeleteHunt;
@@ -236,6 +237,25 @@ public partial class SceneController : Node
 		Save();
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
+	}
+	
+	private void OpenAppInfo()
+	{
+		AppInfoScreen infoScreen = (AppInfoScreen)GD.Load<PackedScene>("res://Scenes/AppInfoScreen.tscn").Instantiate();
+		AddChild(infoScreen);
+		infoScreen.BackButtonPressed += CloseAppInfo;
+		
+		infoScreen.Visible = true;
+		mainScreen.Visible = false;
+		huntScreen.Visible = false;
+	}
+	
+	private void CloseAppInfo()
+	{
+		AppInfoScreen infoScreen = GetNode<AppInfoScreen>("AppInfoScreen");
+		mainScreen.Visible = true;
+		infoScreen.Visible = false;
+		infoScreen.Cleanup();
 	}
 	
 	private void Save()

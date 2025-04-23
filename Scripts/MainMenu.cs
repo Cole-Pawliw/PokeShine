@@ -30,6 +30,8 @@ public partial class MainMenu : Control
 	public delegate void NewHuntButtonPressedEventHandler(int tab);
 	[Signal]
 	public delegate void CapturedButtonPressedEventHandler(int selectedHuntID);
+	[Signal]
+	public delegate void InfoButtonPressedEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -654,6 +656,11 @@ public partial class MainMenu : Control
 	private void OpenNewHuntScreen()
 	{
 		EmitSignal("NewHuntButtonPressed", tabContainer.CurrentTab);
+	}
+	
+	private void OpenInfoScreen()
+	{
+		EmitSignal("InfoButtonPressed");
 	}
 	
 	// Destroy this UI element

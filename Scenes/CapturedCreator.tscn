@@ -98,7 +98,6 @@ text = "Shiny Charm"
 
 [node name="StartDateDay" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 190.0
 offset_top = 420.0
 offset_right = 220.0
@@ -112,7 +111,6 @@ Value = 31
 
 [node name="StartDateMonth" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 150.0
 offset_top = 420.0
 offset_right = 180.0
@@ -126,7 +124,6 @@ Value = 12
 
 [node name="StartDateYear" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 90.0
 offset_top = 420.0
 offset_right = 140.0
@@ -148,7 +145,6 @@ text = "Start Date:"
 
 [node name="EndDateDay" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 360.0
 offset_top = 420.0
 offset_right = 390.0
@@ -162,7 +158,6 @@ Value = 31
 
 [node name="EndDateMonth" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 320.0
 offset_top = 420.0
 offset_right = 350.0
@@ -176,7 +171,6 @@ Value = 12
 
 [node name="EndDateYear" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 260.0
 offset_top = 420.0
 offset_right = 310.0
@@ -214,7 +208,6 @@ text = "Nickname:"
 
 [node name="CounterValue" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 90.0
 offset_top = 580.0
 offset_right = 220.0
@@ -234,7 +227,6 @@ text = "Pokemon Seen:"
 
 [node name="TimerValue" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 260.0
 offset_top = 580.0
 offset_right = 390.0
