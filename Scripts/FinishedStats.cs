@@ -44,6 +44,9 @@ public partial class FinishedStats : Control
 	private void SetSprite()
 	{
 		sprite.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon}.png");
+		float scaleFactor = 100f / sprite.Texture.GetHeight();
+		sprite.Scale = new Vector2(scaleFactor, scaleFactor);
+		
 	}
 	
 	private void SetName()

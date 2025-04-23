@@ -54,7 +54,7 @@ public class HuntData
 		isComplete = src.isComplete;
 		startDate = src.startDate;
 		
-		pokemon = src.pokemon;
+		pokemon = new List<string>(src.pokemon);
 		
 		huntGame = src.huntGame;
 		

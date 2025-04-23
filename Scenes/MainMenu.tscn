@@ -102,4 +102,4 @@ stretch_mode = 0
 [connection signal="pressed" from="NewHuntButton" to="." method="OpenNewHuntScreen"]
 [connection signal="toggled" from="MainButton" to="." method="SetMainPanel"]
 [connection signal="toggled" from="CompletedButton" to="." method="SetCompletedPanel"]
-[connection signal="pressed" from="ToggleSortButton" to="." method="ToggleSortMode"]
+[connection signal="pressed" from="ToggleSortButton" to="." method="SortButtonPressed"]

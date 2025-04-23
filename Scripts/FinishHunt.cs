@@ -271,7 +271,7 @@ public partial class FinishHunt : Control
 		charmButton.ButtonPressed = data.charm;
 		
 		Sprite2D shiny = GetNode<Sprite2D>("PokemonSelect/ShinySprite");
-		if (data.pokemon.Count > 1 || data.pokemon[0] == "")
+		if (data.pokemon.Count != 1 || data.pokemon[0] == "")
 		{
 			// If no pokemon is selected, remove the texture
 			shiny.Texture = null;
@@ -281,6 +281,8 @@ public partial class FinishHunt : Control
 		{
 			// Else set the appropriate texture
 			shiny.Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
+			float scaleFactor = 150f / shiny.Texture.GetHeight();
+			shiny.Scale = new Vector2(scaleFactor, scaleFactor);
 			pokemonSelect.Text = "";
 		}
 	}

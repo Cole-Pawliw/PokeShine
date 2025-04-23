@@ -32,7 +32,6 @@ text = "Edit Hunt"
 
 [node name="CounterValue" parent="." instance=ExtResource("3_82xdn")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 77.0
 offset_top = 245.0
 offset_right = 173.0
@@ -52,7 +51,6 @@ text = "Counter Value:"
 
 [node name="IncrementValue" parent="." instance=ExtResource("3_82xdn")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 273.0
 offset_top = 245.0
 offset_right = 369.0
@@ -72,7 +70,6 @@ text = "Increment Value:"
 
 [node name="TimerValue" parent="." instance=ExtResource("3_82xdn")]
 layout_mode = 0
-anchors_preset = 0
 offset_left = 183.0
 offset_top = 327.0
 offset_right = 279.0

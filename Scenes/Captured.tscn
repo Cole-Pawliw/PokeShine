@@ -7,10 +7,8 @@
 [node name="Captured" type="Control"]
 custom_minimum_size = Vector2(457, 84)
 layout_mode = 3
-anchor_right = 0.958
-anchor_bottom = 0.118
-offset_right = 0.159973
-offset_bottom = 0.0399933
+offset_right = 460.0
+offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6t67q")

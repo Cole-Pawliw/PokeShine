@@ -10,13 +10,10 @@ using System.IO;
 /*
 KNOWN BUGS:
 - HuntData needs better constructors
-- Sprite sizes are a little buggy
-- Check if null values ever get assigned when making CapturedData
 */
 
 /*
 Extra features
-- Sort in the completed tab
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
 - Mod support (custom sprites for ROM hacks)
@@ -170,6 +167,7 @@ public partial class SceneController : Node
 		FinishedStats screen = GetNode<FinishedStats>("FinishedStats");
 		CapturedData data = screen.data;
 		mainScreen.UpdateCaptured(data);
+		mainScreen.UpdateCapturedSprite(data.huntID);
 		Save();
 	}
 	

@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bx7kpoje0gsnh" path="res://Scripts/NumberInputField.cs" id="1_nyalx"]
 
 [node name="NumberInputField" type="TextEdit"]
-anchors_preset = -1
 offset_right = 8.0
 offset_bottom = 8.0
 grow_horizontal = 2

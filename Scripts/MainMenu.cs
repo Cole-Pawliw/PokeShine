@@ -391,6 +391,15 @@ public partial class MainMenu : Control
 		hunt.InitializeHunt(hunt.data);
 	}
 	
+	public void UpdateCapturedSprite(int id)
+	{
+		int index = GetCompletedHuntIndex(id);
+		Captured hunt = completedHunts[index];
+		// This is bad but it saves writing a function that does 90% of this function
+		// Basically jump starts the ActiveHunt to change its sprite
+		hunt.InitializeInfo(hunt.data);
+	}
+	
 	public void SortHunts()
 	{
 		hunts.Sort((x, y) => x.huntIndex.CompareTo(y.huntIndex));
@@ -487,7 +496,6 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 0;
 		}
-		sortButton.Visible = true;
 	}
 	
 	private void SetCompletedPanel(bool button_pressed)
@@ -495,7 +503,18 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 1;
 		}
-		sortButton.Visible = false;
+	}
+	
+	private void SortButtonPressed()
+	{
+		if (tabContainer.CurrentTab == 0)
+		{
+			ToggleSortMode();
+		}
+		else
+		{
+			OpenSelector();
+		}
 	}
 	
 	private void ToggleSortMode()
@@ -576,6 +595,50 @@ public partial class MainMenu : Control
 				activeHunts[flags[i]].Position = new Vector2(x, activeHunts[flags[i]].Position.Y + 5 * Math.Sign(yDifference)); // Increase or decrease based on the difference
 			}
 		}
+	}
+	
+	private void OpenSelector()
+	{
+		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
+		AddChild(selectScreen);
+		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game"]);
+		
+		selectScreen.CreateList(itemList, false);
+		selectScreen.CloseMenu += CloseSelector;
+	}
+	
+	private void CloseSelector(string selectedOption)
+	{
+		if (selectedOption != "")
+		{
+			SortCaptured(selectedOption);
+		}
+		
+		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
+		selector.Visible = false;
+		selector.Cleanup();
+	}
+	
+	private void SortCaptured(string variable)
+	{
+		switch (variable)
+		{
+			case "Start Date":
+				completedHunts.Sort((x, y) => x.data.startDate.CompareTo(y.data.startDate));
+				break;
+			case "End Date":
+				completedHunts.Sort((x, y) => x.data.endDate.CompareTo(y.data.endDate));
+				break;
+			case "Pokemon":
+				completedHunts.Sort((x, y) => x.data.pokemon.CompareTo(y.data.pokemon));
+				break;
+			case "Game":
+				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
+				break;
+		}
+		
+		UpdateCompletedPositions();
+		UpdateHuntIndices();
 	}
 	
 	private void EmitHuntButtonPressed(int id)
