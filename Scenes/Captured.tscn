@@ -7,6 +7,7 @@
 [node name="Captured" type="Control"]
 custom_minimum_size = Vector2(457, 84)
 layout_mode = 3
+anchors_preset = 0
 offset_right = 460.0
 offset_bottom = 85.0
 grow_horizontal = 2

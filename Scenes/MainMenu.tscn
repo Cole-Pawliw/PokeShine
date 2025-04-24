@@ -101,6 +101,7 @@ texture_normal = ExtResource("5_w3t6f")
 stretch_mode = 0
 
 [node name="InfoButton" type="TextureButton" parent="."]
+layout_mode = 0
 offset_left = 5.0
 offset_top = 657.0
 offset_right = 101.0
