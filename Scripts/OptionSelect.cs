@@ -37,6 +37,9 @@ public partial class OptionSelect : Control
 		{
 			list.AddItem(item);
 		}
+		
+		float listY = 27 * list.ItemCount + 10; // Make a custom size to use the ScrollContainer scroll instead
+		list.CustomMinimumSize = new Vector2(list.CustomMinimumSize.X, listY);
 	}
 	
 	// Only called in single select mode

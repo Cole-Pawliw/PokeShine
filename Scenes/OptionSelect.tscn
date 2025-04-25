@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://jiq0ec4wmt54"]
+[gd_scene load_steps=5 format=3 uid="uid://jiq0ec4wmt54"]
 
 [ext_resource type="Script" uid="uid://440ccrg5g5i4" path="res://Scripts/OptionSelect.cs" id="1_un06g"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_pele7"]
 [ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="4_7cp8t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ber1r"]
 
 [node name="OptionSelect" type="Control"]
 layout_mode = 3
@@ -21,17 +23,20 @@ offset_bottom = 720.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="ListContainer" type="ScrollContainer" parent="."]
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 0
 offset_top = 470.0
 offset_right = 480.0
 offset_bottom = 720.0
-follow_focus = true
+horizontal_scroll_mode = 4
+vertical_scroll_mode = 4
 
 [node name="List" type="ItemList" parent="ListContainer"]
-custom_minimum_size = Vector2(480, 250)
+custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
 theme = ExtResource("2_pele7")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ber1r")
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0

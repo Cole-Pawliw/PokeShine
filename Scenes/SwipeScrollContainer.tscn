@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://by8owh41esrg6"]
-
-[node name="SwipeScrollContainer" type="ScrollContainer"]
-offset_right = 40.0
-offset_bottom = 40.0

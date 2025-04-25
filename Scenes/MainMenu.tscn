@@ -73,12 +73,15 @@ tabs_visible = false
 
 [node name="HuntContainer" type="ScrollContainer" parent="TabContainer"]
 layout_mode = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
 metadata/_tab_index = 0
 
 [node name="HuntPanel" type="Panel" parent="TabContainer/HuntContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 
 [node name="CompletedContainer" type="ScrollContainer" parent="TabContainer"]
 visible = false
@@ -89,6 +92,7 @@ metadata/_tab_index = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 
 [node name="ToggleSortButton" type="TextureButton" parent="."]
 layout_mode = 0

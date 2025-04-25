@@ -12,17 +12,20 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 460.0
 offset_bottom = 85.0
+mouse_filter = 2
 script = ExtResource("1_x6net")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
 offset_right = 460.0
 offset_bottom = 85.0
+mouse_filter = 1
 
 [node name="SelectButton" type="Button" parent="."]
 layout_mode = 0
 offset_right = 299.0
 offset_bottom = 85.0
+mouse_filter = 1
 theme_override_colors/icon_hover_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
