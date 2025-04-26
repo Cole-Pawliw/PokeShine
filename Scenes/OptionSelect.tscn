@@ -1,10 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://jiq0ec4wmt54"]
+[gd_scene load_steps=6 format=3 uid="uid://jiq0ec4wmt54"]
 
 [ext_resource type="Script" uid="uid://440ccrg5g5i4" path="res://Scripts/OptionSelect.cs" id="1_un06g"]
+[ext_resource type="PackedScene" uid="uid://tw8gg5lshia7" path="res://ItemScrollList.tscn" id="2_got7x"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_pele7"]
 [ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="4_7cp8t"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ber1r"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jedbl"]
 
 [node name="OptionSelect" type="Control"]
 layout_mode = 3
@@ -30,13 +31,13 @@ offset_bottom = 720.0
 horizontal_scroll_mode = 4
 vertical_scroll_mode = 4
 
-[node name="List" type="ItemList" parent="ListContainer"]
+[node name="List" parent="ListContainer" instance=ExtResource("2_got7x")]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme = ExtResource("2_pele7")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ber1r")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jedbl")
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0
@@ -60,9 +61,9 @@ offset_top = 411.0
 offset_right = 297.0
 offset_bottom = 447.0
 
+[connection signal="ItemPressed" from="ListContainer/List" to="." method="ItemSelected"]
+[connection signal="MultiPressed" from="ListContainer/List" to="." method="MultiSelected"]
 [connection signal="item_activated" from="ListContainer/List" to="." method="ItemActivated"]
-[connection signal="item_selected" from="ListContainer/List" to="." method="ItemSelected"]
-[connection signal="multi_selected" from="ListContainer/List" to="." method="MultiSelected"]
 [connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]
 [connection signal="pressed" from="ConfirmButton" to="." method="ConfirmButtonPressed"]
 [connection signal="text_changed" from="Search" to="." method="SearchUpdated"]

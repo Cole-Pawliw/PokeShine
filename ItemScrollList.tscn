@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://tw8gg5lshia7"]
+
+[ext_resource type="Script" uid="uid://cr5tkufelu5v8" path="res://ItemScrollList.cs" id="1_bb4u6"]
+
+[node name="ItemScrollList" type="ItemList"]
+offset_right = 40.0
+offset_bottom = 40.0
+item_count = 1
+script = ExtResource("1_bb4u6")
+
+[connection signal="gui_input" from="." to="." method="CheckInput"]
+[connection signal="item_selected" from="." to="." method="SingleDown"]
+[connection signal="multi_selected" from="." to="." method="MultiDown"]
