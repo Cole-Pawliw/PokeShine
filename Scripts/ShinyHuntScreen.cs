@@ -4,13 +4,14 @@ using System.Collections.Generic;
 
 public partial class ShinyHuntScreen : Control
 {
-	public HuntData data;
+	public HuntData data = new HuntData();
 	Label counter, info;
 	List<Sprite2D> sprites;
 	double secondTimer = 0; // Tracks how much time has passed up to 1 second
 	int resetTimer = 0; // Times how long each reset takes
 	bool activeHunt = false; // True when this screen is being used by a hunt
 	
+	float halfXAnchor = 0.5f, thirdXAnchor = 0.333f, yAnchor = 0.833f; // Proportions for settings constants
 	int halfX = 240, thirdX = 160, y = 600, yOffset = 120; // Constant values used for placing sprites in a grid
 	
 	[Signal]
@@ -73,8 +74,6 @@ public partial class ShinyHuntScreen : Control
 			sprites[0].Visible = data.showRegular;
 			sprites[1].Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[0]}.png");
 			sprites[1].Visible = data.showShiny;
-			PositionSprites(2);
-			ScaleSprites(2);
 		}
 		else // Multi-hunt
 		{
@@ -83,9 +82,9 @@ public partial class ShinyHuntScreen : Control
 				sprites[i].Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Shiny/{data.pokemon[i]}.png");
 				sprites[i].Visible = data.showShiny;
 			}
-			PositionSprites(data.pokemon.Count);
-			ScaleSprites(data.pokemon.Count);
 		}
+		PositionSprites(data.pokemon.Count);
+		ScaleSprites(data.pokemon.Count);
 	}
 	
 	private void PositionSprites(int amount)
@@ -93,7 +92,7 @@ public partial class ShinyHuntScreen : Control
 		int rows = (int)Math.Max(Math.Ceiling(amount / 2.0), 2); // Minimum of 2 rows is needed
 		int buffer = y / (rows + 1); // y = 600 will result in a whole number for any amount up to 10
 		
-		if (amount == 2) // Unique case for 2 sprites, one of top of the other
+		if (amount == 1 || amount == 2) // Unique case for 2 sprites, one of top of the other
 		{
 			sprites[0].Position = new Vector2(halfX, buffer + yOffset);
 			sprites[1].Position = new Vector2(halfX, buffer * 2 + yOffset);
@@ -120,6 +119,10 @@ public partial class ShinyHuntScreen : Control
 	
 	private void ScaleSprites(int amount)
 	{
+		if (amount == 1)
+		{
+			amount = 2;
+		}
 		int rows = (int)Math.Max(Math.Ceiling(amount / 2.0), 2); // Minimum of 2 rows is needed
 		int buffer = y / (rows + 1); // Buffer is the pixels in the y dimension available for the sprite to fill
 		float scaleFactor;
@@ -373,6 +376,20 @@ public partial class ShinyHuntScreen : Control
 	private void UpdateMainMenu()
 	{
 		EmitSignal("HuntChanged");
+	}
+	
+	private void SizeChanged()
+	{
+		// Reset constants to fit the current size
+		halfX = (int)(Size.X * halfXAnchor);
+		thirdX = (int)(Size.X * thirdXAnchor);
+		y = (int)(Size.Y * yAnchor);
+		
+		if (data.pokemon.Count > 0)
+		{
+			PositionSprites(data.pokemon.Count);
+			ScaleSprites(data.pokemon.Count);
+		}
 	}
 	
 	// Destroy this UI element

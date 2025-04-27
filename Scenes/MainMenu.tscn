@@ -9,7 +9,6 @@
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -17,25 +16,32 @@ grow_vertical = 2
 script = ExtResource("1_xcoif")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 480.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="NewHuntButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 365.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.86
+anchor_right = 0.86
+offset_left = -47.8
 offset_top = 12.0
-offset_right = 461.0
+offset_right = 48.2
 offset_bottom = 108.0
 texture_normal = ExtResource("2_6wsh1")
 stretch_mode = 0
 
 [node name="MainButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 22.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = -74.96
 offset_top = 25.0
-offset_right = 172.0
+offset_right = 75.04
 offset_bottom = 95.0
 theme = ExtResource("4_br7ok")
 toggle_mode = true
@@ -45,10 +51,13 @@ button_group = ExtResource("5_3ghdq")
 text = "Active Hunts"
 
 [node name="CompletedButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 193.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.558
+anchor_right = 0.558
+offset_left = -74.84
 offset_top = 25.0
-offset_right = 343.0
+offset_right = 75.1599
 offset_bottom = 95.0
 theme = ExtResource("4_br7ok")
 toggle_mode = true
@@ -58,10 +67,11 @@ text = "Completed"
 
 [node name="TabContainer" type="TabContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0)
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_top = 120.0
-offset_right = 480.0
-offset_bottom = 720.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
 theme_override_colors/font_unselected_color = Color(0, 0, 0, 0)
@@ -95,21 +105,29 @@ size_flags_vertical = 3
 mouse_filter = 1
 
 [node name="ToggleSortButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 417.0
-offset_top = 657.0
-offset_right = 513.0
-offset_bottom = 753.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -63.0
+offset_top = -63.0
+offset_right = 33.0
+offset_bottom = 32.9999
 scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("5_w3t6f")
 stretch_mode = 0
 
 [node name="InfoButton" type="TextureButton" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 5.0
-offset_top = 657.0
+offset_top = -63.0
 offset_right = 101.0
-offset_bottom = 753.0
+offset_bottom = 32.9999
 scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("6_8um5k")
 stretch_mode = 0

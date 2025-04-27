@@ -17,49 +17,69 @@ grow_vertical = 2
 script = ExtResource("1_un06g")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_top = 390.0
-offset_right = 480.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.542
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.240051
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="ListContainer" type="ScrollContainer" parent="."]
-layout_mode = 0
-offset_top = 470.0
-offset_right = 480.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.653
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.160034
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_scroll_mode = 4
 vertical_scroll_mode = 4
 
 [node name="List" parent="ListContainer" instance=ExtResource("2_got7x")]
-custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 1
 theme = ExtResource("2_pele7")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jedbl")
 
 [node name="BackButton" type="Button" parent="."]
-layout_mode = 0
-offset_right = 480.0
-offset_bottom = 390.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.542
+offset_bottom = -0.240051
 
 [node name="ConfirmButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 405.0
-offset_top = 396.0
-offset_right = 501.0
-offset_bottom = 492.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.914
+anchor_top = 0.597
+anchor_right = 0.914
+anchor_bottom = 0.597
+offset_left = -33.72
+offset_top = -33.84
+offset_right = 62.28
+offset_bottom = 62.16
 scale = Vector2(0.7, 0.7)
 texture_normal = ExtResource("4_7cp8t")
 stretch_mode = 0
 
 [node name="Search" type="LineEdit" parent="."]
-layout_mode = 0
-offset_left = 112.0
-offset_top = 411.0
-offset_right = 297.0
-offset_bottom = 447.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.426
+anchor_top = 0.596
+anchor_right = 0.426
+anchor_bottom = 0.596
+offset_left = -92.48
+offset_top = -18.12
+offset_right = 92.52
+offset_bottom = 17.88
 
 [connection signal="ItemPressed" from="ListContainer/List" to="." method="ItemSelected"]
 [connection signal="MultiPressed" from="ListContainer/List" to="." method="MultiSelected"]

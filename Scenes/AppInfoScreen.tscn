@@ -14,9 +14,10 @@ grow_vertical = 2
 script = ExtResource("1_0a46o")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 480.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="BackButton" type="TextureButton" parent="."]
@@ -29,11 +30,16 @@ texture_normal = ExtResource("2_oovp4")
 stretch_mode = 0
 
 [node name="StatsLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 39.0
-offset_top = 114.0
-offset_right = 443.0
-offset_bottom = 605.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.499
+anchor_right = 0.5
+anchor_bottom = 0.499
+offset_left = -201.0
+offset_top = -245.28
+offset_right = 203.0
+offset_bottom = 245.72
 theme = ExtResource("3_yxlu4")
 theme_override_font_sizes/font_size = 25
 text = "Thank you for using <app name>.
@@ -45,11 +51,16 @@ There is also a donate link below as a thank you to me. This is completely optio
 autowrap_mode = 3
 
 [node name="DonateButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 177.0
-offset_top = 648.0
-offset_right = 287.0
-offset_bottom = 695.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.483
+anchor_top = 1.0
+anchor_right = 0.483
+anchor_bottom = 1.0
+offset_left = -54.84
+offset_top = -72.0
+offset_right = 55.16
+offset_bottom = -25.0
 theme = ExtResource("3_yxlu4")
 text = "Donate"
 

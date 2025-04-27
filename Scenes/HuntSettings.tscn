@@ -16,119 +16,180 @@ grow_vertical = 2
 script = ExtResource("1_ud68x")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 480.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="EditHuntButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 165.0
-offset_top = 34.0
-offset_right = 315.0
-offset_bottom = 134.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.117
+anchor_right = 0.5
+anchor_bottom = 0.117
+offset_left = -75.0
+offset_top = -50.24
+offset_right = 75.0
+offset_bottom = 49.76
 theme = ExtResource("2_2d70s")
 text = "Edit Hunt"
 
 [node name="CounterValue" parent="." instance=ExtResource("3_82xdn")]
-layout_mode = 0
-offset_left = 77.0
-offset_top = 245.0
-offset_right = 173.0
-offset_bottom = 281.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = -163.0
+offset_top = -17.8
+offset_right = -67.0
+offset_bottom = 18.2
 grow_horizontal = 1
 grow_vertical = 1
 AllowGreater = true
 
 [node name="CounterLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 77.0
-offset_top = 219.0
-offset_right = 192.0
-offset_bottom = 245.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = -163.0
+offset_top = -43.8
+offset_right = -48.0
+offset_bottom = -17.8
 theme = ExtResource("2_2d70s")
 text = "Counter Value:"
 
 [node name="IncrementValue" parent="." instance=ExtResource("3_82xdn")]
-layout_mode = 0
-offset_left = 273.0
-offset_top = 245.0
-offset_right = 369.0
-offset_bottom = 281.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = 33.0
+offset_top = -17.8
+offset_right = 129.0
+offset_bottom = 18.2
 grow_horizontal = 1
 grow_vertical = 1
 AllowGreater = true
 
 [node name="IncrementLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 273.0
-offset_top = 217.0
-offset_right = 405.0
-offset_bottom = 243.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = 33.0
+offset_top = -45.8
+offset_right = 165.0
+offset_bottom = -19.8
 theme = ExtResource("2_2d70s")
 text = "Increment Value:"
 
 [node name="TimerValue" parent="." instance=ExtResource("3_82xdn")]
-layout_mode = 0
-offset_left = 183.0
-offset_top = 327.0
-offset_right = 279.0
-offset_bottom = 363.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = -57.0
+offset_top = 64.2
+offset_right = 39.0
+offset_bottom = 100.2
 grow_horizontal = 1
 grow_vertical = 1
 AllowGreater = true
 
 [node name="TimerLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 183.0
-offset_top = 301.0
-offset_right = 298.0
-offset_bottom = 327.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = -57.0
+offset_top = 38.2
+offset_right = 58.0
+offset_bottom = 64.2
 theme = ExtResource("2_2d70s")
 text = "Timer Value:"
 
 [node name="ShinySprite" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 58.0
-offset_top = 433.0
-offset_right = 198.0
-offset_bottom = 464.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -180.0
+offset_top = -75.48
+offset_right = -40.0
+offset_bottom = -44.48
 theme = ExtResource("2_2d70s")
 text = "Shiny Sprite"
 
 [node name="RegularSprite" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 245.0
-offset_top = 434.0
-offset_right = 402.0
-offset_bottom = 465.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_top = -75.48
+offset_right = 157.0
+offset_bottom = -44.48
 theme = ExtResource("2_2d70s")
 text = "Regular Sprite"
 
 [node name="HuntOdds" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 63.0
-offset_top = 556.0
-offset_right = 195.0
-offset_bottom = 587.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -180.0
+offset_top = 44.52
+offset_right = -48.0
+offset_bottom = 75.52
 theme = ExtResource("2_2d70s")
 text = "Hunt Odds"
 
 [node name="EncounterTimer" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 225.0
-offset_top = 492.0
-offset_right = 402.0
-offset_bottom = 523.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_top = -15.48
+offset_right = 177.0
+offset_bottom = 15.52
 theme = ExtResource("2_2d70s")
 text = "Encounter Timer"
 
 [node name="HuntTimer" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 62.0
-offset_top = 493.0
-offset_right = 198.0
-offset_bottom = 524.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -180.0
+offset_top = -15.48
+offset_right = -44.0
+offset_bottom = 15.52
 theme = ExtResource("2_2d70s")
 text = "Hunt Timer"
 
@@ -142,30 +203,45 @@ texture_normal = ExtResource("3_81ucq")
 stretch_mode = 0
 
 [node name="DeleteButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 179.0
-offset_top = 650.0
-offset_right = 293.0
-offset_bottom = 696.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 1.0
+anchor_right = 0.492
+anchor_bottom = 1.0
+offset_left = -57.16
+offset_top = -70.0
+offset_right = 56.84
+offset_bottom = -24.0
 theme = ExtResource("2_2d70s")
 text = "DELETE HUNT"
 
 [node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 162.0
-offset_top = 171.0
-offset_right = 319.0
-offset_bottom = 205.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = -78.0
+offset_top = -91.8
+offset_right = 79.0
+offset_bottom = -57.8
 theme = ExtResource("2_2d70s")
 theme_override_font_sizes/font_size = 24
 text = "Hunt Settings"
 
 [node name="Label2" type="Label" parent="."]
-layout_mode = 0
-offset_left = 149.0
-offset_top = 382.0
-offset_right = 332.0
-offset_bottom = 416.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -91.0
+offset_top = -128.48
+offset_right = 92.0
+offset_bottom = -94.48
 theme = ExtResource("2_2d70s")
 theme_override_font_sizes/font_size = 24
 text = "Display Settings"
@@ -173,11 +249,6 @@ text = "Display Settings"
 [node name="Verify" parent="." instance=ExtResource("4_2xfiw")]
 visible = false
 layout_mode = 1
-anchors_preset = 0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
 
 [connection signal="pressed" from="EditHuntButton" to="." method="OpenHuntCreator"]
 [connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]

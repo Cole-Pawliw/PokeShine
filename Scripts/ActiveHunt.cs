@@ -6,6 +6,7 @@ public class HuntData
 {
 	public HuntData()
 	{
+		pokemon = new List<string>();
 		huntID = ++instances;
 	}
 	public HuntData(string name, string game)
@@ -82,7 +83,8 @@ public class HuntData
 	
 	public override bool Equals(object obj)
 	{
-		if (obj == null || GetType() != obj.GetType()) {
+		if (obj == null || GetType() != obj.GetType())
+		{
 			return false;
 		}
 		

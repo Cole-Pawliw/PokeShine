@@ -9,22 +9,24 @@
 [node name="ActiveHunt" type="Control"]
 custom_minimum_size = Vector2(457, 84)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 460.0
-offset_bottom = 85.0
+offset_right = 457.0
+offset_bottom = 84.0
 mouse_filter = 2
 script = ExtResource("1_x6net")
 
 [node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 460.0
-offset_bottom = 85.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 1
 
 [node name="SelectButton" type="Button" parent="."]
-layout_mode = 0
-offset_right = 299.0
-offset_bottom = 85.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.65
+anchor_bottom = 1.0
+offset_right = -3.05176e-05
 mouse_filter = 1
 theme_override_colors/icon_hover_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
@@ -36,44 +38,62 @@ position = Vector2(45, 42)
 texture = ExtResource("2_dweee")
 
 [node name="Count" type="Label" parent="."]
-layout_mode = 0
-offset_left = 104.0
-offset_right = 303.0
-offset_bottom = 85.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.226
+anchor_right = 0.659
+anchor_bottom = 1.0
+offset_left = 0.0399933
+offset_right = -0.140015
 theme = ExtResource("3_o1qik")
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AddButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 383.0
-offset_top = 7.0
-offset_right = 452.0
-offset_bottom = 76.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.833
+anchor_top = 0.082
+anchor_right = 0.983
+anchor_bottom = 0.894
+offset_left = -0.180023
+offset_top = 0.0299997
+offset_right = -0.180023
+offset_bottom = 0.00999451
 texture_normal = ExtResource("4_j34iw")
 stretch_mode = 0
 
 [node name="SubButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 307.0
-offset_top = 7.0
-offset_right = 376.0
-offset_bottom = 76.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.667
+anchor_top = 0.082
+anchor_right = 0.817
+anchor_bottom = 0.894
+offset_left = 0.179962
+offset_top = 0.0299997
+offset_right = 0.179993
+offset_bottom = 0.00999451
 texture_normal = ExtResource("5_pmkmo")
 stretch_mode = 0
 
 [node name="SortButton" type="Button" parent="."]
 visible = false
-layout_mode = 0
-offset_right = 460.0
-offset_bottom = 85.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="MultiIndicator" type="Label" parent="."]
-layout_mode = 0
-offset_left = 85.0
-offset_right = 125.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.185
+anchor_right = 0.272
+anchor_bottom = 0.271
+offset_left = -0.0999985
+offset_right = -0.12001
+offset_bottom = -0.0350018
 theme = ExtResource("3_o1qik")
 
 [connection signal="pressed" from="SelectButton" to="." method="SelectButton"]

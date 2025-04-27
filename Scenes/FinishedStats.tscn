@@ -16,31 +16,46 @@ grow_vertical = 2
 script = ExtResource("1_071mg")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-layout_mode = 0
-offset_right = 480.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Background" type="ColorRect" parent="ScrollContainer"]
 custom_minimum_size = Vector2(480, 720)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="NameLabel" type="Label" parent="ScrollContainer/Background"]
-layout_mode = 0
-offset_left = 115.0
-offset_top = 185.0
-offset_right = 350.0
-offset_bottom = 213.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.174
+anchor_right = 0.5
+anchor_bottom = 0.174
+offset_left = -117.0
+offset_top = 59.72
+offset_right = 118.0
+offset_bottom = 87.72
 theme = ExtResource("2_j7nrf")
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
 [node name="StatsLabel" type="Label" parent="ScrollContainer/Background"]
-layout_mode = 0
-offset_left = 49.0
-offset_top = 295.0
-offset_right = 190.0
-offset_bottom = 561.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.619
+anchor_right = 0.5
+anchor_bottom = 0.619
+offset_left = -191.0
+offset_top = -150.68
+offset_right = -50.0
+offset_bottom = 115.32
 theme = ExtResource("2_j7nrf")
 theme_override_font_sizes/font_size = 25
 text = "Started on:
@@ -53,11 +68,16 @@ Ball:
 Time spent:"
 
 [node name="CountLabel" type="Label" parent="ScrollContainer/Background"]
-layout_mode = 0
-offset_left = 170.0
-offset_top = 217.0
-offset_right = 295.0
-offset_bottom = 275.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.342
+anchor_right = 0.5
+anchor_bottom = 0.342
+offset_left = -62.0
+offset_top = -29.24
+offset_right = 63.0
+offset_bottom = 28.76
 theme = ExtResource("2_j7nrf")
 theme_override_font_sizes/font_size = 40
 text = "XXXXX"
@@ -72,34 +92,51 @@ offset_bottom = 108.0
 texture_normal = ExtResource("3_t1ssc")
 stretch_mode = 0
 
-[node name="ShinySprite" type="Sprite2D" parent="ScrollContainer/Background"]
-position = Vector2(236, 125)
+[node name="Panel" type="Panel" parent="ScrollContainer/Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.174
+anchor_right = 0.5
+anchor_bottom = 0.174
+offset_top = -0.280006
+offset_bottom = -0.280006
+
+[node name="ShinySprite" type="Sprite2D" parent="ScrollContainer/Background/Panel"]
 scale = Vector2(1.55, 1.55)
 texture = ExtResource("4_eoea3")
 
 [node name="EditButton" type="Button" parent="ScrollContainer/Background"]
-layout_mode = 0
-offset_left = 125.0
-offset_top = 660.0
-offset_right = 200.0
-offset_bottom = 700.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.339
+anchor_top = 1.0
+anchor_right = 0.339
+anchor_bottom = 1.0
+offset_left = -37.72
+offset_top = -60.0
+offset_right = 37.28
+offset_bottom = -20.0
 theme = ExtResource("2_j7nrf")
 text = "Edit"
 
 [node name="DeleteButton" type="Button" parent="ScrollContainer/Background"]
-layout_mode = 0
-offset_left = 280.0
-offset_top = 660.0
-offset_right = 355.0
-offset_bottom = 700.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.661
+anchor_top = 1.0
+anchor_right = 0.661
+anchor_bottom = 1.0
+offset_left = -37.28
+offset_top = -60.0
+offset_right = 37.72
+offset_bottom = -20.0
 theme = ExtResource("2_j7nrf")
 text = "Delete"
 
-[node name="Verify" parent="ScrollContainer/Background" instance=ExtResource("5_l1512")]
+[node name="Verify" parent="." instance=ExtResource("5_l1512")]
 visible = false
-anchors_preset = 0
-grow_horizontal = 1
-grow_vertical = 1
+layout_mode = 1
 
 [connection signal="pressed" from="ScrollContainer/Background/BackButton" to="." method="BackToMenu"]
 [connection signal="pressed" from="ScrollContainer/Background/EditButton" to="." method="EditHunt"]

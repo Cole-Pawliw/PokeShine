@@ -10,7 +10,6 @@ using System.IO;
 /*
 KNOWN BUGS:
 - HuntData needs better constructors
-- Make window stretch to mobile screen size
 */
 
 /*
