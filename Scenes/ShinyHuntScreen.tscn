@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ugxewxi8b38p"]
+[gd_scene load_steps=10 format=3 uid="uid://ugxewxi8b38p"]
 
 [ext_resource type="Script" uid="uid://bmthsl75yon5c" path="res://Scripts/ShinyHuntScreen.cs" id="1_3hrlr"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_dwvgu"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/minus.png" id="5_su54o"]
 [ext_resource type="LabelSettings" uid="uid://cy8qj2uwfhd77" path="res://NumText.tres" id="6_6p3kc"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="7_inhld"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_impdu"]
 
 [node name="ShinyHuntScreen" type="Control"]
 layout_mode = 3
@@ -33,6 +35,7 @@ anchor_bottom = 1.0
 offset_top = 120.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_impdu")
 theme_override_styles/hover = ExtResource("2_impdu")
 theme_override_styles/pressed = ExtResource("2_impdu")
 

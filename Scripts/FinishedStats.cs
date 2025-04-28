@@ -25,10 +25,10 @@ public partial class FinishedStats : Control
 		nameLabel = GetNode<Label>("ScrollContainer/Background/NameLabel");
 		sprite = GetNode<Sprite2D>("ScrollContainer/Background/Panel/ShinySprite");
 		
-		verify = GetNode<Control>("ScrollContainer/Background/Verify");
-		Button cancel = GetNode<Button>("ScrollContainer/Background/Verify/CancelButton");
+		verify = GetNode<Control>("Verify");
+		Button cancel = GetNode<Button>("Verify/CancelButton");
 		cancel.Pressed += VerifyCancelPressed;
-		Button confirm = GetNode<Button>("ScrollContainer/Background/Verify/ConfirmButton");
+		Button confirm = GetNode<Button>("Verify/ConfirmButton");
 		confirm.Pressed += VerifyDeletePressed;
 	}
 	

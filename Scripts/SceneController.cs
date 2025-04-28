@@ -17,6 +17,7 @@ Extra features
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
 - Mod support (custom sprites for ROM hacks)
+- Make MainMenu track hunt times
 */
 
 public partial class SceneController : Node

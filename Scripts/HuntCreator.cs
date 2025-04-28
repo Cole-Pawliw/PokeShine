@@ -66,6 +66,7 @@ public partial class HuntCreator : Control
 			selections[1] = pokemonSelected[0];
 		}
 		UpdateButtonText();
+		startButton.Disabled = false;
 	}
 	
 	private void GameSelectPressed()

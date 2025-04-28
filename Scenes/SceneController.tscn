@@ -11,7 +11,6 @@ script = ExtResource("1_uerx3")
 [node name="JsonManager" parent="." instance=ExtResource("2_4emy2")]
 
 [node name="MainMenu" parent="." instance=ExtResource("2_r3nyo")]
-anchors_preset = 15
 
 [node name="ShinyHuntScreen" parent="." instance=ExtResource("3_da00u")]
 visible = false

@@ -18,6 +18,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
 [node name="BackButton" type="TextureButton" parent="."]
@@ -35,19 +37,19 @@ anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.499
 anchor_right = 0.5
-anchor_bottom = 0.499
+anchor_bottom = 0.5
 offset_left = -201.0
-offset_top = -245.28
+offset_top = -250.28
 offset_right = 203.0
-offset_bottom = 245.72
+offset_bottom = 278.0
 theme = ExtResource("3_yxlu4")
 theme_override_font_sizes/font_size = 25
-text = "Thank you for using <app name>.
+text = "Thank you for using PokeShine.
 I am a solo developer who made this app as a passion project and later decided to release it for free for everyone.
 
 If you like this app, please leave a rating on the app store.
 
-There is also a donate link below as a thank you to me. This is completely optional, please only donate if you have the money."
+There is also a donate link below if you want to show some support. This is completely optional, please only donate if you have the money."
 autowrap_mode = 3
 
 [node name="DonateButton" type="Button" parent="."]

@@ -132,6 +132,10 @@ public partial class ShinyHuntScreen : Control
 			if (sprite.Texture != null)
 			{
 				scaleFactor = (float)buffer / sprite.Texture.GetHeight(); // Width will always have as much or more room than height
+				if (data.huntFolder == "BankModels")
+				{
+					scaleFactor *= 0.6f; // Bank sprites are blurry and consistently need scaling down
+				}
 				sprite.Scale = new Vector2(scaleFactor, scaleFactor);
 			}
 		}
@@ -214,7 +218,7 @@ public partial class ShinyHuntScreen : Control
 				break;
 			case "SOS Chain":
 				// Shiny rolls increase by 4 after chains of 11, 21, and 31
-				for (int i = 1; i < 4 && i * 10 + 1 < data.count; i++)
+				for (int i = 1; i < 4 && i * 10 + 1 <= data.count; i++)
 				{
 					shinyRolls += 4;
 				}

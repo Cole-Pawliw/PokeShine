@@ -94,6 +94,7 @@ public partial class CapturedCreator : Control
 			charmButton.ButtonPressed = data.charm;
 		}
 		UpdateButtons();
+		addButton.Disabled = false;
 	}
 	
 	private void GameSelectPressed()

@@ -301,7 +301,7 @@ public partial class FinishHunt : Control
 		}
 		
 		data.isComplete = true;
-		EmitSignal("FinishButtonPressed", nickname.Text, altSelections[1], altSelections[0]);
+		EmitSignal("FinishButtonPressed", nickname.Text, altSelections[0], altSelections[1]);
 	}
 	
 	public void Cleanup()
