@@ -47,6 +47,7 @@ mouse_filter = 1
 theme = ExtResource("2_pele7")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jedbl")
 text_overrun_behavior = 0
+wraparound_items = false
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 1
