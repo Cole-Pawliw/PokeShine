@@ -172,7 +172,7 @@ offset_bottom = 34.88
 theme = ExtResource("3_0xk1e")
 text = "Gender:"
 
-[node name="Nickname" type="TextEdit" parent="."]
+[node name="Nickname" type="LineEdit" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302

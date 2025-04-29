@@ -9,7 +9,7 @@ public partial class CapturedCreator : Control
 	public CheckBox charmButton;
 	public NumberInputField startDay, startMon, startYear, endDay, endMon, endYear;
 	public NumberInputField counter, timer;
-	public TextEdit nickname;
+	public LineEdit nickname;
 	Button addButton;
 	
 	AvailabilityInformation dicts;
@@ -39,7 +39,7 @@ public partial class CapturedCreator : Control
 		endDay = GetNode<NumberInputField>("EndDateDay");
 		endMon = GetNode<NumberInputField>("EndDateMonth");
 		endYear = GetNode<NumberInputField>("EndDateYear");
-		nickname = GetNode<TextEdit>("Nickname");
+		nickname = GetNode<LineEdit>("Nickname");
 		counter = GetNode<NumberInputField>("CounterValue");
 		timer = GetNode<NumberInputField>("TimerValue");
 		addButton = GetNode<Button>("AddButton");
@@ -94,6 +94,9 @@ public partial class CapturedCreator : Control
 			charmButton.ButtonPressed = data.charm;
 		}
 		UpdateButtons();
+		pokemonSelect.Disabled = false;
+		methodSelect.Disabled = false;
+		routeSelect.Disabled = false;
 		addButton.Disabled = false;
 	}
 	
@@ -220,6 +223,10 @@ public partial class CapturedCreator : Control
 		{
 			charmButton.Visible = false;
 			addButton.Disabled = true;
+			
+			pokemonSelect.Disabled = false;
+			methodSelect.Disabled = false;
+			routeSelect.Disabled = false;
 			
 			// Reset other selections so non existent options can't be selected
 			selections[1] = "";

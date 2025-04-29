@@ -60,6 +60,7 @@ offset_bottom = 25.12
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_x5ic5")
+disabled = true
 text = "Route:"
 
 [node name="MethodSelect" type="Button" parent="."]
@@ -74,6 +75,7 @@ offset_top = -24.88
 offset_right = 75.04
 offset_bottom = 25.12
 theme = ExtResource("3_x5ic5")
+disabled = true
 text = "Method:"
 
 [node name="PokemonSelect" type="Button" parent="."]
@@ -88,6 +90,7 @@ offset_top = -24.72
 offset_right = 74.96
 offset_bottom = 25.28
 theme = ExtResource("3_x5ic5")
+disabled = true
 text = "Pokemon:"
 
 [node name="BallSelect" type="Button" parent="."]
@@ -267,7 +270,7 @@ offset_bottom = 12.96
 theme = ExtResource("3_x5ic5")
 text = "End Date:"
 
-[node name="Nickname" type="TextEdit" parent="."]
+[node name="Nickname" type="LineEdit" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302

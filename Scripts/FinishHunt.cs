@@ -6,15 +6,10 @@ using System.IO;
 
 public partial class FinishHunt : Control
 {
-	Button pokemonSelect;
-	Button gameSelect;
-	Button methodSelect;
-	Button routeSelect;
-	Button genderSelect;
-	Button ballSelect;
+	Button pokemonSelect, gameSelect, methodSelect, routeSelect, genderSelect, ballSelect;
 	CheckBox charmButton;
 	Label info;
-	TextEdit nickname;
+	LineEdit nickname;
 	TextureButton finishButton;
 	
 	AvailabilityInformation dicts;
@@ -39,7 +34,7 @@ public partial class FinishHunt : Control
 		ballSelect = GetNode<Button>("BallSelect");
 		charmButton = GetNode<CheckBox>("CharmButton");
 		info = GetNode<Label>("Info");
-		nickname = GetNode<TextEdit>("Nickname");
+		nickname = GetNode<LineEdit>("Nickname");
 		finishButton = GetNode<TextureButton>("FinishButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
