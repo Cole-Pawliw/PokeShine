@@ -150,7 +150,7 @@ offset_bottom = 198.0
 theme = ExtResource("7_inhld")
 text = "1/1365
 00:00:00
-0"
+0s"
 horizontal_alignment = 2
 
 [connection signal="resized" from="." to="." method="SizeChanged"]

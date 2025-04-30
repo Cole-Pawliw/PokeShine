@@ -184,9 +184,12 @@ public class HuntData
 public partial class ActiveHunt : Control
 {
 	public HuntData data;
-	Label label;
-	Label multiIndicator;
+	Label label, multiIndicator, timer;
 	Button sortButton;
+	
+	double secondTimer = 0; // Tracks how much time has passed up to 1 second
+	int resetTimer = 0; // Times how long each reset takes
+	bool activeHunt = false; // True when this screen is being used by a hunt
 	
 	[Signal]
 	public delegate void SelectButtonPressedEventHandler(int selectedHuntID);
@@ -200,7 +203,25 @@ public partial class ActiveHunt : Control
 	{
 		label = GetNode<Label>("Count");
 		multiIndicator = GetNode<Label>("MultiIndicator");
+		timer = GetNode<Label>("Timer");
 		sortButton = GetNode<Button>("SortButton");
+	}
+	
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		// Only increase the time while the hunt is active
+		if (activeHunt)
+		{
+			secondTimer += delta;
+		}
+		
+		// Update the info label with new seconds
+		while (secondTimer > 1.0)
+		{
+			TimerPlusOne();
+			secondTimer -= 1.0;
+		}
 	}
 	
 	public void InitializeHunt(HuntData hunt)
@@ -213,12 +234,58 @@ public partial class ActiveHunt : Control
 		float scaleFactor = Math.Min(90f / sprite.Texture.GetWidth(), 85f / sprite.Texture.GetHeight());
 		sprite.Scale = new Vector2(scaleFactor, scaleFactor);
 		
-		UpdateLabel();
+		UpdateLabels();
 	}
 	
-	public void UpdateLabel()
+	public void StartTimer()
+	{
+		activeHunt = true;
+	}
+	
+	public void StopTimer()
+	{
+		activeHunt = false;
+		resetTimer = 0;
+		secondTimer = 0;
+		UpdateTimer();
+	}
+	
+	public void UpdateLabels()
+	{
+		UpdateCount();
+		UpdateTimer();
+		UpdateMulti();
+	}
+	
+	public void UpdateCount()
 	{
 		label.Text = $"{data.count}";
+	}
+	
+	private void UpdateTimer()
+	{
+		string finalString = "";
+		int fullTime = data.timeSpent;
+		int hours, minutes, seconds;
+		
+		if (data.showFullTimer)
+		{
+			hours = fullTime / 3600;
+			fullTime %= 3600; // Remove the hours to count seconds and minutes
+			minutes = fullTime / 60;
+			seconds = fullTime % 60;
+		
+			finalString += $"{hours:00}:{minutes:00}:{seconds:00}"; // :00 pads 2 zeros to everything
+		}
+		if (data.showMiniTimer)
+		{
+			finalString += $"     {resetTimer}s";
+		}
+		timer.Text = finalString;
+	}
+	
+	private void UpdateMulti()
+	{
 		if (data.pokemon.Count > 1)
 		{
 			multiIndicator.Text = $"+{data.pokemon.Count - 1}";
@@ -229,16 +296,27 @@ public partial class ActiveHunt : Control
 		}
 	}
 	
+	// Updates the label displaying the hunt odds and timers
+	private void TimerPlusOne()
+	{
+		resetTimer++;
+		UpdateTimer();
+	}
+	
 	private void Increment()
 	{
 		data.count += data.incrementValue;
-		UpdateLabel();
+		data.timeSpent += resetTimer;
+		resetTimer = 0;
+		UpdateCount();
+		UpdateTimer();
+		StartTimer();
 	}
 	
 	private void Decrement()
 	{
 		data.count = Math.Max(data.count - data.incrementValue, 0);
-		UpdateLabel();
+		UpdateCount();
 	}
 	
 	public void ToggleSort()

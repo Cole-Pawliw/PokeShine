@@ -175,7 +175,7 @@ public partial class ShinyHuntScreen : Control
 		}
 		if (data.showMiniTimer)
 		{
-			finalString += $"{resetTimer}";
+			finalString += $"{resetTimer}s";
 		}
 		info.Text = finalString;
 	}

@@ -10,6 +10,7 @@ using System.IO;
 /*
 KNOWN BUGS:
 - HuntData needs better constructors
+- Force quitting on android prevents saving
 */
 
 /*
@@ -55,7 +56,7 @@ public partial class SceneController : Node
 		timer += delta;
 		
 		// Update the main menu and save everything every 5 minutes
-		if (timer > 300.0)
+		if (timer > 60.0)
 		{
 			// Only update the current hunt if the hunt screen is open
 			if (huntScreen.Visible)
@@ -71,6 +72,7 @@ public partial class SceneController : Node
 	private void OpenHunt(int selectedHuntID)
 	{
 		HuntData selectedHunt = mainScreen.GetHunt(selectedHuntID);
+		mainScreen.PauseHunts();
 		huntScreen.InitializeHunt(new HuntData(selectedHunt));
 		huntScreen.Visible = true;
 		mainScreen.Visible = false;
@@ -89,6 +91,7 @@ public partial class SceneController : Node
 		statsScreen.Visible = true;
 		mainScreen.Visible = false;
 		huntScreen.Visible = false;
+		mainScreen.PauseHunts();
 	}
 	
 	private void CloseHunt()
@@ -134,6 +137,7 @@ public partial class SceneController : Node
 			startHuntScreen.AddHunt += AddCaptured;
 			startHuntScreen.BackButtonPressed += CloseCapturedCreator;
 		}
+			mainScreen.PauseHunts();
 	}
 	
 	private void DeleteHunt()
@@ -249,6 +253,8 @@ public partial class SceneController : Node
 		infoScreen.Visible = true;
 		mainScreen.Visible = false;
 		huntScreen.Visible = false;
+		
+		mainScreen.PauseHunts();
 	}
 	
 	private void CloseAppInfo()

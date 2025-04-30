@@ -107,6 +107,14 @@ public partial class MainMenu : Control
 		}
 	}
 	
+	public void PauseHunts()
+	{
+		foreach (ActiveHunt hunt in activeHunts)
+		{
+			hunt.StopTimer();
+		}
+	}
+	
 	// Returns a list of HuntData for each hunt in the scene
 	public List<HuntData> GetHunts()
 	{
@@ -266,7 +274,7 @@ public partial class MainMenu : Control
 			if (hunt.data.huntID == hunts[huntIndex].huntID)
 			{
 				hunt.data = hunts[huntIndex];
-				hunt.UpdateLabel();
+				hunt.UpdateLabels();
 			}
 		}
 	}
@@ -505,6 +513,7 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 1;
 		}
+		PauseHunts();
 	}
 	
 	private void SortButtonPressed()
@@ -524,6 +533,7 @@ public partial class MainMenu : Control
 		sortMode = !sortMode;
 		if (sortMode)
 		{
+			PauseHunts();
 			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/filter.png");
 			mainButton.Disabled = true;
 			completedButton.Disabled = true;
