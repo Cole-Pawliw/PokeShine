@@ -50,6 +50,26 @@ public class HuntData
 		incrementValue = inc;
 		huntID = ++instances;
 	}
+	public HuntData(bool comp, string start, list<string> names,
+					string game, string method, string route, bool shinyCharm, int c, int inc
+					int time)
+	{
+		isComplete = comp;
+		startDate = start;
+		
+		pokemon = new List<string>(names);
+		
+		huntGame = game;
+		huntMethod = method;
+		huntRoute = route;
+		
+		charm = shinyCharm;
+		count = c;
+		incrementValue = inc;
+		timeSpent = time;
+		
+		huntID = ++instances;
+	}
 	public HuntData(HuntData src)
 	{
 		isComplete = src.isComplete;

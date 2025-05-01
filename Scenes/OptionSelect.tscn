@@ -45,9 +45,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 theme = ExtResource("2_pele7")
+theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jedbl")
+allow_search = false
+auto_height = true
 text_overrun_behavior = 0
 wraparound_items = false
+item_count = 0
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 1

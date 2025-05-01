@@ -37,8 +37,6 @@ public partial class OptionSelect : Control
 		{
 			list.AddItem(item);
 		}
-		
-		SetListSize();
 	}
 	
 	// Only called in single select mode
@@ -91,15 +89,6 @@ public partial class OptionSelect : Control
 				}
 			}
 		}
-		
-		SetListSize();
-	}
-	
-	private void SetListSize()
-	{
-		float listY = 27 * list.ItemCount + 10; // Make a custom size to use the ScrollContainer scroll instead
-		float minY = GetNode<ScrollContainer>("ListContainer").Size.Y; // The minimum y value for the list
-		list.CustomMinimumSize = new Vector2(list.CustomMinimumSize.X, Math.Max(listY, minY));
 	}
 	
 	private void BackButtonPressed()
