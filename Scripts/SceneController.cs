@@ -20,6 +20,7 @@ public partial class SceneController : Node
 	ShinyHuntScreen huntScreen;
 	JsonManager json;
 	string saveFileName = "savefile.save";
+	string versionNumber = "0.9";
 	
 	double timer = 0;
 	
@@ -270,7 +271,7 @@ public partial class SceneController : Node
 		
 		string huntData = JsonSerializer.Serialize<List<HuntData>>(allHunts, options);
 		string capturedData = JsonSerializer.Serialize<List<CapturedData>>(allCaptured, options);
-		string fullSave = huntData + "\n" + capturedData;
+		string fullSave = $"v{versionNumber}\n{huntData}\n{capturedData}";
 		string path = ProjectSettings.GlobalizePath("user://");
 		json.SaveJsonToFile(path, saveFileName, fullSave);
 	}
@@ -279,7 +280,6 @@ public partial class SceneController : Node
 	{
 		string path = ProjectSettings.GlobalizePath("user://");
 		string fullLoad = json.LoadJsonFromFile(path, saveFileName);
-		
 		if (fullLoad == null)
 		{
 			return;
@@ -291,17 +291,27 @@ public partial class SceneController : Node
 		{
 			IncludeFields = true,
 		};
-		List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(datas[0], options)!;
-		List<CapturedData> allCaptures = JsonSerializer.Deserialize<List<CapturedData>>(datas[1], options)!;
 		
-		foreach (HuntData hunt in allHunts)
+		try
 		{
-			mainScreen.AddHunt(hunt);
+			List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(datas[1], options)!;
+			List<CapturedData> allCaptures = JsonSerializer.Deserialize<List<CapturedData>>(datas[2], options)!;
+		
+			foreach (HuntData hunt in allHunts)
+			{
+				mainScreen.AddHunt(hunt);
+			}
+			
+			foreach (CapturedData hunt in allCaptures)
+			{
+				mainScreen.AddCaptured(hunt);
+			}
 		}
-		
-		foreach (CapturedData hunt in allCaptures)
+		catch (Exception e) // If the file can't be read, dump the save into another file to be recovered later
 		{
-			mainScreen.AddCaptured(hunt);
+			string backupFile = "savebackup.save";
+			json.SaveJsonToFile(path, backupFile, fullLoad);
+			GD.Print(e);
 		}
 	}
 	

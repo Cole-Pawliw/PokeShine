@@ -50,8 +50,8 @@ public class HuntData
 		incrementValue = inc;
 		huntID = ++instances;
 	}
-	public HuntData(bool comp, string start, list<string> names,
-					string game, string method, string route, bool shinyCharm, int c, int inc
+	public HuntData(bool comp, string start, List<string> names,
+					string game, string method, string route, bool shinyCharm, int c, int inc,
 					int time)
 	{
 		isComplete = comp;
