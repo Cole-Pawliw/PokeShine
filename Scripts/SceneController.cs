@@ -8,6 +8,11 @@ using System.IO;
 // %appdata%\Godot\app_userdata\Shiny Hunt Tracker
 
 /*
+To do
+- Add tutorial page
+*/
+
+/*
 Extra features
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
@@ -20,7 +25,7 @@ public partial class SceneController : Node
 	ShinyHuntScreen huntScreen;
 	JsonManager json;
 	string saveFileName = "savefile.save";
-	string versionNumber = "0.9";
+	string versionNumber = "0.9.1";
 	
 	double timer = 0;
 	

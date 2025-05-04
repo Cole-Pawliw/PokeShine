@@ -8,6 +8,9 @@ public partial class ItemScrollList : ItemList
 	int i = 0;
 	int selectedIndex = -1;
 	
+	[Export]
+	public int ScrollDeadzone = 0;
+	
 	[Signal]
 	public delegate void ItemPressedEventHandler(int index);
 	[Signal]
@@ -18,7 +21,7 @@ public partial class ItemScrollList : ItemList
 		if (@event is InputEventMouseButton && mouseDown && !@event.IsPressed())
 		{
 			Vector2 finalPos = GetViewport().GetMousePosition();
-			if (finalPos - initialPos == new Vector2(0, 0))
+			if ((finalPos - initialPos).Length() <= ScrollDeadzone)
 			{
 				bool single = true;
 				bool selected;

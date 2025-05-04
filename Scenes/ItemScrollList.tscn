@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://tw8gg5lshia7"]
 
-[ext_resource type="Script" uid="uid://cr5tkufelu5v8" path="res://ItemScrollList.cs" id="1_bb4u6"]
+[ext_resource type="Script" uid="uid://cr5tkufelu5v8" path="res://Scripts/ItemScrollList.cs" id="1_bb4u6"]
 
 [node name="ItemScrollList" type="ItemList"]
 offset_right = 40.0

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://clag0uovwwbyj"]
+[gd_scene load_steps=6 format=3 uid="uid://clag0uovwwbyj"]
 
 [ext_resource type="Script" uid="uid://df6ji8tqrq2k6" path="res://Scripts/AppInfoScreen.cs" id="1_0a46o"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_oovp4"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_yxlu4"]
 [ext_resource type="ButtonGroup" uid="uid://bcu6mtho33lvp" path="res://MenuButtonGroup.tres" id="4_oovp4"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="5_yxlu4"]
 
 [node name="AppInfoScreen" type="Control"]
 layout_mode = 3
@@ -62,6 +63,7 @@ offset_top = 12.0
 offset_right = 115.0
 offset_bottom = 108.0
 texture_normal = ExtResource("2_oovp4")
+texture_disabled = ExtResource("5_yxlu4")
 stretch_mode = 0
 
 [node name="DonateButton" type="Button" parent="."]

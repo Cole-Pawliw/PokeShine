@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgj5yuhlagrg8"]
+[gd_scene load_steps=10 format=3 uid="uid://dgj5yuhlagrg8"]
 
 [ext_resource type="Script" uid="uid://crb4ie5d888n1" path="res://Scripts/MainMenu.cs" id="1_xcoif"]
-[ext_resource type="Texture2D" uid="uid://lrsmx4iisltv" path="res://Assets/start.png" id="2_6wsh1"]
+[ext_resource type="Texture2D" uid="uid://cpe68li6qo0d0" path="res://Assets/search.png" id="2_cmrfp"]
+[ext_resource type="Texture2D" uid="uid://dmtwuhu2f1inc" path="res://Assets/search_disabled.png" id="3_loo7a"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="4_br7ok"]
 [ext_resource type="ButtonGroup" uid="uid://bcu6mtho33lvp" path="res://MenuButtonGroup.tres" id="5_3ghdq"]
 [ext_resource type="Texture2D" uid="uid://dplhrfhm5q8ju" path="res://Assets/filter_off.png" id="5_w3t6f"]
 [ext_resource type="Texture2D" uid="uid://d1bsd50cxr1qt" path="res://Assets/info.png" id="6_8um5k"]
+[ext_resource type="Texture2D" uid="uid://dcynxrdvoqqrd" path="res://Assets/filter_off_disabled.png" id="7_loo7a"]
+[ext_resource type="Texture2D" uid="uid://b7obej8q4drmx" path="res://Assets/info_disabled.png" id="9_if7li"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -32,7 +35,8 @@ offset_left = -47.8
 offset_top = 12.0
 offset_right = 48.2
 offset_bottom = 108.0
-texture_normal = ExtResource("2_6wsh1")
+texture_normal = ExtResource("2_cmrfp")
+texture_disabled = ExtResource("3_loo7a")
 stretch_mode = 0
 
 [node name="MainButton" type="Button" parent="."]
@@ -86,6 +90,7 @@ tabs_visible = false
 layout_mode = 2
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
+scroll_deadzone = 10
 metadata/_tab_index = 0
 
 [node name="HuntPanel" type="Panel" parent="TabContainer/HuntContainer"]
@@ -97,6 +102,7 @@ mouse_filter = 1
 [node name="CompletedContainer" type="ScrollContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
+scroll_deadzone = 10
 metadata/_tab_index = 1
 
 [node name="CompletedPanel" type="Panel" parent="TabContainer/CompletedContainer"]
@@ -118,6 +124,7 @@ offset_right = 33.0
 offset_bottom = 32.9999
 scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("5_w3t6f")
+texture_disabled = ExtResource("7_loo7a")
 stretch_mode = 0
 
 [node name="InfoButton" type="TextureButton" parent="."]
@@ -131,6 +138,7 @@ offset_right = 101.0
 offset_bottom = 32.9999
 scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("6_8um5k")
+texture_disabled = ExtResource("9_if7li")
 stretch_mode = 0
 
 [connection signal="pressed" from="NewHuntButton" to="." method="OpenNewHuntScreen"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4vgfm2j2x2w"]
+[gd_scene load_steps=6 format=3 uid="uid://b4vgfm2j2x2w"]
 
 [ext_resource type="Script" uid="uid://b6n3gwfs2d0eu" path="res://Scripts/HuntCreator.cs" id="1_qvm6q"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_1gh5o"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_p8t5h"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_bv7v0"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="5_8id2o"]
 
 [node name="HuntCreator" type="Control"]
 layout_mode = 3
@@ -155,6 +156,7 @@ offset_top = 12.0
 offset_right = 115.0
 offset_bottom = 108.0
 texture_normal = ExtResource("3_bv7v0")
+texture_disabled = ExtResource("5_8id2o")
 stretch_mode = 0
 
 [connection signal="pressed" from="GameSelect" to="." method="GameSelectPressed"]

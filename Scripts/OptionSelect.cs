@@ -12,12 +12,14 @@ public partial class OptionSelect : Control
 	List<string> allValues;
 	ItemList list;
 	LineEdit searchBar;
+	Label numSelectedLabel;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		list = GetNode<ItemList>("ListContainer/List");
 		searchBar = GetNode<LineEdit>("Search");
+		numSelectedLabel = GetNode<Label>("NumSelectedLabel");
 		selectedValues = new List<string>();
 	}
 	
@@ -37,6 +39,7 @@ public partial class OptionSelect : Control
 		{
 			list.AddItem(item);
 		}
+		UpdateSelectedLabel();
 	}
 	
 	// Only called in single select mode
@@ -44,6 +47,7 @@ public partial class OptionSelect : Control
 	{
 		selectedValues.Clear();
 		selectedValues.Add(list.GetItemText((int)index));
+		UpdateSelectedLabel();
 	}
 	
 	private void ItemActivated(int index)
@@ -71,6 +75,7 @@ public partial class OptionSelect : Control
 		{
 			selectedValues.Remove(list.GetItemText((int)index));
 		}
+		UpdateSelectedLabel();
 	}
 	
 	private void SearchUpdated(string newText)
@@ -89,6 +94,12 @@ public partial class OptionSelect : Control
 				}
 			}
 		}
+	}
+	
+	private void UpdateSelectedLabel()
+	{
+		int maxSelect = multiselect ? 10 : 1;
+		numSelectedLabel.Text = $"{selectedValues.Count}/{maxSelect} selected";
 	}
 	
 	private void BackButtonPressed()

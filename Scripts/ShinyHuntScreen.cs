@@ -11,8 +11,8 @@ public partial class ShinyHuntScreen : Control
 	int resetTimer = 0; // Times how long each reset takes
 	bool activeHunt = false; // True when this screen is being used by a hunt
 	
-	float halfXAnchor = 0.5f, thirdXAnchor = 0.333f, yAnchor = 0.833f; // Proportions for settings constants
-	int halfX = 240, thirdX = 160, y = 600, yOffset = 120; // Constant values used for placing sprites in a grid
+	float halfXAnchor = 0.5f, quarterXAnchor = 0.25f, yAnchor = 0.833f; // Proportions for settings constants
+	int halfX = 240, quarterX = 120, y = 600, yOffset = 120; // Constant values used for placing sprites in a grid
 	
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
@@ -110,7 +110,8 @@ public partial class ShinyHuntScreen : Control
 					}
 					else
 					{
-						sprites[i * 2 + j].Position = new Vector2(thirdX * (j+1), buffer * (i+1) + yOffset);
+						int xFactor = j % 2 == 0 ? 1 : 3;
+						sprites[i * 2 + j].Position = new Vector2(quarterX * xFactor, buffer * (i+1) + yOffset);
 					}
 				}
 			}
@@ -386,7 +387,7 @@ public partial class ShinyHuntScreen : Control
 	{
 		// Reset constants to fit the current size
 		halfX = (int)(Size.X * halfXAnchor);
-		thirdX = (int)(Size.X * thirdXAnchor);
+		quarterX = (int)(Size.X * quarterXAnchor);
 		y = (int)(Size.Y * yAnchor);
 		
 		if (data.pokemon.Count > 0)

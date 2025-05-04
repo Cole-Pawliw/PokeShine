@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvnw7d40js5ir"]
+[gd_scene load_steps=8 format=3 uid="uid://bvnw7d40js5ir"]
 
 [ext_resource type="Script" uid="uid://po1mrq7whdm3" path="res://Scripts/ActiveHunt.cs" id="1_x6net"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_dweee"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_o1qik"]
 [ext_resource type="Texture2D" uid="uid://be32drmjwk5yf" path="res://Assets/plus.png" id="4_j34iw"]
+[ext_resource type="Texture2D" uid="uid://brw57ykf3wbmo" path="res://Assets/plus_disabled.png" id="5_307le"]
 [ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/minus.png" id="5_pmkmo"]
+[ext_resource type="Texture2D" uid="uid://yyefeyqnciwl" path="res://Assets/minus_disabled.png" id="7_85t6y"]
 
 [node name="ActiveHunt" type="Control"]
 custom_minimum_size = Vector2(457, 84)
@@ -83,6 +85,7 @@ offset_top = 0.0299997
 offset_right = -0.180023
 offset_bottom = 0.00999451
 texture_normal = ExtResource("4_j34iw")
+texture_disabled = ExtResource("5_307le")
 stretch_mode = 0
 
 [node name="SubButton" type="TextureButton" parent="."]
@@ -97,6 +100,7 @@ offset_top = 0.0299997
 offset_right = 0.179993
 offset_bottom = 0.00999451
 texture_normal = ExtResource("5_pmkmo")
+texture_disabled = ExtResource("7_85t6y")
 stretch_mode = 0
 
 [node name="SortButton" type="Button" parent="."]

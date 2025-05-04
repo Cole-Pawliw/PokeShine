@@ -506,6 +506,7 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 0;
 		}
+		SetButtonTextures("search");
 	}
 	
 	private void SetCompletedPanel(bool button_pressed)
@@ -514,6 +515,13 @@ public partial class MainMenu : Control
 			tabContainer.CurrentTab = 1;
 		}
 		PauseHunts();
+		SetButtonTextures("create");
+	}
+	
+	private void SetButtonTextures(string baseName)
+	{
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/{baseName}.png");
+		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/{baseName}_disabled.png");
 	}
 	
 	private void SortButtonPressed()

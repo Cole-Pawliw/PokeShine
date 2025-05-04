@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://r7si871pi6oj"]
+[gd_scene load_steps=7 format=3 uid="uid://r7si871pi6oj"]
 
 [ext_resource type="Script" uid="uid://bmkd40tj8qcb7" path="res://Scripts/FinishedStats.cs" id="1_071mg"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_j7nrf"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_t1ssc"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="4_eh0i3"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="4_eoea3"]
 [ext_resource type="PackedScene" uid="uid://c1fphqg4nagq8" path="res://Scenes/Verify.tscn" id="5_l1512"]
 
@@ -90,6 +91,7 @@ offset_top = 12.0
 offset_right = 115.0
 offset_bottom = 108.0
 texture_normal = ExtResource("3_t1ssc")
+texture_disabled = ExtResource("4_eh0i3")
 stretch_mode = 0
 
 [node name="Panel" type="Panel" parent="ScrollContainer/Background"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cnm6ue8flowug"]
+[gd_scene load_steps=7 format=3 uid="uid://cnm6ue8flowug"]
 
 [ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_bdfeo"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_tsjlh"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_x5ic5"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="4_3rmve"]
 [ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="5_ru4jw"]
 
 [node name="CapturedCreator" type="Control"]
@@ -30,6 +31,7 @@ offset_top = 12.0
 offset_right = 115.0
 offset_bottom = 108.0
 texture_normal = ExtResource("2_bdfeo")
+texture_disabled = ExtResource("4_3rmve")
 stretch_mode = 0
 
 [node name="GameSelect" type="Button" parent="."]
