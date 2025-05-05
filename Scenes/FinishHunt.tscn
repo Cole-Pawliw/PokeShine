@@ -4,10 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_pbhrc"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_s238b"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_0xk1e"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="4_l8w8v"]
-[ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/shine.png" id="5_0sduh"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="6_22wlt"]
-[ext_resource type="Texture2D" uid="uid://cxgafcteoag7d" path="res://Assets/shine_disabled.png" id="8_e4wwj"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="4_l8w8v"]
+[ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/Buttons/shine.png" id="5_0sduh"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="6_22wlt"]
+[ext_resource type="Texture2D" uid="uid://cxgafcteoag7d" path="res://Assets/Buttons/shine_disabled.png" id="8_e4wwj"]
 
 [node name="FinishHunt" type="Control"]
 layout_mode = 3

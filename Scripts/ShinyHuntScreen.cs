@@ -125,14 +125,15 @@ public partial class ShinyHuntScreen : Control
 			amount = 2;
 		}
 		int rows = (int)Math.Max(Math.Ceiling(amount / 2.0), 2); // Minimum of 2 rows is needed
-		int buffer = y / (rows + 1); // Buffer is the pixels in the y dimension available for the sprite to fill
+		int xBuffer = halfX; // Buffer of pixels in the x dimension available for the sprite to fill
+		int yBuffer = y / (rows + 1); // Buffer of pixels in the y dimension available for the sprite to fill
 		float scaleFactor;
 		
 		foreach (Sprite2D sprite in sprites)
 		{
 			if (sprite.Texture != null)
 			{
-				scaleFactor = (float)buffer / sprite.Texture.GetHeight(); // Width will always have as much or more room than height
+				scaleFactor = Math.Min((float)yBuffer / sprite.Texture.GetHeight(), (float)xBuffer / sprite.Texture.GetWidth());
 				if (data.huntFolder == "BankModels")
 				{
 					scaleFactor *= 0.6f; // Bank sprites are blurry and consistently need scaling down

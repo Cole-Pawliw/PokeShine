@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://b6n3gwfs2d0eu" path="res://Scripts/HuntCreator.cs" id="1_qvm6q"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_1gh5o"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_p8t5h"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="3_bv7v0"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="5_8id2o"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="3_bv7v0"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="5_8id2o"]
 
 [node name="HuntCreator" type="Control"]
 layout_mode = 3

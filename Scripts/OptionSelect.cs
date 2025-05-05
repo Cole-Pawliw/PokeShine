@@ -13,6 +13,7 @@ public partial class OptionSelect : Control
 	ItemList list;
 	LineEdit searchBar;
 	Label numSelectedLabel;
+	TextureButton confirmButton;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -20,6 +21,7 @@ public partial class OptionSelect : Control
 		list = GetNode<ItemList>("ListContainer/List");
 		searchBar = GetNode<LineEdit>("Search");
 		numSelectedLabel = GetNode<Label>("NumSelectedLabel");
+		confirmButton = GetNode<TextureButton>("ConfirmButton");
 		selectedValues = new List<string>();
 	}
 	
@@ -48,6 +50,7 @@ public partial class OptionSelect : Control
 		selectedValues.Clear();
 		selectedValues.Add(list.GetItemText((int)index));
 		UpdateSelectedLabel();
+		confirmButton.Disabled = false;
 	}
 	
 	private void ItemActivated(int index)
@@ -76,6 +79,15 @@ public partial class OptionSelect : Control
 			selectedValues.Remove(list.GetItemText((int)index));
 		}
 		UpdateSelectedLabel();
+		
+		if (selectedValues.Count == 0)
+		{
+			confirmButton.Disabled = true;
+		}
+		else
+		{
+			confirmButton.Disabled = false;
+		}
 	}
 	
 	private void SearchUpdated(string newText)

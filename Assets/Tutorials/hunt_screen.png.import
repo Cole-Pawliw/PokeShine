@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1bsd50cxr1qt"
-path="res://.godot/imported/info.png-f08fa74e8e3842868a7184331144e17f.ctex"
+uid="uid://v227tpgu6u3b"
+path="res://.godot/imported/hunt_screen.png-74a084451a7b7ae67cf5d7cb137e4201.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/info.png"
-dest_files=["res://.godot/imported/info.png-f08fa74e8e3842868a7184331144e17f.ctex"]
+source_file="res://Assets/Tutorials/hunt_screen.png"
+dest_files=["res://.godot/imported/hunt_screen.png-74a084451a7b7ae67cf5d7cb137e4201.ctex"]
 
 [params]
 

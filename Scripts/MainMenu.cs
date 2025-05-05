@@ -32,6 +32,8 @@ public partial class MainMenu : Control
 	public delegate void CapturedButtonPressedEventHandler(int selectedHuntID);
 	[Signal]
 	public delegate void InfoButtonPressedEventHandler();
+	[Signal]
+	public delegate void RequestSaveEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -520,8 +522,8 @@ public partial class MainMenu : Control
 	
 	private void SetButtonTextures(string baseName)
 	{
-		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/{baseName}.png");
-		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/{baseName}_disabled.png");
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{baseName}.png");
+		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/Buttons/{baseName}_disabled.png");
 	}
 	
 	private void SortButtonPressed()
@@ -542,17 +544,18 @@ public partial class MainMenu : Control
 		if (sortMode)
 		{
 			PauseHunts();
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/filter.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/filter.png");
 			mainButton.Disabled = true;
 			completedButton.Disabled = true;
 			newHuntButton.Disabled = true;
 		}
 		else
 		{
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/filter_off.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/filter_off.png");
 			mainButton.Disabled = false;
 			completedButton.Disabled = false;
 			newHuntButton.Disabled = false;
+			Save();
 		}
 		
 		// Iterate through all ActiveHunts and call ToggleSort()
@@ -637,11 +640,12 @@ public partial class MainMenu : Control
 		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
 		selector.Visible = false;
 		selector.Cleanup();
+		Save();
 	}
 	
-	private void SortCaptured(string variable)
+	private void SortCaptured(string sortMethod)
 	{
-		switch (variable)
+		switch (sortMethod)
 		{
 			case "Start Date":
 				completedHunts.Sort((x, y) => x.data.startDate.CompareTo(y.data.startDate));
@@ -679,6 +683,11 @@ public partial class MainMenu : Control
 	private void OpenInfoScreen()
 	{
 		EmitSignal("InfoButtonPressed");
+	}
+	
+	private void Save()
+	{
+		EmitSignal("RequestSave");
 	}
 	
 	// Destroy this UI element

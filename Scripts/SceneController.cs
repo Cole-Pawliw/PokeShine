@@ -40,6 +40,7 @@ public partial class SceneController : Node
 		mainScreen.CapturedButtonPressed += OpenStats;
 		mainScreen.NewHuntButtonPressed += CreateNewHunt;
 		mainScreen.InfoButtonPressed += OpenAppInfo;
+		mainScreen.RequestSave += Save;
 		mainScreen.TreeExiting += AppClosing;
 		huntScreen.BackButtonPressed += CloseHunt;
 		huntScreen.DeleteSignal += DeleteHunt;

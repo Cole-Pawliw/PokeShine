@@ -20,17 +20,24 @@ public partial class AppInfoScreen : Control
 		OS.ShellOpen(donateLink);
 	}
 	
-	private void SetInfoPanel(bool button_pressed)
+	private void SetInfoTab(bool button_pressed)
 	{
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 0;
 		}
 	}
 	
-	private void SetCopyrightPanel(bool button_pressed)
+	private void SetTutorialTab(bool button_pressed)
 	{
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 1;
+		}
+	}
+	
+	private void SetCopyrightTab(bool button_pressed)
+	{
+		if (button_pressed == true) {
+			tabContainer.CurrentTab = 2;
 		}
 	}
 	

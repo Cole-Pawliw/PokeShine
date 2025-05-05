@@ -1,12 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvnw7d40js5ir"]
+[gd_scene load_steps=9 format=3 uid="uid://bvnw7d40js5ir"]
 
 [ext_resource type="Script" uid="uid://po1mrq7whdm3" path="res://Scripts/ActiveHunt.cs" id="1_x6net"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_dweee"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_o1qik"]
-[ext_resource type="Texture2D" uid="uid://be32drmjwk5yf" path="res://Assets/plus.png" id="4_j34iw"]
-[ext_resource type="Texture2D" uid="uid://brw57ykf3wbmo" path="res://Assets/plus_disabled.png" id="5_307le"]
-[ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/minus.png" id="5_pmkmo"]
-[ext_resource type="Texture2D" uid="uid://yyefeyqnciwl" path="res://Assets/minus_disabled.png" id="7_85t6y"]
+[ext_resource type="Texture2D" uid="uid://be32drmjwk5yf" path="res://Assets/Buttons/plus.png" id="4_j34iw"]
+[ext_resource type="Texture2D" uid="uid://brw57ykf3wbmo" path="res://Assets/Buttons/plus_disabled.png" id="5_307le"]
+[ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/Buttons/minus.png" id="5_pmkmo"]
+[ext_resource type="Texture2D" uid="uid://yyefeyqnciwl" path="res://Assets/Buttons/minus_disabled.png" id="7_85t6y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_307le"]
 
 [node name="ActiveHunt" type="Control"]
 custom_minimum_size = Vector2(457, 84)
@@ -36,6 +38,7 @@ mouse_filter = 1
 theme_override_colors/icon_hover_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_307le")
 flat = true
 
 [node name="ShinySprite" type="Sprite2D" parent="."]

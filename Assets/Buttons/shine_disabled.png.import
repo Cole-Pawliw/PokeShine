@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhdrntuk6qwnx"
-path="res://.godot/imported/minus.png-3aa6431a78bdde86c0f6eebf9d38ea2f.ctex"
+uid="uid://cxgafcteoag7d"
+path="res://.godot/imported/shine_disabled.png-3cd2deb85aa08b094c8371b89b2f0f7a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/minus.png"
-dest_files=["res://.godot/imported/minus.png-3aa6431a78bdde86c0f6eebf9d38ea2f.ctex"]
+source_file="res://Assets/Buttons/shine_disabled.png"
+dest_files=["res://.godot/imported/shine_disabled.png-3cd2deb85aa08b094c8371b89b2f0f7a.ctex"]
 
 [params]
 

@@ -1,10 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://clag0uovwwbyj"]
+[gd_scene load_steps=14 format=3 uid="uid://clag0uovwwbyj"]
 
 [ext_resource type="Script" uid="uid://df6ji8tqrq2k6" path="res://Scripts/AppInfoScreen.cs" id="1_0a46o"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_oovp4"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="2_oovp4"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_yxlu4"]
 [ext_resource type="ButtonGroup" uid="uid://bcu6mtho33lvp" path="res://MenuButtonGroup.tres" id="4_oovp4"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="5_yxlu4"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="5_yxlu4"]
+[ext_resource type="Texture2D" uid="uid://bjnnt8cdlb12y" path="res://Assets/Tutorials/main_screen.png" id="6_extoa"]
+[ext_resource type="Texture2D" uid="uid://drxvjxhhvu5lw" path="res://Assets/Tutorials/make_hunt.png" id="7_2kndd"]
+[ext_resource type="Texture2D" uid="uid://v227tpgu6u3b" path="res://Assets/Tutorials/hunt_screen.png" id="8_8hhh1"]
+[ext_resource type="Texture2D" uid="uid://cfwijbvt3sp68" path="res://Assets/Tutorials/make_captured.png" id="9_lfu6p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rtu3n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yxlu4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_extoa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uvth8"]
 
 [node name="AppInfoScreen" type="Control"]
 layout_mode = 3
@@ -29,9 +41,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.202
 anchor_right = 0.202
-offset_left = 35.04
+offset_left = 33.04
 offset_top = 25.0
-offset_right = 185.04
+offset_right = 133.04
 offset_bottom = 95.0
 theme = ExtResource("3_yxlu4")
 toggle_mode = true
@@ -41,14 +53,29 @@ button_group = ExtResource("4_oovp4")
 text = "Personal
 Statement"
 
+[node name="TutorialButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.558
+anchor_right = 0.558
+offset_left = -27.84
+offset_top = 25.0
+offset_right = 72.16
+offset_bottom = 95.0
+theme = ExtResource("3_yxlu4")
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("4_oovp4")
+text = "Tutorial"
+
 [node name="CopyrightButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.558
 anchor_right = 0.558
-offset_left = 35.16
+offset_left = 82.16
 offset_top = 25.0
-offset_right = 185.16
+offset_right = 182.16
 offset_bottom = 95.0
 theme = ExtResource("3_yxlu4")
 toggle_mode = true
@@ -66,20 +93,6 @@ texture_normal = ExtResource("2_oovp4")
 texture_disabled = ExtResource("5_yxlu4")
 stretch_mode = 0
 
-[node name="DonateButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.483
-anchor_top = 1.0
-anchor_right = 0.483
-anchor_bottom = 1.0
-offset_left = -54.84
-offset_top = -72.0
-offset_right = 55.16
-offset_bottom = -25.0
-theme = ExtResource("3_yxlu4")
-text = "Donate"
-
 [node name="TabContainer" type="TabContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -87,11 +100,10 @@ anchors_preset = -1
 anchor_left = 0.083
 anchor_top = 0.153
 anchor_right = 0.917
-anchor_bottom = 0.889
-offset_left = 0.159996
+anchor_bottom = 1.0
+offset_left = 0.159992
 offset_top = 4.83999
-offset_right = -0.160034
-offset_bottom = -5.08002
+offset_right = -0.160004
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
 theme_override_colors/font_unselected_color = Color(0, 0, 0, 0)
@@ -115,21 +127,88 @@ There is also a donate link below if you want to  support my work. This is compl
 autowrap_mode = 3
 metadata/_tab_index = 0
 
+[node name="DonateButton" type="Button" parent="TabContainer/InfoLabel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.502
+anchor_top = 0.937
+anchor_right = 0.502
+anchor_bottom = 0.937
+offset_left = -54.8
+offset_top = -24.885
+offset_right = 55.2
+offset_bottom = 25.115
+theme = ExtResource("3_yxlu4")
+disabled = true
+text = "Donate"
+
+[node name="TabContainer" type="TabContainer" parent="TabContainer"]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme = ExtResource("3_yxlu4")
+current_tab = 0
+metadata/_tab_index = 1
+
+[node name="Main" type="Panel" parent="TabContainer/TabContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_rtu3n")
+metadata/_tab_index = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="TabContainer/TabContainer/Main"]
+position = Vector2(200, 287)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("6_extoa")
+
+[node name="MakeHunt" type="Panel" parent="TabContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_yxlu4")
+metadata/_tab_index = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="TabContainer/TabContainer/MakeHunt"]
+position = Vector2(200, 287)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("7_2kndd")
+
+[node name="Hunt" type="Panel" parent="TabContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_extoa")
+metadata/_tab_index = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="TabContainer/TabContainer/Hunt"]
+position = Vector2(200, 287)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("8_8hhh1")
+
+[node name="MakeCompleted" type="Panel" parent="TabContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_uvth8")
+metadata/_tab_index = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="TabContainer/TabContainer/MakeCompleted"]
+position = Vector2(200, 287)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("9_lfu6p")
+
 [node name="CopyrightLabel" type="Label" parent="TabContainer"]
 visible = false
 custom_minimum_size = Vector2(400, 500)
 layout_mode = 2
 theme = ExtResource("3_yxlu4")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 22
 text = "This is an unofficial, fan-made, free-to-use app designed to be used alongside official works by Game Freak and The Pokémon Company.
 
 Names and visuals used are the properties of Game Freak, Nintendo, and The Pokemon Company.
 
 This app is not official and has no relation to any of the companies mentioned above. Some of the images used do not belong to me and are being used in accordance with Fair Use laws."
 autowrap_mode = 3
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
-[connection signal="toggled" from="InfoButton" to="." method="SetInfoPanel"]
-[connection signal="toggled" from="CopyrightButton" to="." method="SetCopyrightPanel"]
+[connection signal="toggled" from="InfoButton" to="." method="SetInfoTab"]
+[connection signal="toggled" from="TutorialButton" to="." method="SetTutorialTab"]
+[connection signal="toggled" from="CopyrightButton" to="." method="SetCopyrightTab"]
 [connection signal="pressed" from="BackButton" to="." method="BackToMenu"]
-[connection signal="pressed" from="DonateButton" to="." method="Donate"]
+[connection signal="pressed" from="TabContainer/InfoLabel/DonateButton" to="." method="Donate"]

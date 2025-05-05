@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://cnm6ue8flowug"]
 
 [ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/back.png" id="2_bdfeo"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="2_bdfeo"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_tsjlh"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_x5ic5"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/back_disabled.png" id="4_3rmve"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="4_3rmve"]
 [ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="5_ru4jw"]
 
 [node name="CapturedCreator" type="Control"]
@@ -151,10 +151,11 @@ offset_right = 75.04
 offset_bottom = 56.96
 grow_horizontal = 1
 grow_vertical = 1
-text = "31"
+text = ""
+placeholder_text = "31"
 MaxValue = 31
 MinValue = 1
-Value = 31
+Value = 1
 
 [node name="StartDateMonth" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 1
@@ -169,10 +170,11 @@ offset_right = 35.04
 offset_bottom = 56.96
 grow_horizontal = 1
 grow_vertical = 1
-text = "12"
+text = ""
+placeholder_text = "12"
 MaxValue = 12
 MinValue = 1
-Value = 12
+Value = 1
 
 [node name="StartDateYear" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 1
@@ -187,9 +189,9 @@ offset_right = -4.96001
 offset_bottom = 56.96
 grow_horizontal = 1
 grow_vertical = 1
-text = "1900"
+text = ""
+placeholder_text = "1900"
 MaxValue = 3000
-Value = 1900
 
 [node name="StartDateLabel" type="Label" parent="."]
 layout_mode = 1
@@ -218,10 +220,11 @@ offset_right = 54.96
 offset_bottom = 56.96
 grow_horizontal = 1
 grow_vertical = 1
-text = "31"
+text = ""
+placeholder_text = "31"
 MaxValue = 31
 MinValue = 1
-Value = 31
+Value = 1
 
 [node name="EndDateMonth" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 1
@@ -236,10 +239,11 @@ offset_right = 14.96
 offset_bottom = 56.96
 grow_horizontal = 1
 grow_vertical = 1
-text = "12"
+text = ""
+placeholder_text = "12"
 MaxValue = 12
 MinValue = 1
-Value = 12
+Value = 1
 
 [node name="EndDateYear" parent="." instance=ExtResource("5_ru4jw")]
 layout_mode = 1
@@ -254,9 +258,9 @@ offset_right = -25.04
 offset_bottom = 56.96
 grow_horizontal = 1
 grow_vertical = 1
-text = "1900"
+text = ""
+placeholder_text = "1900"
 MaxValue = 3000
-Value = 1900
 
 [node name="EndDateLabel" type="Label" parent="."]
 layout_mode = 1

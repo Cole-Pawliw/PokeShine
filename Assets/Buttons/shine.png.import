@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bj0j353ouff0j"
-path="res://.godot/imported/menu_disabled.png-6f85bdcf49d676838d4e550672997af2.ctex"
+uid="uid://bk1lrtyw07huu"
+path="res://.godot/imported/shine.png-bda9f0af7021766a89071b24cbac6e0a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/menu_disabled.png"
-dest_files=["res://.godot/imported/menu_disabled.png-6f85bdcf49d676838d4e550672997af2.ctex"]
+source_file="res://Assets/Buttons/shine.png"
+dest_files=["res://.godot/imported/shine.png-bda9f0af7021766a89071b24cbac6e0a.ctex"]
 
 [params]
 
