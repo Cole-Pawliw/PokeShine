@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cnm6ue8flowug"]
+[gd_scene load_steps=8 format=3 uid="uid://cnm6ue8flowug"]
 
 [ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="2_bdfeo"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_x5ic5"]
 [ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="4_3rmve"]
 [ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="5_ru4jw"]
+[ext_resource type="PackedScene" uid="uid://c3f5qolpt0clw" path="res://Scenes/DateInputField.tscn" id="6_p2qf2"]
 
 [node name="CapturedCreator" type="Control"]
 layout_mode = 3
@@ -138,60 +139,16 @@ offset_bottom = 17.8
 theme = ExtResource("3_x5ic5")
 text = "Shiny Charm"
 
-[node name="StartDateDay" parent="." instance=ExtResource("5_ru4jw")]
+[node name="StartDate" parent="." instance=ExtResource("6_p2qf2")]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.302
-anchor_top = 0.282
-anchor_right = 0.302
-anchor_bottom = 0.282
-offset_left = 45.04
-offset_top = 16.96
-offset_right = 75.04
-offset_bottom = 56.96
-grow_horizontal = 1
-grow_vertical = 1
-text = ""
-placeholder_text = "31"
-MaxValue = 31
-MinValue = 1
-Value = 1
-
-[node name="StartDateMonth" parent="." instance=ExtResource("5_ru4jw")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.302
-anchor_top = 0.282
-anchor_right = 0.302
-anchor_bottom = 0.282
-offset_left = 5.04001
-offset_top = 16.96
-offset_right = 35.04
-offset_bottom = 56.96
-grow_horizontal = 1
-grow_vertical = 1
-text = ""
-placeholder_text = "12"
-MaxValue = 12
-MinValue = 1
-Value = 1
-
-[node name="StartDateYear" parent="." instance=ExtResource("5_ru4jw")]
-layout_mode = 1
-anchors_preset = -1
 anchor_left = 0.302
 anchor_top = 0.282
 anchor_right = 0.302
 anchor_bottom = 0.282
 offset_left = -54.96
 offset_top = 16.96
-offset_right = -4.96001
+offset_right = 75.04
 offset_bottom = 56.96
-grow_horizontal = 1
-grow_vertical = 1
-text = ""
-placeholder_text = "1900"
-MaxValue = 3000
 
 [node name="StartDateLabel" type="Label" parent="."]
 layout_mode = 1
@@ -207,60 +164,16 @@ offset_bottom = 12.96
 theme = ExtResource("3_x5ic5")
 text = "Start Date:"
 
-[node name="EndDateDay" parent="." instance=ExtResource("5_ru4jw")]
+[node name="EndDate" parent="." instance=ExtResource("6_p2qf2")]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.698
-anchor_top = 0.282
-anchor_right = 0.698
-anchor_bottom = 0.282
-offset_left = 24.96
-offset_top = 16.96
-offset_right = 54.96
-offset_bottom = 56.96
-grow_horizontal = 1
-grow_vertical = 1
-text = ""
-placeholder_text = "31"
-MaxValue = 31
-MinValue = 1
-Value = 1
-
-[node name="EndDateMonth" parent="." instance=ExtResource("5_ru4jw")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.698
-anchor_top = 0.282
-anchor_right = 0.698
-anchor_bottom = 0.282
-offset_left = -15.04
-offset_top = 16.96
-offset_right = 14.96
-offset_bottom = 56.96
-grow_horizontal = 1
-grow_vertical = 1
-text = ""
-placeholder_text = "12"
-MaxValue = 12
-MinValue = 1
-Value = 1
-
-[node name="EndDateYear" parent="." instance=ExtResource("5_ru4jw")]
-layout_mode = 1
-anchors_preset = -1
 anchor_left = 0.698
 anchor_top = 0.282
 anchor_right = 0.698
 anchor_bottom = 0.282
 offset_left = -75.04
 offset_top = 16.96
-offset_right = -25.04
+offset_right = 54.96
 offset_bottom = 56.96
-grow_horizontal = 1
-grow_vertical = 1
-text = ""
-placeholder_text = "1900"
-MaxValue = 3000
 
 [node name="EndDateLabel" type="Label" parent="."]
 layout_mode = 1

@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3f5qolpt0clw"]
+
+[ext_resource type="Script" uid="uid://nl4blcjeolay" path="res://Scripts/DateInputField.cs" id="1_fnbix"]
+[ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="1_rm5yx"]
+
+[node name="DateInputField" type="Control"]
+layout_mode = 3
+anchor_right = 0.271
+anchor_bottom = 0.056
+offset_right = -0.0800171
+offset_bottom = -0.32
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fnbix")
+
+[node name="Year" parent="." instance=ExtResource("1_rm5yx")]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.385
+anchor_bottom = 1.0
+offset_right = -0.0500031
+offset_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+text = "1900"
+placeholder_text = "1900"
+MaxValue = 3000
+MinValue = 1900
+Value = 1900
+
+[node name="Month" parent="." instance=ExtResource("1_rm5yx")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.462
+anchor_right = 0.692
+anchor_bottom = 1.0
+offset_left = -0.0600014
+offset_right = 0.0399933
+offset_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+text = "1"
+placeholder_text = "12"
+MaxValue = 12
+MinValue = 1
+Value = 1
+
+[node name="Day" parent="." instance=ExtResource("1_rm5yx")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.769
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0299911
+offset_right = 0.0
+offset_bottom = 0.0
+text = "1"
+placeholder_text = "31"
+MaxValue = 31
+MinValue = 1
+Value = 1
+
+[connection signal="ValueChanged" from="Year" to="." method="UpdateDate"]
+[connection signal="ValueChanged" from="Month" to="." method="MonthUpdated"]
+[connection signal="ValueChanged" from="Day" to="." method="UpdateDate"]

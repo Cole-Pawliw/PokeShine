@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3qi3h4bxksep"]
+[gd_scene load_steps=8 format=3 uid="uid://d3qi3h4bxksep"]
 
 [ext_resource type="Script" uid="uid://ds3y0ftoqp57" path="res://Scripts/HuntSettings.cs" id="1_ud68x"]
 [ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_2d70s"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="3_81ucq"]
 [ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="3_82xdn"]
 [ext_resource type="PackedScene" uid="uid://c1fphqg4nagq8" path="res://Scenes/Verify.tscn" id="4_2xfiw"]
+[ext_resource type="PackedScene" uid="uid://c3f5qolpt0clw" path="res://Scenes/DateInputField.tscn" id="4_58g5d"]
 [ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="5_vjjhf"]
 
 [node name="HuntSettings" type="Control"]
@@ -104,9 +105,9 @@ anchor_left = 0.5
 anchor_top = 0.365
 anchor_right = 0.5
 anchor_bottom = 0.365
-offset_left = -57.0
+offset_left = -163.0
 offset_top = 64.2
-offset_right = 39.0
+offset_right = -67.0
 offset_bottom = 100.2
 grow_horizontal = 1
 grow_vertical = 1
@@ -119,12 +120,37 @@ anchor_left = 0.5
 anchor_top = 0.365
 anchor_right = 0.5
 anchor_bottom = 0.365
-offset_left = -57.0
+offset_left = -163.0
 offset_top = 38.2
-offset_right = 58.0
+offset_right = -48.0
 offset_bottom = 64.2
 theme = ExtResource("2_2d70s")
 text = "Timer Value:"
+
+[node name="DateValue" parent="." instance=ExtResource("4_58g5d")]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = 33.0
+offset_top = 64.2
+offset_right = 163.0
+offset_bottom = 104.2
+
+[node name="DateLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.365
+anchor_right = 0.5
+anchor_bottom = 0.365
+offset_left = 33.0
+offset_top = 38.2
+offset_right = 116.0
+offset_bottom = 61.2
+theme = ExtResource("2_2d70s")
+text = "Start Date:"
 
 [node name="ShinySprite" type="CheckButton" parent="."]
 layout_mode = 1

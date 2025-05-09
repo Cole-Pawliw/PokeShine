@@ -93,11 +93,16 @@ offset_right = 92.52
 offset_bottom = 18.36
 
 [node name="NumSelectedLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 237.0
-offset_right = 112.0
-offset_bottom = 260.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.021
+anchor_top = 0.361
+anchor_right = 0.021
+anchor_bottom = 0.361
+offset_left = -0.0800009
+offset_top = -22.92
+offset_right = 101.92
+offset_bottom = 0.0799866
 theme = ExtResource("2_pele7")
 text = "0/1 selected"
 

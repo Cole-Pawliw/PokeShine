@@ -39,11 +39,11 @@ color = Color(0.176471, 0.180392, 0.34902, 1)
 [node name="InfoButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.202
-anchor_right = 0.202
-offset_left = 33.04
+anchor_left = 0.375
+anchor_right = 0.375
+offset_left = -50.0
 offset_top = 25.0
-offset_right = 133.04
+offset_right = 50.0
 offset_bottom = 95.0
 theme = ExtResource("3_yxlu4")
 toggle_mode = true
@@ -56,11 +56,11 @@ Statement"
 [node name="TutorialButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.558
-anchor_right = 0.558
-offset_left = -27.84
+anchor_left = 0.604
+anchor_right = 0.604
+offset_left = -49.92
 offset_top = 25.0
-offset_right = 72.16
+offset_right = 50.08
 offset_bottom = 95.0
 theme = ExtResource("3_yxlu4")
 toggle_mode = true
@@ -71,11 +71,11 @@ text = "Tutorial"
 [node name="CopyrightButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.558
-anchor_right = 0.558
-offset_left = 82.16
+anchor_left = 0.833
+anchor_right = 0.833
+offset_left = -49.84
 offset_top = 25.0
-offset_right = 182.16
+offset_right = 50.16
 offset_bottom = 95.0
 theme = ExtResource("3_yxlu4")
 toggle_mode = true

@@ -203,7 +203,7 @@ public partial class Captured : Control
 	[Signal]
 	public delegate void SelectButtonPressedEventHandler(int selectedHuntID);
 	
-	public void InitializeInfo(CapturedData hunt)
+	public void InitializeInfo(CapturedData hunt, string sortMode)
 	{
 		data = hunt;
 		Sprite2D sprite = GetNode<Sprite2D>("ShinySprite");
@@ -213,14 +213,34 @@ public partial class Captured : Control
 		float scaleFactor = Math.Min(90f / sprite.Texture.GetWidth(), 85f / sprite.Texture.GetHeight());
 		sprite.Scale = new Vector2(scaleFactor, scaleFactor);
 		
-		UpdateLabel();
+		UpdateLabel(sortMode);
 	}
 	
-	public void UpdateLabel()
+	public void UpdateLabel(string sortMode)
 	{
 		Label info = GetNode<Label>("Info");
-		string date = data.endDate.Split('T')[0];
-		info.Text = $"{data.count}\n{date}";
+		string sortInfo = "";
+		
+		switch (sortMode)
+		{
+			case "Start Date":
+				sortInfo = data.startDate.Split('T')[0];
+				break;
+			case "End Date":
+				sortInfo = data.endDate.Split('T')[0];
+				break;
+			case "Pokemon":
+				sortInfo = data.pokemon;
+				break;
+			case "Game":
+				sortInfo = data.huntGame;
+				break;
+			case "": // Empty case
+				sortInfo = data.endDate.Split('T')[0];
+				break;
+		}
+		
+		info.Text = $"{data.count}\n{sortInfo}";
 	}
 	
 	private void SelectButton()

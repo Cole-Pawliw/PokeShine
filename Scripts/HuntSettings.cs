@@ -6,6 +6,7 @@ public partial class HuntSettings : Control
 {
 	// Hunt Settings
 	NumberInputField counter, increment, timer;
+	DateInputField date;
 	CheckButton shiny, regular, odds, huntTimer, encounterTimer;
 	
 	// Functional Buttons
@@ -28,6 +29,7 @@ public partial class HuntSettings : Control
 		counter = GetNode<NumberInputField>("CounterValue");
 		increment = GetNode<NumberInputField>("IncrementValue");
 		timer = GetNode<NumberInputField>("TimerValue");
+		date = GetNode<DateInputField>("DateValue");
 	
 		shiny = GetNode<CheckButton>("ShinySprite");
 		regular = GetNode<CheckButton>("RegularSprite");
@@ -51,6 +53,7 @@ public partial class HuntSettings : Control
 		counter.Text = $"{settings.count}";
 		increment.Text = $"{settings.incrementValue}";
 		timer.Text = $"{settings.timeSpent}";
+		date.UpdateDate(settings.startDate);
 		
 		shiny.ButtonPressed = settings.showShiny;
 		regular.ButtonPressed = settings.showRegular;
@@ -109,6 +112,7 @@ public partial class HuntSettings : Control
 		settings.count = (int)counter.Value;
 		settings.incrementValue = (int)increment.Value;
 		settings.timeSpent = (int)timer.Value;
+		settings.startDate = date.date;
 		
 		settings.showShiny = shiny.ButtonPressed;
 		settings.showRegular = regular.ButtonPressed;

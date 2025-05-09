@@ -4,19 +4,20 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
 
-// SAVE FILE LOCATION
-// %appdata%\Godot\app_userdata\Shiny Hunt Tracker
-
 /*
-To do
-- Add tutorial page
+Bugs
+- Add forms
+- GSC sprites?
+- Change new hunt symbol
+- customizable colours (means expanding save files)
+- New hunt not saving
+- Verify file loads
 */
 
 /*
 Extra features
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
-- Mod support (custom sprites for ROM hacks)
 */
 
 public partial class SceneController : Node
@@ -25,7 +26,7 @@ public partial class SceneController : Node
 	ShinyHuntScreen huntScreen;
 	JsonManager json;
 	string saveFileName = "savefile.save";
-	string versionNumber = "0.9.1";
+	string versionNumber = "0.9.3";
 	
 	double timer = 0;
 	
@@ -47,7 +48,10 @@ public partial class SceneController : Node
 		huntScreen.HuntChanged += UpdateActiveSprite;
 		huntScreen.FinishHunt += FinishHunt;
 		
-		Load();
+		if (OS.RequestPermissions())
+		{
+			Load();
+		}
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -55,7 +59,7 @@ public partial class SceneController : Node
 	{
 		timer += delta;
 		
-		// Update the main menu and save everything every 5 minutes
+		// Update the main menu and save everything every minute
 		if (timer > 60.0)
 		{
 			// Only update the current hunt if the hunt screen is open
@@ -68,6 +72,17 @@ public partial class SceneController : Node
 			timer = 0.0;
 		}
 	}
+	
+	/*
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMCloseRequest)
+		{
+			Save();
+			GetTree.Quit();
+		}
+	}
+	*/
 	
 	private void OpenHunt(int selectedHuntID)
 	{
@@ -137,7 +152,7 @@ public partial class SceneController : Node
 			startHuntScreen.AddHunt += AddCaptured;
 			startHuntScreen.BackButtonPressed += CloseCapturedCreator;
 		}
-			mainScreen.PauseHunts();
+		mainScreen.PauseHunts();
 	}
 	
 	private void DeleteHunt()
@@ -209,9 +224,7 @@ public partial class SceneController : Node
 	{
 		// s short for startHuntScreen so that initializing the CapturedData isn't 10 lines long
 		CapturedCreator s = GetNode<CapturedCreator>("CapturedCreator");
-		string startDate = $"{s.startYear.Value}-{s.startMon.Value}-{s.startDay.Value}";
-		string endDate = $"{s.endYear.Value}-{s.endMon.Value}-{s.endDay.Value}";
-		CapturedData huntToAdd = new CapturedData(startDate, endDate, s.selections[0], s.selections[1],
+		CapturedData huntToAdd = new CapturedData(s.startDate.date, s.endDate.date, s.selections[0], s.selections[1],
 												s.selections[2], s.selections[3], s.selections[4], s.selections[5],
 												s.nickname.Text, s.charmButton.ButtonPressed,
 												(int)s.counter.Value, (int)s.timer.Value * 60);
@@ -277,7 +290,7 @@ public partial class SceneController : Node
 		
 		string huntData = JsonSerializer.Serialize<List<HuntData>>(allHunts, options);
 		string capturedData = JsonSerializer.Serialize<List<CapturedData>>(allCaptured, options);
-		string fullSave = $"v{versionNumber}\n{huntData}\n{capturedData}";
+		string fullSave = $"v{versionNumber}\nsortby:{mainScreen.sortType}\n{huntData}\n{capturedData}";
 		string path = ProjectSettings.GlobalizePath("user://");
 		json.SaveJsonToFile(path, saveFileName, fullSave);
 	}
@@ -293,6 +306,24 @@ public partial class SceneController : Node
 		
 		string[] datas = fullLoad.Split("\n");
 		
+		switch (datas[0])
+		{
+			case "v0.9.3":
+				Load093(fullLoad);
+				break;
+			default:
+				LoadDefault(fullLoad);
+				break;
+		}
+	}
+	
+	// Load a save file labelled v0.9.3
+	private bool Load093(string fullLoad)
+	{
+		string[] datas = fullLoad.Split("\n");
+		int size = datas.Length;
+		mainScreen.sortType = datas[1].Split(':')[1];
+		
 		var options = new JsonSerializerOptions
 		{
 			IncludeFields = true,
@@ -300,25 +331,87 @@ public partial class SceneController : Node
 		
 		try
 		{
-			List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(datas[1], options)!;
-			List<CapturedData> allCaptures = JsonSerializer.Deserialize<List<CapturedData>>(datas[2], options)!;
+			List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(datas[size - 2], options)!;
+			List<CapturedData> allCaptures = JsonSerializer.Deserialize<List<CapturedData>>(datas[size - 1], options)!;
 		
 			foreach (HuntData hunt in allHunts)
 			{
-				mainScreen.AddHunt(hunt);
+				if (VerifyLoadedHunt(hunt))
+				{
+					mainScreen.AddHunt(hunt);
+				}
 			}
 			
 			foreach (CapturedData hunt in allCaptures)
 			{
-				mainScreen.AddCaptured(hunt);
+				if (VerifyLoadedCaptured(hunt))
+				{
+					mainScreen.AddCaptured(hunt);
+				}
 			}
 		}
 		catch (Exception e) // If the file can't be read, dump the save into another file to be recovered later
 		{
+			string path = ProjectSettings.GlobalizePath("user://");
 			string backupFile = "savebackup.save";
 			json.SaveJsonToFile(path, backupFile, fullLoad);
 			GD.Print(e);
 		}
+		
+		return true;
+	}
+	
+	// Load a save file with a strange version number
+	private bool LoadDefault(string fullLoad)
+	{
+		string[] datas = fullLoad.Split("\n");
+		int size = datas.Length;
+		
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		
+		try
+		{
+			List<HuntData> allHunts = JsonSerializer.Deserialize<List<HuntData>>(datas[size - 2], options)!;
+			List<CapturedData> allCaptures = JsonSerializer.Deserialize<List<CapturedData>>(datas[size - 1], options)!;
+		
+			foreach (HuntData hunt in allHunts)
+			{
+				if (VerifyLoadedHunt(hunt))
+				{
+					mainScreen.AddHunt(hunt);
+				}
+			}
+			
+			foreach (CapturedData hunt in allCaptures)
+			{
+				if (VerifyLoadedCaptured(hunt))
+				{
+					mainScreen.AddCaptured(hunt);
+				}
+			}
+		}
+		catch (Exception e) // If the file can't be read, dump the save into another file to be recovered later
+		{
+			string path = ProjectSettings.GlobalizePath("user://");
+			string backupFile = "savebackup.save";
+			json.SaveJsonToFile(path, backupFile, fullLoad);
+			GD.Print(e);
+		}
+		
+		return true;
+	}
+	
+	private bool VerifyLoadedHunt(HuntData hunt)
+	{
+		return true;
+	}
+	
+	private bool VerifyLoadedCaptured(CapturedData hunt)
+	{
+		return true;
 	}
 	
 	private void AppClosing()

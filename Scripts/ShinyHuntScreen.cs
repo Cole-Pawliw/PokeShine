@@ -138,6 +138,10 @@ public partial class ShinyHuntScreen : Control
 				{
 					scaleFactor *= 0.6f; // Bank sprites are blurry and consistently need scaling down
 				}
+				else if (data.huntFolder == "HomeModels")
+				{
+					scaleFactor *= 0.8f;
+				}
 				sprite.Scale = new Vector2(scaleFactor, scaleFactor);
 			}
 		}
@@ -195,7 +199,7 @@ public partial class ShinyHuntScreen : Control
 				odds = 128;
 				break;
 			case "Masuda Method":
-				odds += (game.methodID < 5) ? 5 : 6; // Masuda breeding has different rolls starting in gen 5
+				shinyRolls += (game.methodID < 5) ? 5 : 6; // Masuda breeding has different rolls starting in gen 5
 				break;
 			case "Poke Radar": // This case isn't fully accurate to what's going on but these odds are good enough
 				shinyRolls = 1; // Shiny charm doesn't affect odds for this method
@@ -245,8 +249,7 @@ public partial class ShinyHuntScreen : Control
 				}
 				break;
 			case "Dynamax Adventures":
-				odds = 100;
-				shinyRolls = 1; // Shiny charm doesn't affect these odds
+				odds = 300; // Shiny charm will change this to 1/100
 				break;
 			case "Mass Outbreak": // Mass outbreaks are in both PLA and SV, but have different functionality in each
 				shinyRolls += 12; // Currently only considering PLA until a good solution is found for SV sandwiches
@@ -254,6 +257,15 @@ public partial class ShinyHuntScreen : Control
 			case "Massive Mass Outbreak":
 				shinyRolls += 25;
 				break;
+		}
+		
+		if (data.huntMethod != "Masuda Method" && data.huntMethod != "Breeding" && game.methodID == 13) // Shiny charm is weird in BDSP
+		{
+			shinyRolls = 1; // No shiny charm unless the player is doing masuda method
+		}
+		if ((data.huntMethod == "Masuda Method" || data.huntMethod == "Breeding") && game.methodID >= 12)
+		{
+			shinyRolls = Math.Max(shinyRolls - 1, 1); // Rerolls override the initial roll from a bug
 		}
 		
 		return odds / shinyRolls;

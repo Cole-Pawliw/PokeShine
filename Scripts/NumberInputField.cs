@@ -4,18 +4,65 @@ using System;
 [Tool]
 public partial class NumberInputField : TextEdit
 {
+	private int _MaxValue = 100;
 	[Export]
-	public int MaxValue = 100; // The maximum value allowed in the field
+	public int MaxValue // The maximum value allowed in the field
+	{
+		get
+		{
+			return _MaxValue;
+		}
+		set
+		{
+			_MaxValue = value;
+			if (Value > _MaxValue && !AllowGreater)
+			{
+				Value = _MaxValue;
+				UpdateText();
+			}
+		}
+	}
+	private int _MinValue = 0;
 	[Export]
-	public int MinValue = 0; // The minimum value allowed in the field
+	public int MinValue // The minimum value allowed in the field
+	{
+		get
+		{
+			return _MinValue;
+		}
+		set
+		{
+			_MinValue = value;
+			if (Value < _MinValue && !AllowLesser)
+			{
+				Value = _MinValue;
+				UpdateText();
+			}
+		}
+	}
 	[Export]
 	public int Step = 1; // Value must be a multiple of this
+	private int _Value = 0;
 	[Export]
-	public int Value = 0; // The actual value shown in the input field
+	public int Value // The actual value shown in the input field
+	{
+		get
+		{
+			return _Value;
+		}
+		set
+		{
+			_Value = value;
+			EmitValueChanged();
+		}
+	}
 	[Export]
 	public bool AllowGreater = false; // Allows value to be greater than maxValue
 	[Export]
 	public bool AllowLesser = false; // Allows value to be smaller than minValue
+	
+	[Signal]
+	public delegate void ValueChangedEventHandler();
 	
 	// Called whenever the text in the field is changed
 	// Changes value to match the text after removing non-numeric characters
@@ -35,24 +82,21 @@ public partial class NumberInputField : TextEdit
 		
 		if (!AllowGreater && textAsInt > MaxValue)
 		{
-			Value = MaxValue;
+			textAsInt = MaxValue;
 		}
 		else if (!AllowLesser && textAsInt < MinValue)
 		{
-			Value = MinValue;
+			textAsInt = MinValue;
 		}
 		else if (textAsInt % Step != 0)
 		{
-			Value -= textAsInt % Step;
+			textAsInt -= textAsInt % Step;
 			if (!AllowLesser && textAsInt < MinValue)
 			{
-				Value += Step; // Increase to next lowest step if it goes too low
+				textAsInt += Step; // Increase to next lowest step if it goes too low
 			}
 		}
-		else
-		{
-			Value = textAsInt;
-		}
+		Value = textAsInt; // Only assign Value once so ValueChanged is only emitted once
 	}
 	
 	// Checks that there are no non-numeric characters before removing them
@@ -97,5 +141,10 @@ public partial class NumberInputField : TextEdit
 	{
 		Text = $"{Value}";
 		SetCaretColumn(Text.Length);
+	}
+	
+	private void EmitValueChanged()
+	{
+		EmitSignal("ValueChanged");
 	}
 }

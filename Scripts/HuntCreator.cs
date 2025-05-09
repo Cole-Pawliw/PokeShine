@@ -37,7 +37,7 @@ public partial class HuntCreator : Control
 	public void SetPreSelections(HuntData data)
 	{
 		Button startButton = GetNode<Button>("StartButton");
-		startButton.Text = "Edit Hunt";
+		startButton.Text = "Update Hunt";
 		pokemonSelect.Visible = true;
 		methodSelect.Visible = true;
 		routeSelect.Visible = true;
@@ -190,6 +190,12 @@ public partial class HuntCreator : Control
 			{
 				multiButton.Visible = false;
 				multiButton.ButtonPressed = false;
+				
+				if (selections[2] != selectedOption && pokemonSelected.Count > 1)
+				{
+					pokemonSelected.Clear();
+					selections[1] = "";
+				}
 			}
 		}
 		

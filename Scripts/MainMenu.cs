@@ -24,6 +24,8 @@ public partial class MainMenu : Control
 	int selectedHuntSiblingIndex = -1;
 	List<int> flags; // List of ActiveHunts that hav been flagged to be moved
 	
+	public string sortType = "";
+	
 	[Signal]
 	public delegate void HuntButtonPressedEventHandler(int selectedHuntID);
 	[Signal]
@@ -177,7 +179,7 @@ public partial class MainMenu : Control
 		
 		// Connect signals and initialize the hunt
 		newHuntScene.SelectButtonPressed += EmitCapturedButtonPressed;
-		newHuntScene.InitializeInfo(hunt);
+		newHuntScene.InitializeInfo(hunt, sortType);
 	}
 	
 	public void AddHunt(HuntData hunt)
@@ -288,7 +290,7 @@ public partial class MainMenu : Control
 			if (hunt.data.huntID == finished[huntIndex].huntID)
 			{
 				hunt.data = finished[huntIndex];
-				hunt.UpdateLabel();
+				hunt.UpdateLabel(sortType);
 			}
 		}
 	}
@@ -409,7 +411,7 @@ public partial class MainMenu : Control
 		Captured hunt = completedHunts[index];
 		// This is bad but it saves writing a function that does 90% of this function
 		// Basically jump starts the ActiveHunt to change its sprite
-		hunt.InitializeInfo(hunt.data);
+		hunt.InitializeInfo(hunt.data, sortType);
 	}
 	
 	public void SortHunts()
@@ -623,21 +625,52 @@ public partial class MainMenu : Control
 	private void OpenSelector()
 	{
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
+		selectScreen.Name = "TypeSelect";
 		AddChild(selectScreen);
 		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game"]);
 		
 		selectScreen.CreateList(itemList, false);
-		selectScreen.CloseMenu += CloseSelector;
+		selectScreen.CloseMenu += SortTypeSelected;
 	}
 	
-	private void CloseSelector(string selectedOption)
+	private void SortTypeSelected(string selectedOption)
 	{
-		if (selectedOption != "")
+		CloseSelector("TypeSelect");
+		if (selectedOption == "")
 		{
-			SortCaptured(selectedOption);
+			return;
 		}
+		sortType = selectedOption;
+		SortCaptured(selectedOption);
 		
-		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
+		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
+		selectScreen.Name = "AscendingSelect";
+		AddChild(selectScreen);
+		List<string> itemList = new List<string>(["Ascending", "Descending"]);
+		
+		selectScreen.CreateList(itemList, false);
+		selectScreen.CloseMenu += SortAscendingSelected;
+		
+		foreach (Captured hunt in completedHunts)
+		{
+			hunt.UpdateLabel(sortType);
+		}
+	}
+	
+	private void SortAscendingSelected(string selectedOption)
+	{
+		if (selectedOption == "Descending")
+		{
+			completedHunts.Reverse();
+			UpdateCompletedPositions();
+			UpdateHuntIndices();
+		}
+		CloseSelector("AscendingSelect");
+	}
+	
+	private void CloseSelector(string selectorName)
+	{
+		OptionSelect selector = GetNode<OptionSelect>(selectorName);
 		selector.Visible = false;
 		selector.Cleanup();
 		Save();

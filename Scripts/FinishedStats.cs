@@ -128,8 +128,8 @@ public partial class FinishedStats : Control
 	{
 		CapturedCreator startHuntScreen = GetNode<CapturedCreator>("CapturedCreator");
 		
-		data.startDate = $"{startHuntScreen.startYear.Value}-{startHuntScreen.startMon.Value}-{startHuntScreen.startDay.Value}";
-		data.endDate = $"{startHuntScreen.endYear.Value}-{startHuntScreen.endMon.Value}-{startHuntScreen.endDay.Value}";
+		data.startDate = startHuntScreen.startDate.date;
+		data.endDate = startHuntScreen.endDate.date;
 		data.huntGame = startHuntScreen.selections[0];
 		data.pokemon = startHuntScreen.selections[1];
 		data.huntMethod = startHuntScreen.selections[2];
