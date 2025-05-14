@@ -5,6 +5,7 @@ public partial class AppInfoScreen : Control
 {
 	string donateLink = "https://buymeacoffee.com/colesapps";
 	TabContainer tabContainer;
+	bool screenVisible = false;
 	
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
@@ -13,6 +14,15 @@ public partial class AppInfoScreen : Control
 	public override void _Ready()
 	{
 		tabContainer = GetNode<TabContainer>("TabContainer");
+		screenVisible = true;
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			BackToMenu();
+		}
 	}
 	
 	private void Donate()
@@ -43,6 +53,7 @@ public partial class AppInfoScreen : Control
 	
 	private void BackToMenu()
 	{
+		screenVisible = false;
 		EmitSignal("BackButtonPressed");
 	}
 	

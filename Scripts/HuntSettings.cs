@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public partial class HuntSettings : Control
 {
 	// Hunt Settings
-	NumberInputField counter, increment, timer;
+	NumberInputField counter, increment;
 	DateInputField date;
+	TimeInputField timer;
 	CheckButton shiny, regular, odds, huntTimer, encounterTimer;
 	
 	// Functional Buttons
@@ -17,6 +18,7 @@ public partial class HuntSettings : Control
 	
 	public HuntData settings;
 	bool huntChanged = false;
+	bool screenVisible = false;
 	
 	[Signal]
 	public delegate void CloseSettingsEventHandler(bool importantChange);
@@ -28,7 +30,7 @@ public partial class HuntSettings : Control
 	{
 		counter = GetNode<NumberInputField>("CounterValue");
 		increment = GetNode<NumberInputField>("IncrementValue");
-		timer = GetNode<NumberInputField>("TimerValue");
+		timer = GetNode<TimeInputField>("TimerValue");
 		date = GetNode<DateInputField>("DateValue");
 	
 		shiny = GetNode<CheckButton>("ShinySprite");
@@ -41,10 +43,14 @@ public partial class HuntSettings : Control
 		deleteButton = GetNode<Button>("DeleteButton");
 		
 		verify = GetNode<Control>("Verify");
-		Button cancel = GetNode<Button>("Verify/CancelButton");
-		cancel.Pressed += VerifyCancelPressed;
-		Button confirm = GetNode<Button>("Verify/ConfirmButton");
-		confirm.Pressed += VerifyDeletePressed;
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			BackButtonPressed();
+		}
 	}
 	
 	public void SetInitialSettings(HuntData data)
@@ -52,7 +58,7 @@ public partial class HuntSettings : Control
 		settings = data;
 		counter.Text = $"{settings.count}";
 		increment.Text = $"{settings.incrementValue}";
-		timer.Text = $"{settings.timeSpent}";
+		timer.UpdateTime(settings.timeSpent);
 		date.UpdateDate(settings.startDate);
 		
 		shiny.ButtonPressed = settings.showShiny;
@@ -69,6 +75,7 @@ public partial class HuntSettings : Control
 		{
 			regular.Disabled = false;
 		}
+		screenVisible = true;
 	}
 	
 	private void OpenHuntCreator()
@@ -79,6 +86,7 @@ public partial class HuntSettings : Control
 		startHuntScreen.StartHunt += ChangeHunt;
 		startHuntScreen.BackButtonPressed += CloseCreator;
 		startHuntScreen.SetPreSelections(settings);
+		screenVisible = false;
 	}
 	
 	private void ChangeHunt(string gameName, string method, bool charm)
@@ -104,6 +112,7 @@ public partial class HuntSettings : Control
 	{
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		startHuntScreen.Visible = false;
+		screenVisible = true;
 		startHuntScreen.Cleanup();
 	}
 	
@@ -111,7 +120,7 @@ public partial class HuntSettings : Control
 	{
 		settings.count = (int)counter.Value;
 		settings.incrementValue = (int)increment.Value;
-		settings.timeSpent = (int)timer.Value;
+		settings.timeSpent = timer.totalTime;
 		settings.startDate = date.date;
 		
 		settings.showShiny = shiny.ButtonPressed;
@@ -119,21 +128,25 @@ public partial class HuntSettings : Control
 		settings.showOdds = odds.ButtonPressed;
 		settings.showFullTimer = huntTimer.ButtonPressed;
 		settings.showMiniTimer = encounterTimer.ButtonPressed;
+		screenVisible = false;
 		EmitSignal("CloseSettings", huntChanged);
 	}
 	
 	private void DeleteButtonPressed()
 	{
 		verify.Visible = true;
+		screenVisible = false;
 	}
 	
 	private void VerifyCancelPressed()
 	{
 		verify.Visible = false;
+		screenVisible = true;
 	}
 	
 	private void VerifyDeletePressed()
 	{
+		screenVisible = false;
 		EmitSignal("DeleteHunt");
 	}
 	

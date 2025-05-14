@@ -12,12 +12,14 @@ offset_right = 460.0
 offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_6t67q")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 0
 offset_right = 460.0
 offset_bottom = 85.0
+mouse_filter = 1
 
 [node name="ShinySprite" type="Sprite2D" parent="."]
 position = Vector2(45, 42)

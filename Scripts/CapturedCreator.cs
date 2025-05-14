@@ -8,15 +8,16 @@ public partial class CapturedCreator : Control
 	Button pokemonSelect, gameSelect, methodSelect, routeSelect, genderSelect, ballSelect;
 	public CheckBox charmButton;
 	public DateInputField startDate, endDate;
-	public NumberInputField counter, timer;
+	public TimeInputField timer;
+	public NumberInputField counter;
 	public LineEdit nickname;
 	Button addButton;
 	
 	AvailabilityInformation dicts;
 	
 	public string[] selections = {"", "", "", "", "", ""};
-	
 	int optionMode = 0;
+	bool screenVisible = true; // True when this screen is the only one visible to the user
 	
 	[Signal]
 	public delegate void AddHuntEventHandler();
@@ -37,7 +38,7 @@ public partial class CapturedCreator : Control
 		endDate = GetNode<DateInputField>("EndDate");
 		nickname = GetNode<LineEdit>("Nickname");
 		counter = GetNode<NumberInputField>("CounterValue");
-		timer = GetNode<NumberInputField>("TimerValue");
+		timer = GetNode<TimeInputField>("TimerValue");
 		addButton = GetNode<Button>("AddButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
@@ -47,6 +48,14 @@ public partial class CapturedCreator : Control
 		string date = Time.GetDatetimeStringFromSystem().Split('T')[0];
 		startDate.UpdateDate(date);
 		endDate.UpdateDate(date);
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			BackToMenu();
+		}
 	}
 	
 	public void SetPreSelections(CapturedData data)
@@ -70,7 +79,7 @@ public partial class CapturedCreator : Control
 		// endDate.Text = data.endDate;
 		nickname.Text = data.nickname;
 		counter.Text = $"{data.count}";
-		timer.Text = $"{data.timeSpent / 60}";
+		timer.UpdateTime(data.timeSpent);
 		
 		startDate.UpdateDate(data.startDate);
 		endDate.UpdateDate(data.endDate);
@@ -86,6 +95,7 @@ public partial class CapturedCreator : Control
 		methodSelect.Disabled = false;
 		routeSelect.Disabled = false;
 		addButton.Disabled = false;
+		screenVisible = true;
 	}
 	
 	private void GameSelectPressed()
@@ -188,6 +198,7 @@ public partial class CapturedCreator : Control
 		
 		selectScreen.CreateList(itemList, false);
 		selectScreen.CloseMenu += UpdateSelection;
+		screenVisible = false;
 	}
 	
 	private void UpdateSelection(string selectedOption)
@@ -266,6 +277,7 @@ public partial class CapturedCreator : Control
 	{
 		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
 		selector.Visible = false;
+		screenVisible = true;
 		selector.Cleanup();
 	}
 	
@@ -281,6 +293,7 @@ public partial class CapturedCreator : Control
 	
 	private void EmitStartHunt()
 	{
+		screenVisible = false;
 		// Only emit the signal if all selections have been made
 		if (selections[0] != "" && selections[1] != "")
 		{
@@ -290,6 +303,7 @@ public partial class CapturedCreator : Control
 	
 	public void BackToMenu()
 	{
+		screenVisible = false;
 		EmitSignal("BackButtonPressed");
 	}
 	

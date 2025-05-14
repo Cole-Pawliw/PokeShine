@@ -6,17 +6,17 @@ using System.IO;
 
 public partial class FinishHunt : Control
 {
-	Button pokemonSelect, gameSelect, methodSelect, routeSelect, genderSelect, ballSelect;
+	Button pokemonSelect, gameSelect, methodSelect, routeSelect, genderSelect, ballSelect, finishButton;
 	CheckBox charmButton;
 	Label info;
 	LineEdit nickname;
-	TextureButton finishButton;
 	
 	AvailabilityInformation dicts;
 	
 	public HuntData data;
 	int optionMode = 0;
 	string[] altSelections = {"", ""};
+	bool screenVisible = false;
 	
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
@@ -35,9 +35,17 @@ public partial class FinishHunt : Control
 		charmButton = GetNode<CheckBox>("CharmButton");
 		info = GetNode<Label>("Info");
 		nickname = GetNode<LineEdit>("Nickname");
-		finishButton = GetNode<TextureButton>("FinishButton");
+		finishButton = GetNode<Button>("FinishButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			BackToHunt();
+		}
 	}
 	
 	public void SetInitialSettings(HuntData hunt)
@@ -68,6 +76,7 @@ public partial class FinishHunt : Control
 		{
 			finishButton.Disabled = true;
 		}
+		screenVisible = true;
 	}
 	
 	private void GameSelectPressed()
@@ -175,6 +184,7 @@ public partial class FinishHunt : Control
 		
 		selectScreen.CreateList(itemList, false);
 		selectScreen.CloseMenu += UpdateSelection;
+		screenVisible = false;
 	}
 	
 	private void UpdateSelection(string selectedOption)
@@ -253,6 +263,7 @@ public partial class FinishHunt : Control
 	{
 		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
 		selector.Visible = false;
+		screenVisible = true;
 		selector.Cleanup();
 	}
 	
@@ -284,6 +295,7 @@ public partial class FinishHunt : Control
 	
 	private void BackToHunt()
 	{
+		screenVisible = false;
 		EmitSignal("BackButtonPressed");
 	}
 	
@@ -295,6 +307,7 @@ public partial class FinishHunt : Control
 			return;
 		}
 		
+		screenVisible = false;
 		data.isComplete = true;
 		EmitSignal("FinishButtonPressed", nickname.Text, altSelections[0], altSelections[1]);
 	}

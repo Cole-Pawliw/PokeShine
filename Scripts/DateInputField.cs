@@ -13,6 +13,10 @@ public partial class DateInputField : Control
 		year = GetNode<NumberInputField>("Year");
 		month = GetNode<NumberInputField>("Month");
 		day = GetNode<NumberInputField>("Day");
+		
+		year.ValueChanged += UpdateDate;
+		month.ValueChanged += UpdateDate;
+		day.ValueChanged += UpdateDate;
 	}
 	
 	private void MonthUpdated()

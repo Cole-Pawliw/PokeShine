@@ -22,6 +22,8 @@ public partial class ShinyHuntScreen : Control
 	public delegate void HuntChangedEventHandler();
 	[Signal]
 	public delegate void FinishHuntEventHandler(string nickname, string ball, string gender);
+	[Signal]
+	public delegate void RequestSaveEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -49,6 +51,14 @@ public partial class ShinyHuntScreen : Control
 		{
 			TimerPlusOne();
 			secondTimer -= 1.0;
+		}
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && activeHunt)
+		{
+			BackToMenu();
 		}
 	}
 	
@@ -199,7 +209,7 @@ public partial class ShinyHuntScreen : Control
 				odds = 128;
 				break;
 			case "Masuda Method":
-				shinyRolls += (game.methodID < 5) ? 5 : 6; // Masuda breeding has different rolls starting in gen 5
+				shinyRolls += (game.methodID < 5) ? 4 : 5; // Masuda breeding has different rolls starting in gen 5
 				break;
 			case "Poke Radar": // This case isn't fully accurate to what's going on but these odds are good enough
 				shinyRolls = 1; // Shiny charm doesn't affect odds for this method
@@ -262,10 +272,6 @@ public partial class ShinyHuntScreen : Control
 		if (data.huntMethod != "Masuda Method" && data.huntMethod != "Breeding" && game.methodID == 13) // Shiny charm is weird in BDSP
 		{
 			shinyRolls = 1; // No shiny charm unless the player is doing masuda method
-		}
-		if ((data.huntMethod == "Masuda Method" || data.huntMethod == "Breeding") && game.methodID >= 12)
-		{
-			shinyRolls = Math.Max(shinyRolls - 1, 1); // Rerolls override the initial roll from a bug
 		}
 		
 		return odds / shinyRolls;
@@ -379,6 +385,7 @@ public partial class ShinyHuntScreen : Control
 		RemoveChild(finishMenu);
 		finishMenu.Cleanup();
 		ClearSprites();
+		activeHunt = false;
 		EmitSignal("FinishHunt", nickname, ball, gender);
 	}
 	
@@ -394,6 +401,11 @@ public partial class ShinyHuntScreen : Control
 	private void UpdateMainMenu()
 	{
 		EmitSignal("HuntChanged");
+	}
+	
+	private void Save()
+	{
+		EmitSignal("RequestSave");
 	}
 	
 	private void SizeChanged()

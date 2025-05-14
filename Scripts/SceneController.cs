@@ -5,19 +5,21 @@ using System.Text.Json;
 using System.IO;
 
 /*
-Bugs
+Bugs and Changes
 - Add forms
-- GSC sprites?
-- Change new hunt symbol
-- customizable colours (means expanding save files)
-- New hunt not saving
 - Verify file loads
+- Global Settings (for what sprites to show)
+- Different font
+- Edit button design
+- Box sprites for ItemList
 */
 
 /*
 Extra features
 - Active hunt stats page (odds graph, other detailed info)
 - Per-route pokemon availability (very complicated to make, might not get added)
+- customizable colours (means expanding save files)
+- GSC sprites?
 */
 
 public partial class SceneController : Node
@@ -25,14 +27,16 @@ public partial class SceneController : Node
 	MainMenu mainScreen;
 	ShinyHuntScreen huntScreen;
 	JsonManager json;
-	string saveFileName = "savefile.save";
-	string versionNumber = "0.9.3";
+	string saveFileName = "savefile.save", activeFileName = "ActiveHunts.save", capturedFileName = "CapturedHunts.save";
+	string path;
+	string versionNumber = "0.9.4";
 	
 	double timer = 0;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		path = ProjectSettings.GlobalizePath("user://");
 		mainScreen = GetNode<MainMenu>("MainMenu");
 		huntScreen = GetNode<ShinyHuntScreen>("ShinyHuntScreen");
 		json = GetNode<JsonManager>("JsonManager");
@@ -41,17 +45,15 @@ public partial class SceneController : Node
 		mainScreen.CapturedButtonPressed += OpenStats;
 		mainScreen.NewHuntButtonPressed += CreateNewHunt;
 		mainScreen.InfoButtonPressed += OpenAppInfo;
-		mainScreen.RequestSave += Save;
+		mainScreen.RequestFullSave += Save;
+		mainScreen.RequestSmallSave += SaveActiveHunts;
 		mainScreen.TreeExiting += AppClosing;
 		huntScreen.BackButtonPressed += CloseHunt;
 		huntScreen.DeleteSignal += DeleteHunt;
 		huntScreen.HuntChanged += UpdateActiveSprite;
 		huntScreen.FinishHunt += FinishHunt;
 		
-		if (OS.RequestPermissions())
-		{
-			Load();
-		}
+		Load();
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -59,30 +61,21 @@ public partial class SceneController : Node
 	{
 		timer += delta;
 		
-		// Update the main menu and save everything every minute
-		if (timer > 60.0)
+		// Update the main menu and save everything every 5 minutes
+		if (timer > 300.0)
 		{
-			// Only update the current hunt if the hunt screen is open
-			if (huntScreen.Visible)
-			{
-				HuntData data = huntScreen.data;
-				mainScreen.UpdateHunt(data);
-			}
 			Save();
 			timer = 0.0;
 		}
 	}
 	
-	/*
 	public override void _Notification(int what)
 	{
-		if (what == NotificationWMCloseRequest)
+		if (what == NotificationApplicationPaused)
 		{
 			Save();
-			GetTree.Quit();
 		}
 	}
-	*/
 	
 	private void OpenHunt(int selectedHuntID)
 	{
@@ -113,9 +106,9 @@ public partial class SceneController : Node
 	{
 		HuntData data = huntScreen.data;
 		mainScreen.UpdateHunt(data);
-		Save();
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
+		Save();
 	}
 	
 	private void CloseStats()
@@ -159,9 +152,9 @@ public partial class SceneController : Node
 	{
 		HuntData data = huntScreen.data;
 		mainScreen.RemoveHunt(data);
-		Save();
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
+		Save();
 	}
 	
 	private void DeleteCaptured()
@@ -169,9 +162,9 @@ public partial class SceneController : Node
 		FinishedStats screen = GetNode<FinishedStats>("FinishedStats");
 		CapturedData data = screen.data;
 		mainScreen.RemoveCaptured(data);
-		Save();
 		mainScreen.Visible = true;
 		screen.Visible = false;
+		Save();
 		screen.Cleanup();
 	}
 	
@@ -227,7 +220,7 @@ public partial class SceneController : Node
 		CapturedData huntToAdd = new CapturedData(s.startDate.date, s.endDate.date, s.selections[0], s.selections[1],
 												s.selections[2], s.selections[3], s.selections[4], s.selections[5],
 												s.nickname.Text, s.charmButton.ButtonPressed,
-												(int)s.counter.Value, (int)s.timer.Value * 60);
+												(int)s.counter.Value, s.timer.totalTime);
 		
 		// Fill empty values
 		string DT = Time.GetDatetimeStringFromSystem();
@@ -252,9 +245,9 @@ public partial class SceneController : Node
 		CapturedData finishedHunt = new CapturedData(huntScreen.data, endDT, nickname, ball, gender);
 		mainScreen.RemoveHunt(huntScreen.data);
 		mainScreen.AddCaptured(finishedHunt);
-		Save();
 		mainScreen.Visible = true;
 		huntScreen.Visible = false;
+		Save();
 	}
 	
 	private void OpenAppInfo()
@@ -280,24 +273,65 @@ public partial class SceneController : Node
 	
 	private void Save()
 	{
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		
+		string fullSave = $"v{versionNumber}\nsortby:{mainScreen.sortType}";
+		json.SaveJsonToFile(path, saveFileName, fullSave);
+		SaveActiveHunts();
+		SaveCaptured();
+		
+	}
+	
+	private void SaveActiveHunts()
+	{
+		// Only update the current hunt if the hunt screen is open
+		if (huntScreen.Visible)
+		{
+			HuntData data = huntScreen.data;
+			mainScreen.UpdateHunt(data);
+		}
+		
 		List<HuntData> allHunts = mainScreen.GetHunts();
-		List<CapturedData> allCaptured = mainScreen.GetFinished();
+		string huntData = "";
 		
 		var options = new JsonSerializerOptions
 		{
 			IncludeFields = true,
 		};
 		
-		string huntData = JsonSerializer.Serialize<List<HuntData>>(allHunts, options);
-		string capturedData = JsonSerializer.Serialize<List<CapturedData>>(allCaptured, options);
-		string fullSave = $"v{versionNumber}\nsortby:{mainScreen.sortType}\n{huntData}\n{capturedData}";
-		string path = ProjectSettings.GlobalizePath("user://");
-		json.SaveJsonToFile(path, saveFileName, fullSave);
+		foreach (HuntData hunt in allHunts)
+		{
+			huntData += JsonSerializer.Serialize<HuntData>(hunt, options);
+			huntData += "\n";
+		}
+		huntData = huntData.Remove(huntData.Length - 1); // Remove final \n
+		json.SaveJsonToFile(path, activeFileName, huntData);
+	}
+	
+	private void SaveCaptured()
+	{
+		List<CapturedData> allCaptured = mainScreen.GetFinished();
+		string capturedData = "";
+		
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		
+		foreach (CapturedData hunt in allCaptured)
+		{
+			capturedData += JsonSerializer.Serialize<CapturedData>(hunt, options);
+			capturedData += "\n";
+		}
+		capturedData = capturedData.Remove(capturedData.Length - 1); // Remove final \n
+		json.SaveJsonToFile(path, capturedFileName, capturedData);
 	}
 	
 	private void Load()
 	{
-		string path = ProjectSettings.GlobalizePath("user://");
 		string fullLoad = json.LoadJsonFromFile(path, saveFileName);
 		if (fullLoad == null)
 		{
@@ -308,12 +342,85 @@ public partial class SceneController : Node
 		
 		switch (datas[0])
 		{
+			case "v0.9.4":
+				Load094(fullLoad);
+				break;
 			case "v0.9.3":
 				Load093(fullLoad);
 				break;
 			default:
 				LoadDefault(fullLoad);
 				break;
+		}
+	}
+	
+	private void Load094(string fullLoad)
+	{
+		string[] datas = fullLoad.Split("\n");
+		int size = datas.Length;
+		mainScreen.sortType = datas[1].Split(':')[1];
+		
+		LoadActiveHunts();
+		LoadCaptured();
+	}
+	
+	private void LoadActiveHunts()
+	{
+		string fullLoad = json.LoadJsonFromFile(path, activeFileName);
+		if (fullLoad == null)
+		{
+			return;
+		}
+		
+		string[] hunts = fullLoad.Split("\n");
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		
+		foreach (string hunt in hunts)
+		{
+			try
+			{
+				mainScreen.AddHunt(JsonSerializer.Deserialize<HuntData>(hunt, options)!);
+			}
+			catch (Exception e)
+			{
+				string path = ProjectSettings.GlobalizePath("user://");
+				string backupFile = "savebackup.save";
+				json.SaveJsonToFile(path, backupFile, fullLoad);
+				GD.Print(e);
+			}
+		}
+	}
+	
+	private void LoadCaptured()
+	{
+		string fullLoad = json.LoadJsonFromFile(path, capturedFileName);
+		if (fullLoad == null)
+		{
+			return;
+		}
+		
+		string[] hunts = fullLoad.Split("\n");
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		
+		foreach (string hunt in hunts)
+		{
+			try
+			{
+				mainScreen.AddCaptured(JsonSerializer.Deserialize<CapturedData>(hunt, options)!);
+			}
+			catch (Exception e)
+			{
+				string path = ProjectSettings.GlobalizePath("user://");
+				string backupFile = "savebackup.save";
+				json.SaveJsonToFile(path, backupFile, fullLoad);
+				GD.Print(e);
+			}
 		}
 	}
 	
@@ -352,7 +459,6 @@ public partial class SceneController : Node
 		}
 		catch (Exception e) // If the file can't be read, dump the save into another file to be recovered later
 		{
-			string path = ProjectSettings.GlobalizePath("user://");
 			string backupFile = "savebackup.save";
 			json.SaveJsonToFile(path, backupFile, fullLoad);
 			GD.Print(e);
@@ -395,7 +501,6 @@ public partial class SceneController : Node
 		}
 		catch (Exception e) // If the file can't be read, dump the save into another file to be recovered later
 		{
-			string path = ProjectSettings.GlobalizePath("user://");
 			string backupFile = "savebackup.save";
 			json.SaveJsonToFile(path, backupFile, fullLoad);
 			GD.Print(e);
@@ -416,12 +521,6 @@ public partial class SceneController : Node
 	
 	private void AppClosing()
 	{
-		// Only update the current hunt if the hunt screen is open
-		if (huntScreen.Visible)
-		{
-			HuntData data = huntScreen.data;
-			mainScreen.UpdateHunt(data);
-		}
 		Save();
 	}
 }

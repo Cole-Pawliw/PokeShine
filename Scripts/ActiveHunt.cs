@@ -217,6 +217,8 @@ public partial class ActiveHunt : Control
 	public delegate void SortButtonDownEventHandler(int selectedHuntID);
 	[Signal]
 	public delegate void SortButtonUpEventHandler();
+	[Signal]
+	public delegate void HuntIncrementedEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -357,6 +359,11 @@ public partial class ActiveHunt : Control
 	private void SortDeselect()
 	{
 		EmitSignal("SortButtonUp");
+	}
+	
+	private void Save()
+	{
+		EmitSignal("HuntIncremented");
 	}
 	
 	// Destroy this UI element

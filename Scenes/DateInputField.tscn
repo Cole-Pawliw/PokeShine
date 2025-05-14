@@ -59,7 +59,3 @@ placeholder_text = "31"
 MaxValue = 31
 MinValue = 1
 Value = 1
-
-[connection signal="ValueChanged" from="Year" to="." method="UpdateDate"]
-[connection signal="ValueChanged" from="Month" to="." method="MonthUpdated"]
-[connection signal="ValueChanged" from="Day" to="." method="UpdateDate"]

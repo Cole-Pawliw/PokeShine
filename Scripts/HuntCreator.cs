@@ -14,6 +14,7 @@ public partial class HuntCreator : Control
 	string[] selections = {"", "", ""};
 	public List<string> pokemonSelected;
 	int optionMode = 0;
+	bool screenVisible = true; // True when this screen is the only one visible to the user
 	
 	[Signal]
 	public delegate void StartHuntEventHandler(string gameName, string method, bool charm);
@@ -32,6 +33,14 @@ public partial class HuntCreator : Control
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
 		pokemonSelected = new List<string>();
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			BackToMenu();
+		}
 	}
 	
 	public void SetPreSelections(HuntData data)
@@ -67,6 +76,7 @@ public partial class HuntCreator : Control
 		}
 		UpdateButtonText();
 		startButton.Disabled = false;
+		screenVisible = true;
 	}
 	
 	private void GameSelectPressed()
@@ -101,6 +111,7 @@ public partial class HuntCreator : Control
 		AddChild(selectScreen);
 		List<string> itemList = new List<string>();
 		bool multiSelect = false;
+		screenVisible = false;
 		
 		if (optionMode == 1) // Send list of games
 		{
@@ -226,6 +237,7 @@ public partial class HuntCreator : Control
 	{
 		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
 		selector.Visible = false;
+		screenVisible = true;
 		selector.Cleanup();
 	}
 	
@@ -238,6 +250,7 @@ public partial class HuntCreator : Control
 	
 	private void EmitStartHunt()
 	{
+		screenVisible = false;
 		// Only emit the signal if all selections have been made
 		if (selections[0] != "" && selections[1] != "" && selections[2] != "")
 		{
@@ -247,6 +260,7 @@ public partial class HuntCreator : Control
 	
 	public void BackToMenu()
 	{
+		screenVisible = false;
 		EmitSignal("BackButtonPressed");
 	}
 	

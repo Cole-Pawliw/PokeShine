@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cnm6ue8flowug"]
+[gd_scene load_steps=9 format=3 uid="uid://cnm6ue8flowug"]
 
 [ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="2_bdfeo"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="4_3rmve"]
 [ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="5_ru4jw"]
 [ext_resource type="PackedScene" uid="uid://c3f5qolpt0clw" path="res://Scenes/DateInputField.tscn" id="6_p2qf2"]
+[ext_resource type="PackedScene" uid="uid://cq272tc8wj4m" path="res://Scenes/TimeInputField.tscn" id="8_5tvdg"]
 
 [node name="CapturedCreator" type="Control"]
 layout_mode = 3
@@ -244,9 +245,8 @@ offset_bottom = 13.12
 theme = ExtResource("3_x5ic5")
 text = "Pokemon Seen:"
 
-[node name="TimerValue" parent="." instance=ExtResource("5_ru4jw")]
+[node name="TimerValue" parent="." instance=ExtResource("8_5tvdg")]
 layout_mode = 1
-anchors_preset = -1
 anchor_left = 0.698
 anchor_top = 0.504
 anchor_right = 0.698
@@ -255,9 +255,6 @@ offset_left = -75.04
 offset_top = 17.12
 offset_right = 54.96
 offset_bottom = 57.12
-grow_horizontal = 1
-grow_vertical = 1
-AllowGreater = true
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -271,7 +268,7 @@ offset_top = -12.88
 offset_right = 40.96
 offset_bottom = 13.12
 theme = ExtResource("3_x5ic5")
-text = "Minutes Spent:"
+text = "Time Spent:"
 
 [node name="AddButton" type="Button" parent="."]
 layout_mode = 1

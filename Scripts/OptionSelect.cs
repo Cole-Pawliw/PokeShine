@@ -14,6 +14,7 @@ public partial class OptionSelect : Control
 	LineEdit searchBar;
 	Label numSelectedLabel;
 	TextureButton confirmButton;
+	bool screenVisible = false;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -23,6 +24,14 @@ public partial class OptionSelect : Control
 		numSelectedLabel = GetNode<Label>("NumSelectedLabel");
 		confirmButton = GetNode<TextureButton>("ConfirmButton");
 		selectedValues = new List<string>();
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			BackButtonPressed();
+		}
 	}
 	
 	public void CreateList(List<string> items, bool multi)
@@ -42,6 +51,7 @@ public partial class OptionSelect : Control
 			list.AddItem(item);
 		}
 		UpdateSelectedLabel();
+		screenVisible = true;
 	}
 	
 	// Only called in single select mode
@@ -133,6 +143,7 @@ public partial class OptionSelect : Control
 	
 	private void Back(string itemName)
 	{
+		screenVisible = false;
 		EmitSignal("CloseMenu", itemName);
 	}
 	

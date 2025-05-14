@@ -143,3 +143,5 @@ layout_mode = 1
 [connection signal="pressed" from="ScrollContainer/Background/BackButton" to="." method="BackToMenu"]
 [connection signal="pressed" from="ScrollContainer/Background/EditButton" to="." method="EditHunt"]
 [connection signal="pressed" from="ScrollContainer/Background/DeleteButton" to="." method="DeleteButtonPressed"]
+[connection signal="Cancel" from="Verify" to="." method="VerifyCancelPressed"]
+[connection signal="Confirm" from="Verify" to="." method="VerifyDeletePressed"]

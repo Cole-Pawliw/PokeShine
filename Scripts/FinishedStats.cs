@@ -9,6 +9,7 @@ public partial class FinishedStats : Control
 	Sprite2D sprite;
 	
 	Control verify;
+	bool screenVisible = false;
 	
 	[Signal]
 	public delegate void HuntChangedEventHandler();
@@ -24,12 +25,15 @@ public partial class FinishedStats : Control
 		countLabel = GetNode<Label>("ScrollContainer/Background/CountLabel");
 		nameLabel = GetNode<Label>("ScrollContainer/Background/NameLabel");
 		sprite = GetNode<Sprite2D>("ScrollContainer/Background/Panel/ShinySprite");
-		
 		verify = GetNode<Control>("Verify");
-		Button cancel = GetNode<Button>("Verify/CancelButton");
-		cancel.Pressed += VerifyCancelPressed;
-		Button confirm = GetNode<Button>("Verify/ConfirmButton");
-		confirm.Pressed += VerifyDeletePressed;
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			BackToMenu();
+		}
 	}
 	
 	public void InitializeStats(CapturedData hunt)
@@ -39,6 +43,7 @@ public partial class FinishedStats : Control
 		SetName();
 		SetCount();
 		SetStats();
+		screenVisible = true;
 	}
 	
 	private void SetSprite()
@@ -121,6 +126,7 @@ public partial class FinishedStats : Control
 		
 		startHuntScreen.AddHunt += ChangeHunt;
 		startHuntScreen.BackButtonPressed += CloseCreator;
+		screenVisible = false;
 		startHuntScreen.SetPreSelections(data);
 	}
 	
@@ -138,7 +144,7 @@ public partial class FinishedStats : Control
 		data.huntRoute = startHuntScreen.selections[5];
 		data.nickname = startHuntScreen.nickname.Text;
 		data.count = (int)startHuntScreen.counter.Value;
-		data.timeSpent = (int)startHuntScreen.timer.Value * 60;
+		data.timeSpent = startHuntScreen.timer.totalTime;
 		data.charm = startHuntScreen.charmButton.ButtonPressed;
 		
 		SetSprite();
@@ -147,14 +153,14 @@ public partial class FinishedStats : Control
 		SetStats();
 		HuntChangedEmitter(); // Tell SceneManager that the hunt values have changed
 		
-		startHuntScreen.Visible = false;
-		startHuntScreen.Cleanup();
+		CloseCreator();
 	}
 	
 	private void CloseCreator()
 	{
 		CapturedCreator startHuntScreen = GetNode<CapturedCreator>("CapturedCreator");
 		startHuntScreen.Visible = false;
+		screenVisible = true;
 		startHuntScreen.Cleanup();
 	}
 	
@@ -166,21 +172,25 @@ public partial class FinishedStats : Control
 	// Close this screen
 	private void BackToMenu()
 	{
+		screenVisible = false;
 		EmitSignal("BackButtonPressed");
 	}
 	
 	private void DeleteButtonPressed()
 	{
+		screenVisible = false;
 		verify.Visible = true;
 	}
 	
 	private void VerifyCancelPressed()
 	{
+		screenVisible = true;
 		verify.Visible = false;
 	}
 	
 	private void VerifyDeletePressed()
 	{
+		screenVisible = false;
 		EmitSignal("DeleteHunt");
 	}
 	

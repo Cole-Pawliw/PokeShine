@@ -35,7 +35,9 @@ public partial class MainMenu : Control
 	[Signal]
 	public delegate void InfoButtonPressedEventHandler();
 	[Signal]
-	public delegate void RequestSaveEventHandler();
+	public delegate void RequestFullSaveEventHandler();
+	[Signal]
+	public delegate void RequestSmallSaveEventHandler();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -155,6 +157,7 @@ public partial class MainMenu : Control
 		newHuntScene.SelectButtonPressed += EmitHuntButtonPressed;
 		newHuntScene.SortButtonDown += HuntToSortSelected;
 		newHuntScene.SortButtonUp += HuntToSortDeselected;
+		newHuntScene.HuntIncremented += SaveActive;
 		newHuntScene.InitializeHunt(hunt);
 	}
 	
@@ -510,7 +513,7 @@ public partial class MainMenu : Control
 		if (button_pressed == true) {
 			tabContainer.CurrentTab = 0;
 		}
-		SetButtonTextures("search");
+		SetButtonTextures("create");
 	}
 	
 	private void SetCompletedPanel(bool button_pressed)
@@ -519,7 +522,7 @@ public partial class MainMenu : Control
 			tabContainer.CurrentTab = 1;
 		}
 		PauseHunts();
-		SetButtonTextures("create");
+		SetButtonTextures("plus");
 	}
 	
 	private void SetButtonTextures(string baseName)
@@ -557,7 +560,7 @@ public partial class MainMenu : Control
 			mainButton.Disabled = false;
 			completedButton.Disabled = false;
 			newHuntButton.Disabled = false;
-			Save();
+			SaveAll();
 		}
 		
 		// Iterate through all ActiveHunts and call ToggleSort()
@@ -627,7 +630,7 @@ public partial class MainMenu : Control
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
 		selectScreen.Name = "TypeSelect";
 		AddChild(selectScreen);
-		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game"]);
+		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game", "Generation"]);
 		
 		selectScreen.CreateList(itemList, false);
 		selectScreen.CloseMenu += SortTypeSelected;
@@ -673,7 +676,7 @@ public partial class MainMenu : Control
 		OptionSelect selector = GetNode<OptionSelect>(selectorName);
 		selector.Visible = false;
 		selector.Cleanup();
-		Save();
+		SaveAll();
 	}
 	
 	private void SortCaptured(string sortMethod)
@@ -691,6 +694,16 @@ public partial class MainMenu : Control
 				break;
 			case "Game":
 				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
+				break;
+			case "Generation":
+				// Start by sorting by game
+				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
+				
+				// Then sort by generation
+				completedHunts.Sort((x, y) => 
+					GameHuntInformation.gameInfoDict[x.data.huntGame].methodID.CompareTo(
+						GameHuntInformation.gameInfoDict[y.data.huntGame].methodID
+					));
 				break;
 		}
 		
@@ -718,9 +731,14 @@ public partial class MainMenu : Control
 		EmitSignal("InfoButtonPressed");
 	}
 	
-	private void Save()
+	private void SaveAll()
 	{
-		EmitSignal("RequestSave");
+		EmitSignal("RequestFullSave");
+	}
+	
+	private void SaveActive()
+	{
+		EmitSignal("RequestSmallSave");
 	}
 	
 	// Destroy this UI element
