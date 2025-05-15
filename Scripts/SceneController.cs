@@ -7,13 +7,10 @@ using System.IO;
 /*
 Bugs and Changes
 - Add forms
-- Verify file loads
 - Global Settings (for what sprites to show)
 - Different font
 - Edit button design
 - Box sprites for ItemList
-- Fix android back signal
-- Bug with LGPE routes
 */
 
 /*
@@ -30,7 +27,7 @@ public partial class SceneController : Node
 	ShinyHuntScreen huntScreen;
 	JsonManager json;
 	string saveFileName = "savefile.save", activeFileName = "ActiveHunts.save", capturedFileName = "CapturedHunts.save";
-	string path;
+	string path = "user://";
 	string versionNumber = "0.9.4";
 	
 	double timer = 0;
@@ -38,7 +35,6 @@ public partial class SceneController : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		path = ProjectSettings.GlobalizePath("user://");
 		mainScreen = GetNode<MainMenu>("MainMenu");
 		huntScreen = GetNode<ShinyHuntScreen>("ShinyHuntScreen");
 		json = GetNode<JsonManager>("JsonManager");
@@ -339,7 +335,7 @@ public partial class SceneController : Node
 	
 	private void Load()
 	{
-		string fullLoad = json.LoadJsonFromFile(path, saveFileName);
+		string fullLoad = json.LoadResourceFromFile(path, saveFileName);
 		if (fullLoad == null)
 		{
 			return;
@@ -373,7 +369,7 @@ public partial class SceneController : Node
 	
 	private void LoadActiveHunts()
 	{
-		string fullLoad = json.LoadJsonFromFile(path, activeFileName);
+		string fullLoad = json.LoadResourceFromFile(path, activeFileName);
 		if (fullLoad == null)
 		{
 			return;
@@ -403,7 +399,7 @@ public partial class SceneController : Node
 	
 	private void LoadCaptured()
 	{
-		string fullLoad = json.LoadJsonFromFile(path, capturedFileName);
+		string fullLoad = json.LoadResourceFromFile(path, capturedFileName);
 		if (fullLoad == null)
 		{
 			return;
@@ -427,6 +423,7 @@ public partial class SceneController : Node
 				string backupFile = "capturedbackup.save";
 				json.SaveJsonToFile(path, backupFile, fullLoad);
 				GD.Print(e);
+				ErrorOccurred(e);
 			}
 		}
 	}
@@ -450,18 +447,12 @@ public partial class SceneController : Node
 		
 			foreach (HuntData hunt in allHunts)
 			{
-				if (VerifyLoadedHunt(hunt))
-				{
-					mainScreen.AddHunt(hunt);
-				}
+				mainScreen.AddHunt(hunt);
 			}
 			
 			foreach (CapturedData hunt in allCaptures)
 			{
-				if (VerifyLoadedCaptured(hunt))
-				{
-					mainScreen.AddCaptured(hunt);
-				}
+				mainScreen.AddCaptured(hunt);
 			}
 		}
 		catch (Exception e) // If the file can't be read, dump the save into another file to be recovered later
@@ -469,6 +460,7 @@ public partial class SceneController : Node
 			string backupFile = "savebackup.save";
 			json.SaveJsonToFile(path, backupFile, fullLoad);
 			GD.Print(e);
+			ErrorOccurred(e);
 		}
 		
 		return true;
@@ -492,18 +484,12 @@ public partial class SceneController : Node
 		
 			foreach (HuntData hunt in allHunts)
 			{
-				if (VerifyLoadedHunt(hunt))
-				{
-					mainScreen.AddHunt(hunt);
-				}
+				mainScreen.AddHunt(hunt);
 			}
 			
 			foreach (CapturedData hunt in allCaptures)
 			{
-				if (VerifyLoadedCaptured(hunt))
-				{
-					mainScreen.AddCaptured(hunt);
-				}
+				mainScreen.AddCaptured(hunt);
 			}
 		}
 		catch (Exception e) // If the file can't be read, dump the save into another file to be recovered later
@@ -511,19 +497,26 @@ public partial class SceneController : Node
 			string backupFile = "savebackup.save";
 			json.SaveJsonToFile(path, backupFile, fullLoad);
 			GD.Print(e);
+			ErrorOccurred(e);
 		}
 		
 		return true;
 	}
 	
-	private bool VerifyLoadedHunt(HuntData hunt)
+	private void ErrorOccurred(Exception e)
 	{
-		return true;
+		ErrorScreen errorScreen = (ErrorScreen)GD.Load<PackedScene>("res://Scenes/ErrorScreen.tscn").Instantiate();
+		AddChild(errorScreen);
+		errorScreen.Visible = true;
+		startHuntScreen.BackSignal += CloseErrorScreen;
 	}
 	
-	private bool VerifyLoadedCaptured(CapturedData hunt)
+	private void CloseErrorScreen()
 	{
-		return true;
+		ErrorScreen errorScreen = GetNode<ErrorScreen>("ErrorScreen");
+		errorScreen.Visible = false;
+		RemoveChild(errorScreen);
+		errorScreen.Cleanup();
 	}
 	
 	private void AppClosing()

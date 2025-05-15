@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://ecbsiwero4c8"]
+
+[ext_resource type="Script" uid="uid://b8kcclhwstqr8" path="res://Scripts/ErrorScreen.cs" id="1_mr2x2"]
+
+[node name="ErrorScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mr2x2")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 27.0
+offset_right = 450.0
+offset_bottom = 619.0
+
+[node name="Label" type="Label" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "An error has occurred:
+
+"
+
+[node name="CopyButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 638.0
+offset_right = 217.0
+offset_bottom = 692.0
+text = "Copy Error
+Message"
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 639.0
+offset_right = 360.0
+offset_bottom = 693.0
+text = "Close
+Screen"
+
+[connection signal="pressed" from="CopyButton" to="." method="CopyToClipboard"]
+[connection signal="pressed" from="CloseButton" to="." method="CloseScreen"]

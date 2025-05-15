@@ -9,13 +9,21 @@ public partial class JsonManager : Node
 	{
 		if (!Directory.Exists(path))
 		{
-			Directory.CreateDirectory(path);
+			try
+			{
+				Directory.CreateDirectory(path);
+			}
+			catch (Exception e)
+			{
+				// Do nothing
+			}
 		}
 		
 		string fullPath = path + fileName;
+		using var saveFile = Godot.FileAccess.Open(fullPath, Godot.FileAccess.ModeFlags.Write);
 		try
 		{
-			File.WriteAllText(fullPath, data);
+			saveFile.StoreString(data);
 		}
 		catch (System.Exception e)
 		{
