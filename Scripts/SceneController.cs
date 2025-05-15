@@ -12,6 +12,8 @@ Bugs and Changes
 - Different font
 - Edit button design
 - Box sprites for ItemList
+- Fix android back signal
+- Bug with LGPE routes
 */
 
 /*
@@ -116,6 +118,7 @@ public partial class SceneController : Node
 		FinishedStats statsScreen = GetNode<FinishedStats>("FinishedStats");
 		mainScreen.Visible = true;
 		statsScreen.Visible = false;
+		RemoveChild(statsScreen);
 		statsScreen.Cleanup();
 	}
 	
@@ -165,6 +168,7 @@ public partial class SceneController : Node
 		mainScreen.Visible = true;
 		screen.Visible = false;
 		Save();
+		RemoveChild(screen);
 		screen.Cleanup();
 	}
 	
@@ -190,6 +194,7 @@ public partial class SceneController : Node
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		mainScreen.Visible = true;
 		startHuntScreen.Visible = false;
+		RemoveChild(startHuntScreen);
 		startHuntScreen.Cleanup();
 	}
 	
@@ -210,6 +215,7 @@ public partial class SceneController : Node
 		CapturedCreator startHuntScreen = GetNode<CapturedCreator>("CapturedCreator");
 		mainScreen.Visible = true;
 		startHuntScreen.Visible = false;
+		RemoveChild(startHuntScreen);
 		startHuntScreen.Cleanup();
 	}
 	
@@ -268,6 +274,7 @@ public partial class SceneController : Node
 		AppInfoScreen infoScreen = GetNode<AppInfoScreen>("AppInfoScreen");
 		mainScreen.Visible = true;
 		infoScreen.Visible = false;
+		RemoveChild(infoScreen);
 		infoScreen.Cleanup();
 	}
 	
@@ -387,7 +394,7 @@ public partial class SceneController : Node
 			catch (Exception e)
 			{
 				string path = ProjectSettings.GlobalizePath("user://");
-				string backupFile = "savebackup.save";
+				string backupFile = "activebackup.save";
 				json.SaveJsonToFile(path, backupFile, fullLoad);
 				GD.Print(e);
 			}
@@ -417,7 +424,7 @@ public partial class SceneController : Node
 			catch (Exception e)
 			{
 				string path = ProjectSettings.GlobalizePath("user://");
-				string backupFile = "savebackup.save";
+				string backupFile = "capturedbackup.save";
 				json.SaveJsonToFile(path, backupFile, fullLoad);
 				GD.Print(e);
 			}

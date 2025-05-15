@@ -221,23 +221,46 @@ public partial class CapturedCreator : Control
 		if (optionMode == 1 && selections[0] != selectedOption)
 		{
 			charmButton.Visible = false;
-			addButton.Disabled = true;
 			
 			pokemonSelect.Disabled = false;
 			methodSelect.Disabled = false;
 			routeSelect.Disabled = false;
 			
-			// Reset other selections so non existent options can't be selected
-			selections[1] = "";
-			selections[2] = "";
-			selections[5] = "";
-			// Make sure user cannot enable shiny charm then change games
-			charmButton.ButtonPressed = false;
+			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
 			
-			GameInfo gameInfo = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
-			if (gameInfo.methodID >= 6) // Shiny charm introduced in Black2/White2
+			// Reset method if it isn't available
+			if (selections[2] != "" && !dicts.methodAvailabilityDict[selections[2]][info.methodID])
+			{
+				selections[2] = "";
+			}
+			// Reset pokemon if it isn't available
+			if (selections[1] != "" && !dicts.pokemonAvailabilityDict[selections[1]][info.methodID])
+			{
+				selections[1] = "";
+			}
+			// Reset ball if it isn't available
+			if (selections[4] != "" && !dicts.ballAvailabilityDict[selections[4]][info.methodID])
+			{
+				selections[4] = "";
+			}
+			if (selections[0] != "")
+			{
+				// Reset route if the game changed codes (or if switching to/from emerald or platinum)
+				GameInfo currentInfo = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the current game
+				if (currentInfo.methodID != info.methodID || selectedOption == "Emerald" || selectedOption == "Platinum"
+					|| selections[0] == "Emerald" || selections[0] == "Platinum")
+				{
+					selections[5] = "";
+				}
+			}
+			
+			if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
+			}
+			else
+			{
+				charmButton.ButtonPressed = false;
 			}
 		}
 		else if (optionMode == 2)
@@ -278,6 +301,7 @@ public partial class CapturedCreator : Control
 		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
 		selector.Visible = false;
 		screenVisible = true;
+		RemoveChild(selector);
 		selector.Cleanup();
 	}
 	

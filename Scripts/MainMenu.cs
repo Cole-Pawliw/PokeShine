@@ -675,6 +675,7 @@ public partial class MainMenu : Control
 	{
 		OptionSelect selector = GetNode<OptionSelect>(selectorName);
 		selector.Visible = false;
+		RemoveChild(selector);
 		selector.Cleanup();
 		SaveAll();
 	}

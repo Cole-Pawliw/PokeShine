@@ -206,22 +206,43 @@ public partial class FinishHunt : Control
 		if (optionMode == 1 && data.huntGame != selectedOption)
 		{
 			charmButton.Visible = false;
-			finishButton.Disabled = true;
 			
-			// Reset other selections so non existent options can't be selected
-			data.pokemon.Clear();
-			data.huntMethod = "";
-			altSelections[0] = "";
-			altSelections[1] = "";
-			data.charm = false;
-			// Make sure user cannot enable shiny charm then change games
-			charmButton.ButtonPressed = false;
+			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
+			
+			// Reset method if it isn't available
+			if (data.huntMethod != "" && !dicts.methodAvailabilityDict[data.huntMethod][info.methodID])
+			{
+				data.huntMethod = "";
+			}
+			// Reset pokemon if it isn't available
+			if (data.pokemon.Count > 0 && !dicts.pokemonAvailabilityDict[data.pokemon[0]][info.methodID])
+			{
+				data.pokemon.Clear();
+				finishButton.Disabled = true;
+			}
+			// Reset ball if it isn't available
+			if (altSelections[0] != "" && !dicts.ballAvailabilityDict[altSelections[0]][info.methodID])
+			{
+				altSelections[0] = "";
+			}
+			// Reset route if the game changed codes (or if switching to/from emerald or platinum)
+			GameInfo currentInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the current game
+			if (currentInfo.methodID != info.methodID || selectedOption == "Emerald" || selectedOption == "Platinum"
+				|| data.huntGame == "Emerald" || data.huntGame == "Platinum")
+			{
+				data.huntRoute = "";
+			}
 			
 			data.huntGame = selectedOption;
 			GameInfo gameInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
 			if (gameInfo.methodID >= 6) // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
+			}
+			else
+			{
+				data.charm = false;
+				charmButton.ButtonPressed = false;
 			}
 		}
 		else if (optionMode == 2)
@@ -264,6 +285,7 @@ public partial class FinishHunt : Control
 		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
 		selector.Visible = false;
 		screenVisible = true;
+		RemoveChild(selector);
 		selector.Cleanup();
 	}
 	

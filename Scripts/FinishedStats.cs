@@ -161,6 +161,7 @@ public partial class FinishedStats : Control
 		CapturedCreator startHuntScreen = GetNode<CapturedCreator>("CapturedCreator");
 		startHuntScreen.Visible = false;
 		screenVisible = true;
+		RemoveChild(startHuntScreen);
 		startHuntScreen.Cleanup();
 	}
 	
@@ -191,6 +192,7 @@ public partial class FinishedStats : Control
 	private void VerifyDeletePressed()
 	{
 		screenVisible = false;
+		verify.Visible = false;
 		EmitSignal("DeleteHunt");
 	}
 	

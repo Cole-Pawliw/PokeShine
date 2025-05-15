@@ -113,6 +113,7 @@ public partial class HuntSettings : Control
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		startHuntScreen.Visible = false;
 		screenVisible = true;
+		RemoveChild(startHuntScreen);
 		startHuntScreen.Cleanup();
 	}
 	

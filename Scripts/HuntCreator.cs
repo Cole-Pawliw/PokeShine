@@ -7,7 +7,7 @@ using System.IO;
 public partial class HuntCreator : Control
 {
 	Button gameSelect, pokemonSelect, methodSelect, routeSelect, startButton;
-	CheckBox charmButton, multiButton;
+	CheckBox charmButton;
 	
 	AvailabilityInformation dicts;
 	
@@ -29,7 +29,6 @@ public partial class HuntCreator : Control
 		routeSelect = GetNode<Button>("RouteSelect");
 		startButton = GetNode<Button>("StartButton");
 		charmButton = GetNode<CheckBox>("CharmButton");
-		multiButton = GetNode<CheckBox>("MultiHuntButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
 		pokemonSelected = new List<string>();
@@ -61,14 +60,9 @@ public partial class HuntCreator : Control
 			charmButton.Visible = true;
 			charmButton.ButtonPressed = data.charm;
 		}
-		if (selections[2] == "Random Encounter" || selections[2] == "Symbol Encounter")
-		{
-			multiButton.Visible = true;
-		}
 		if (pokemonSelected.Count > 1)
 		{
 			selections[1] = "Various";
-			multiButton.ButtonPressed = true;
 		}
 		else
 		{
@@ -131,7 +125,10 @@ public partial class HuntCreator : Control
 				}
 			}
 			
-			multiSelect = multiButton.ButtonPressed;
+			if (selections[2] == "Random Encounter" || selections[2] == "Symbol Encounter")
+			{
+				multiSelect = true;
+			}
 		}
 		else if (optionMode == 3) // Send list of methods
 		{
@@ -170,20 +167,44 @@ public partial class HuntCreator : Control
 		if (optionMode == 1 && selections[0] != selectedOption)
 		{
 			charmButton.Visible = false;
-			multiButton.Visible = false;
-			
-			// Reset other selections so non existent options can't be selected
-			selections[1] = "";
-			selections[2] = "";
-			// Make sure user cannot enable shiny charm or multi hunt then change games
-			charmButton.ButtonPressed = false;
-			multiButton.ButtonPressed = false;
-			
 			
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
+			
+			if (selections[2] != "" && !dicts.methodAvailabilityDict[selections[2]][info.methodID])
+			{
+				selections[2] = "";
+				if (pokemonSelected.Count > 1)
+				{
+					pokemonSelected.Clear();
+					selections[1] = "";
+				}
+			}
+			
+			for (int i = pokemonSelected.Count - 1; i >= 0; i--)
+			{
+				// Check if each pokemon is available in the new game
+				if (!dicts.pokemonAvailabilityDict[pokemonSelected[i]][info.methodID])
+				{
+					// Remove the pokemon if it is not available
+					pokemonSelected.Remove(pokemonSelected[i]);
+				}
+			}
+			if (pokemonSelected.Count == 1)
+			{
+				selections[1] = pokemonSelected[0];
+			}
+			else if (pokemonSelected.Count == 0)
+			{
+				selections[1] = "";
+			}
+			
 			if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
+			}
+			else
+			{
+				charmButton.ButtonPressed = false;
 			}
 		} 
 		else if (optionMode == 2)
@@ -193,20 +214,10 @@ public partial class HuntCreator : Control
 		}
 		else if (optionMode == 3)
 		{
-			if (selectedOption == "Random Encounter" || selectedOption == "Symbol Encounter")
+			if (selectedOption != "Random Encounter" && selectedOption != "Symbol Encounter" && pokemonSelected.Count > 1)
 			{
-				multiButton.Visible = true;
-			}
-			else
-			{
-				multiButton.Visible = false;
-				multiButton.ButtonPressed = false;
-				
-				if (selections[2] != selectedOption && pokemonSelected.Count > 1)
-				{
-					pokemonSelected.Clear();
-					selections[1] = "";
-				}
+				pokemonSelected.Clear();
+				selections[1] = "";
 			}
 		}
 		
@@ -238,6 +249,7 @@ public partial class HuntCreator : Control
 		OptionSelect selector = GetNode<OptionSelect>("OptionSelect");
 		selector.Visible = false;
 		screenVisible = true;
+		RemoveChild(selector);
 		selector.Cleanup();
 	}
 	
@@ -250,10 +262,10 @@ public partial class HuntCreator : Control
 	
 	private void EmitStartHunt()
 	{
-		screenVisible = false;
 		// Only emit the signal if all selections have been made
 		if (selections[0] != "" && selections[1] != "" && selections[2] != "")
 		{
+			screenVisible = false;
 			EmitSignal("StartHunt", selections[0], selections[2], charmButton.ButtonPressed);
 		}
 	}

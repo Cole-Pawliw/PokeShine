@@ -45,7 +45,7 @@ public class GameHuntInformation
 		{"Alpha Sapphire", infoStorage[8]}, {"Omega Ruby", infoStorage[8]},
 		{"Sun", infoStorage[9]}, {"Moon", infoStorage[9]},
 		{"Ultra Sun", infoStorage[10]}, {"Ultra Moon", infoStorage[10]},
-		{"Let's Go Pikachu", infoStorage[11]}, {"Let's Go Eevee", infoStorage[11]},
+		{"Lets Go Pikachu", infoStorage[11]}, {"Lets Go Eevee", infoStorage[11]},
 		{"Sword", infoStorage[12]}, {"Shield", infoStorage[12]},
 		{"Brilliant Diamond", infoStorage[13]}, {"Shining Pearl", infoStorage[13]},
 		{"Legends Arceus", infoStorage[14]},
