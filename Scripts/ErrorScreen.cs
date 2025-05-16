@@ -30,4 +30,9 @@ public partial class ErrorScreen : Control
 	{
 		EmitSignal("BackSignal");
 	}
+	
+	public void Cleanup()
+	{
+		QueueFree();
+	}
 }
