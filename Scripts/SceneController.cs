@@ -7,17 +7,17 @@ using System.IO;
 /*
 Bugs and Changes
 - Add a "bonus" int to HuntData that tracks extra odds information in various methods
-- Global Settings (for what sprites to show)
 - Different font
 - Edit button design
-- Box sprites for ItemList
 - REMOVE TRY CATCH ON EVERYTHING BEFORE RELEASE
 */
 
 /*
 Extra features
+- Global Settings (for what sprites to show)
 - Active hunt stats page (odds graph, other detailed info)
 - customizable colours (means expanding save files)
+- Box sprites for ItemList
 - GSC sprites?
 */
 
