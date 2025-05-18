@@ -6,8 +6,7 @@ using System.IO;
 
 /*
 Bugs and Changes
-- Get route select working in HuntCreator
-
+- Add a "bonus" int to HuntData that tracks extra odds information in various methods
 - Global Settings (for what sprites to show)
 - Different font
 - Edit button design
