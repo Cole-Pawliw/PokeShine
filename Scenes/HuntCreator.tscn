@@ -41,7 +41,6 @@ theme = ExtResource("2_p8t5h")
 text = "Game:"
 
 [node name="MethodSelect" type="Button" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -53,10 +52,10 @@ offset_top = -49.92
 offset_right = 75.04
 offset_bottom = 50.08
 theme = ExtResource("2_p8t5h")
+disabled = true
 text = "Method:"
 
 [node name="RouteSelect" type="Button" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -69,11 +68,9 @@ offset_right = 74.96
 offset_bottom = 50.08
 theme = ExtResource("2_p8t5h")
 disabled = true
-text = "Route:
-Coming Soon"
+text = "Route:"
 
 [node name="PokemonSelect" type="Button" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -85,26 +82,10 @@ offset_top = -49.88
 offset_right = 75.0
 offset_bottom = 50.12
 theme = ExtResource("2_p8t5h")
+disabled = true
 text = "Pokemon:"
 
-[node name="RoutePokemonButton" type="CheckBox" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.701
-anchor_top = 0.486
-anchor_right = 0.701
-anchor_bottom = 0.486
-offset_left = -92.48
-offset_top = 60.08
-offset_right = 92.52
-offset_bottom = 91.08
-theme = ExtResource("2_p8t5h")
-disabled = true
-text = "Use Route Pokemon"
-
 [node name="CharmButton" type="CheckBox" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -116,6 +97,7 @@ offset_top = 60.0
 offset_right = 65.0
 offset_bottom = 91.0
 theme = ExtResource("2_p8t5h")
+disabled = true
 text = "Shiny Charm"
 
 [node name="StartButton" type="Button" parent="."]
@@ -146,6 +128,7 @@ stretch_mode = 0
 
 [connection signal="pressed" from="GameSelect" to="." method="GameSelectPressed"]
 [connection signal="pressed" from="MethodSelect" to="." method="MethodSelectPressed"]
+[connection signal="pressed" from="RouteSelect" to="." method="RouteSelectPressed"]
 [connection signal="pressed" from="PokemonSelect" to="." method="PokemonSelectPressed"]
 [connection signal="pressed" from="StartButton" to="." method="EmitStartHunt"]
 [connection signal="pressed" from="BackButton" to="." method="BackToMenu"]

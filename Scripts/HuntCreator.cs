@@ -11,7 +11,7 @@ public partial class HuntCreator : Control
 	
 	AvailabilityInformation dicts;
 	
-	string[] selections = {"", "", ""};
+	string[] selections = {"", "", "", ""};
 	public List<string> pokemonSelected;
 	int optionMode = 0;
 	bool screenVisible = true; // True when this screen is the only one visible to the user
@@ -46,18 +46,18 @@ public partial class HuntCreator : Control
 	{
 		Button startButton = GetNode<Button>("StartButton");
 		startButton.Text = "Update Hunt";
-		pokemonSelect.Visible = true;
-		methodSelect.Visible = true;
-		routeSelect.Visible = true;
+		pokemonSelect.Disabled = false;
+		methodSelect.Disabled = false;
+		routeSelect.Disabled = false;
 		
 		selections[0] = data.huntGame;
 		selections[2] = data.huntMethod;
-		pokemonSelected = data.pokemon;
+		pokemonSelected = new List<string>(data.pokemon);
 		
 		GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
 		if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
 		{
-			charmButton.Visible = true;
+			charmButton.Disabled = false;
 			charmButton.ButtonPressed = data.charm;
 		}
 		if (pokemonSelected.Count > 1)
@@ -96,6 +96,16 @@ public partial class HuntCreator : Control
 			return;
 		}
 		optionMode = 3;
+		OpenSelector();
+	}
+	
+	private void RouteSelectPressed()
+	{
+		if (selections[0] == "")
+		{
+			return;
+		}
+		optionMode = 4;
 		OpenSelector();
 	}
 	
@@ -144,8 +154,22 @@ public partial class HuntCreator : Control
 				}
 			}
 		}
+		else if (optionMode == 4) // Send list of routes
+		{
+			foreach (KeyValuePair<string, string[]> location in dicts.pokemonRouteAvailabilityDict)
+			{
+				if (location.Value.Any())
+				{
+					itemList.Add(location.Key); // Only add the routes that have pokemon to random encounter
+				}
+			}
+		}
 		
 		selectScreen.CreateList(itemList, multiSelect);
+		if (optionMode == 2) // Send selected pokemon
+		{
+			selectScreen.SetPreSelections(pokemonSelected);
+		}
 		selectScreen.CloseMenu += UpdateSelection;
 	}
 	
@@ -166,8 +190,11 @@ public partial class HuntCreator : Control
 		
 		if (optionMode == 1 && selections[0] != selectedOption)
 		{
-			charmButton.Visible = false;
+			charmButton.Disabled = true;
+			pokemonSelect.Disabled = false;
+			methodSelect.Disabled = false;
 			
+			dicts.SetRoutes(selectedOption); // Initialize the dictionary of routes for the selected game
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
 			
 			if (selections[2] != "" && !dicts.methodAvailabilityDict[selections[2]][info.methodID])
@@ -178,6 +205,15 @@ public partial class HuntCreator : Control
 					pokemonSelected.Clear();
 					selections[1] = "";
 				}
+			}
+			
+			if (selections[3] != "" && !dicts.pokemonRouteAvailabilityDict.ContainsKey(selections[3]))
+			{
+				selections[3] = "";
+			}
+			else if (selections[3] != "")
+			{
+				pokemonSelected = new List<string>(dicts.pokemonRouteAvailabilityDict[selections[3]]);
 			}
 			
 			for (int i = pokemonSelected.Count - 1; i >= 0; i--)
@@ -200,7 +236,7 @@ public partial class HuntCreator : Control
 			
 			if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
 			{
-				charmButton.Visible = true;
+				charmButton.Disabled = false;
 			}
 			else
 			{
@@ -219,6 +255,21 @@ public partial class HuntCreator : Control
 				pokemonSelected.Clear();
 				selections[1] = "";
 			}
+			
+			if (selectedOption == "Random Encounter")
+			{
+				routeSelect.Disabled = false;
+			}
+			else
+			{
+				routeSelect.Disabled = true;
+				selections[3] = "";
+			}
+		}
+		else if (optionMode == 4)
+		{
+			pokemonSelected = new List<string>(dicts.pokemonRouteAvailabilityDict[selectedOption]);
+			selections[1] = "Various";
 		}
 		
 		selections[optionMode - 1] = selectedOption;
@@ -258,6 +309,7 @@ public partial class HuntCreator : Control
 		gameSelect.Text = "Game:\n" + selections[0];
 		pokemonSelect.Text = "Pokemon:\n" + selections[1];
 		methodSelect.Text = "Method:\n" + selections[2];
+		routeSelect.Text = "Route:\n" + selections[3];
 	}
 	
 	private void EmitStartHunt()

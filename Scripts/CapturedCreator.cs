@@ -94,6 +94,7 @@ public partial class CapturedCreator : Control
 		pokemonSelect.Disabled = false;
 		methodSelect.Disabled = false;
 		routeSelect.Disabled = false;
+		ballSelect.Disabled = false;
 		addButton.Disabled = false;
 		screenVisible = true;
 	}
@@ -225,6 +226,7 @@ public partial class CapturedCreator : Control
 			pokemonSelect.Disabled = false;
 			methodSelect.Disabled = false;
 			routeSelect.Disabled = false;
+			ballSelect.Disabled = false;
 			
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
 			

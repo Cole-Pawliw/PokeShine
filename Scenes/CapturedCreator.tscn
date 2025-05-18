@@ -109,6 +109,7 @@ offset_top = -24.72
 offset_right = 75.04
 offset_bottom = 25.28
 theme = ExtResource("3_x5ic5")
+disabled = true
 text = "Ball:"
 
 [node name="GenderSelect" type="Button" parent="."]
