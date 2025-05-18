@@ -46,18 +46,18 @@ public partial class HuntCreator : Control
 	{
 		Button startButton = GetNode<Button>("StartButton");
 		startButton.Text = "Update Hunt";
-		pokemonSelect.Visible = true;
-		methodSelect.Visible = true;
-		routeSelect.Visible = true;
+		pokemonSelect.Disabled = false;
+		methodSelect.Disabled = false;
+		routeSelect.Disabled = false;
 		
 		selections[0] = data.huntGame;
 		selections[2] = data.huntMethod;
-		pokemonSelected = data.pokemon;
+		pokemonSelected = new List<string>(data.pokemon);
 		
 		GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
 		if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
 		{
-			charmButton.Visible = true;
+			charmButton.Disabled = false;
 			charmButton.ButtonPressed = data.charm;
 		}
 		if (pokemonSelected.Count > 1)
@@ -146,6 +146,10 @@ public partial class HuntCreator : Control
 		}
 		
 		selectScreen.CreateList(itemList, multiSelect);
+		if (optionMode == 2) // Send selected pokemon
+		{
+			selectScreen.SetPreSelections(pokemonSelected);
+		}
 		selectScreen.CloseMenu += UpdateSelection;
 	}
 	
@@ -166,7 +170,10 @@ public partial class HuntCreator : Control
 		
 		if (optionMode == 1 && selections[0] != selectedOption)
 		{
-			charmButton.Visible = false;
+			charmButton.Disabled = true;
+			pokemonSelect.Disabled = false;
+			methodSelect.Disabled = false;
+			routeSelect.Disabled = false;
 			
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
 			
@@ -200,7 +207,7 @@ public partial class HuntCreator : Control
 			
 			if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
 			{
-				charmButton.Visible = true;
+				charmButton.Disabled = false;
 			}
 			else
 			{

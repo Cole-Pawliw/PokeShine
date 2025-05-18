@@ -54,6 +54,28 @@ public partial class OptionSelect : Control
 		screenVisible = true;
 	}
 	
+	public void SetPreSelections(List<string> items)
+	{
+		if (!multiselect || items.Count == 0)
+		{
+			return; // Only allow pre selections in a multi-select
+		}
+		
+		// Set the pokemon as selected
+		selectedValues = items;
+		
+		// Move the selected items to the top of the list
+		for (int i = selectedValues.Count - 1; i >= 0; i--) // Reverse order preserves order when adding
+		{
+			allValues.Remove(selectedValues[i]);
+			allValues.Insert(0, selectedValues[i]);
+		}
+		
+		// Re-add all list items to the list with the new order and selected pokemon
+		SearchUpdated("");
+		UpdateSelectedLabel();
+	}
+	
 	// Only called in single select mode
 	private void ItemSelected(int index)
 	{
@@ -75,7 +97,7 @@ public partial class OptionSelect : Control
 	{
 		if (selected)
 		{
-			if (selectedValues.Count == 10) // Max of 10 pokemon can be selected
+			if (selectedValues.Count == 15) // Max of 10 pokemon can be selected
 			{
 				list.Deselect(index);
 			}
@@ -120,7 +142,7 @@ public partial class OptionSelect : Control
 	
 	private void UpdateSelectedLabel()
 	{
-		int maxSelect = multiselect ? 10 : 1;
+		int maxSelect = multiselect ? 15 : 1;
 		numSelectedLabel.Text = $"{selectedValues.Count}/{maxSelect} selected";
 	}
 	

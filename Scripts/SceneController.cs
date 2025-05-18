@@ -6,8 +6,6 @@ using System.IO;
 
 /*
 Bugs and Changes
-- Expand ShinyHuntScreen to 15
-- Make OptionSelect put previous selections at the top
 - Get route select working in HuntCreator
 
 - Global Settings (for what sprites to show)
@@ -20,7 +18,6 @@ Bugs and Changes
 /*
 Extra features
 - Active hunt stats page (odds graph, other detailed info)
-- Per-route pokemon availability (very complicated to make, might not get added)
 - customizable colours (means expanding save files)
 - GSC sprites?
 */

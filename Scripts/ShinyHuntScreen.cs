@@ -11,8 +11,8 @@ public partial class ShinyHuntScreen : Control
 	int resetTimer = 0; // Times how long each reset takes
 	bool activeHunt = false; // True when this screen is being used by a hunt
 	
-	float halfXAnchor = 0.5f, quarterXAnchor = 0.25f, yAnchor = 0.833f; // Proportions for settings constants
-	int halfX = 240, quarterX = 120, y = 600, yOffset = 120; // Constant values used for placing sprites in a grid
+	float halfXAnchor = 0.5f, thirdXAnchor = 0.333f, quarterXAnchor = 0.25f, yAnchor = 0.833f; // Proportions for settings constants
+	int halfX = 240, thirdX = 160, quarterX = 120, y = 600, yOffset = 120; // Constant values used for placing sprites in a grid
 	
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
@@ -31,7 +31,7 @@ public partial class ShinyHuntScreen : Control
 		counter = GetNode<Label>("Count");
 		info = GetNode<Label>("HuntInfo");
 		sprites = new List<Sprite2D>(10); // Up to 10 sprites can be supported for multi-hunts
-		for (int i = 1; i <= 10; i++)
+		for (int i = 1; i <= 15; i++)
 		{
 			sprites.Add(GetNode<Sprite2D>($"Sprite{i}"));
 		}
@@ -78,6 +78,7 @@ public partial class ShinyHuntScreen : Control
 	
 	private void SetSprites()
 	{
+		ClearSprites(); // Wipe any previous sprites
 		if (data.pokemon.Count == 1) // Single shiny hunt, show regular and shiny sprites
 		{
 			sprites[0].Texture = (Texture2D)GD.Load($"res://Sprites/{data.huntFolder}/Regular/{data.pokemon[0]}.png");
@@ -99,7 +100,9 @@ public partial class ShinyHuntScreen : Control
 	
 	private void PositionSprites(int amount)
 	{
-		int rows = (int)Math.Max(Math.Ceiling(amount / 2.0), 2); // Minimum of 2 rows is needed
+		int buffer_calc_amount = amount > 10 ? 10 : amount;
+		int rows = (int)Math.Max(Math.Ceiling(buffer_calc_amount / 2.0), 2); // Minimum of 2 rows is needed
+		int large_amount_rows = (int)Math.Max(Math.Ceiling(amount / 3.0), 4); // Only used when amount > 10
 		int buffer = y / (rows + 1); // y = 600 will result in a whole number for any amount up to 10
 		
 		if (amount == 1 || amount == 2) // Unique case for 2 sprites, one of top of the other
@@ -107,7 +110,7 @@ public partial class ShinyHuntScreen : Control
 			sprites[0].Position = new Vector2(halfX, buffer + yOffset);
 			sprites[1].Position = new Vector2(halfX, buffer * 2 + yOffset);
 		}
-		else // More than 2 sprites uses 2 columns and up to 5 rows, with an odd number being centred
+		else if (amount <= 10) // More than 2 sprites uses 2 columns and up to 5 rows, with an odd number being centred
 		{
 			for (int i = 0; i < rows; i++)
 			{
@@ -120,8 +123,34 @@ public partial class ShinyHuntScreen : Control
 					}
 					else
 					{
-						int xFactor = j % 2 == 0 ? 1 : 3;
+						int xFactor = j == 0 ? 1 : 3;
 						sprites[i * 2 + j].Position = new Vector2(quarterX * xFactor, buffer * (i+1) + yOffset);
+					}
+				}
+			}
+		}
+		else // Any more than 10 sprites uses 3 columns
+		{
+			for (int i = 0; i < large_amount_rows; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					if (i == large_amount_rows - 1 && amount % 3 == 1) // Use halfX
+					{
+						sprites[i * 3 + j].Position = new Vector2(halfX, buffer * (i+1) + yOffset);
+						break;
+					}
+					else if (i == large_amount_rows - 1 && amount % 3 == 2) // Use thirdX
+					{
+						sprites[i * 3 + j].Position = new Vector2(thirdX * (j + 1), buffer * (i+1) + yOffset);
+						if (j == 1)
+						{
+							break;
+						}
+					}
+					else
+					{
+						sprites[i * 3 + j].Position = new Vector2(quarterX * (j + 1), buffer * (i+1) + yOffset);
 					}
 				}
 			}
@@ -133,6 +162,10 @@ public partial class ShinyHuntScreen : Control
 		if (amount == 1)
 		{
 			amount = 2;
+		}
+		if (amount > 10)
+		{
+			amount = 10; // Always use smallest scaling for sprites after 10
 		}
 		int rows = (int)Math.Max(Math.Ceiling(amount / 2.0), 2); // Minimum of 2 rows is needed
 		int xBuffer = halfX; // Buffer of pixels in the x dimension available for the sprite to fill

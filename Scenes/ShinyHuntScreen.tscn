@@ -86,6 +86,26 @@ scale = Vector2(2.5, 2.5)
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
+[node name="Sprite11" type="Sprite2D" parent="."]
+position = Vector2(240, 330)
+scale = Vector2(2.5, 2.5)
+
+[node name="Sprite12" type="Sprite2D" parent="."]
+position = Vector2(240, 330)
+scale = Vector2(2.5, 2.5)
+
+[node name="Sprite13" type="Sprite2D" parent="."]
+position = Vector2(240, 330)
+scale = Vector2(2.5, 2.5)
+
+[node name="Sprite14" type="Sprite2D" parent="."]
+position = Vector2(240, 330)
+scale = Vector2(2.5, 2.5)
+
+[node name="Sprite15" type="Sprite2D" parent="."]
+position = Vector2(240, 330)
+scale = Vector2(2.5, 2.5)
+
 [node name="BackButton" type="TextureButton" parent="."]
 layout_mode = 1
 anchors_preset = -1
