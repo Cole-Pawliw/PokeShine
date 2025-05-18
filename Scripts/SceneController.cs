@@ -6,11 +6,15 @@ using System.IO;
 
 /*
 Bugs and Changes
-- Add forms
+- Expand ShinyHuntScreen to 15
+- Make OptionSelect put previous selections at the top
+- Get route select working in HuntCreator
+
 - Global Settings (for what sprites to show)
 - Different font
 - Edit button design
 - Box sprites for ItemList
+- REMOVE TRY CATCH ON EVERYTHING BEFORE RELEASE
 */
 
 /*
@@ -79,7 +83,6 @@ public partial class SceneController : Node
 	{
 		try
 		{
-			throw new Exception("Test");
 			HuntData selectedHunt = mainScreen.GetHunt(selectedHuntID);
 			mainScreen.PauseHunts();
 			huntScreen.InitializeHunt(new HuntData(selectedHunt));
@@ -138,7 +141,7 @@ public partial class SceneController : Node
 	{
 		try
 		{
-			FinishedStats statsScreen = GetNode<FinishedStats>("FinishedStat");
+			FinishedStats statsScreen = GetNode<FinishedStats>("FinishedStats");
 			mainScreen.Visible = true;
 			statsScreen.Visible = false;
 			RemoveChild(statsScreen);
@@ -449,7 +452,10 @@ public partial class SceneController : Node
 				huntData += JsonSerializer.Serialize<HuntData>(hunt, options);
 				huntData += "\n";
 			}
-			huntData = huntData.Remove(huntData.Length - 1); // Remove final \n
+			if (huntData.Length > 0) // Check if any hunts have been aded
+			{
+				huntData = huntData.Remove(huntData.Length - 1); // Remove final \n
+			}
 			json.SaveJsonToFile(path, activeFileName, huntData);
 		}
 		catch (Exception e)
@@ -476,7 +482,10 @@ public partial class SceneController : Node
 				capturedData += JsonSerializer.Serialize<CapturedData>(hunt, options);
 				capturedData += "\n";
 			}
-			capturedData = capturedData.Remove(capturedData.Length - 1); // Remove final \n
+			if (capturedData.Length > 0)
+			{
+				capturedData = capturedData.Remove(capturedData.Length - 1); // Remove final \n
+			}
 			json.SaveJsonToFile(path, capturedFileName, capturedData);
 		}
 		catch (Exception e)
@@ -491,7 +500,7 @@ public partial class SceneController : Node
 		try
 		{
 			string fullLoad = json.LoadResourceFromFile(path, saveFileName);
-			if (fullLoad == null)
+			if (fullLoad == null || fullLoad == "")
 			{
 				return;
 			}
@@ -541,7 +550,7 @@ public partial class SceneController : Node
 		try
 		{
 			string fullLoad = json.LoadResourceFromFile(path, activeFileName);
-			if (fullLoad == null)
+			if (fullLoad == null || fullLoad == "")
 			{
 				return;
 			}
@@ -579,7 +588,7 @@ public partial class SceneController : Node
 		try
 		{
 			string fullLoad = json.LoadResourceFromFile(path, capturedFileName);
-			if (fullLoad == null)
+			if (fullLoad == null || fullLoad == "")
 			{
 				return;
 			}
