@@ -1,10 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://clag0uovwwbyj"]
+[gd_scene load_steps=13 format=3 uid="uid://clag0uovwwbyj"]
 
 [ext_resource type="Script" uid="uid://df6ji8tqrq2k6" path="res://Scripts/AppInfoScreen.cs" id="1_0a46o"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="2_oovp4"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_yxlu4"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_oovp4"]
 [ext_resource type="ButtonGroup" uid="uid://bcu6mtho33lvp" path="res://MenuButtonGroup.tres" id="4_oovp4"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="5_yxlu4"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="5_yxlu4"]
 [ext_resource type="Texture2D" uid="uid://bjnnt8cdlb12y" path="res://Assets/Tutorials/main_screen.png" id="6_extoa"]
 [ext_resource type="Texture2D" uid="uid://drxvjxhhvu5lw" path="res://Assets/Tutorials/make_hunt.png" id="7_2kndd"]
 [ext_resource type="Texture2D" uid="uid://v227tpgu6u3b" path="res://Assets/Tutorials/hunt_screen.png" id="8_8hhh1"]
@@ -45,7 +44,6 @@ offset_left = -50.0
 offset_top = 25.0
 offset_right = 50.0
 offset_bottom = 95.0
-theme = ExtResource("3_yxlu4")
 toggle_mode = true
 button_pressed = true
 action_mode = 0
@@ -62,7 +60,6 @@ offset_left = -49.92
 offset_top = 25.0
 offset_right = 50.08
 offset_bottom = 95.0
-theme = ExtResource("3_yxlu4")
 toggle_mode = true
 action_mode = 0
 button_group = ExtResource("4_oovp4")
@@ -77,7 +74,6 @@ offset_left = -49.84
 offset_top = 25.0
 offset_right = 50.16
 offset_bottom = 95.0
-theme = ExtResource("3_yxlu4")
 toggle_mode = true
 action_mode = 0
 button_group = ExtResource("4_oovp4")
@@ -116,7 +112,6 @@ tabs_visible = false
 [node name="InfoLabel" type="Label" parent="TabContainer"]
 custom_minimum_size = Vector2(400, 520)
 layout_mode = 2
-theme = ExtResource("3_yxlu4")
 theme_override_font_sizes/font_size = 24
 text = "Thank you for using PokeShine.
 I am a solo developer who made this app as a passion project and later decided to release it for free for everyone.
@@ -138,7 +133,6 @@ offset_left = -54.8
 offset_top = -24.885
 offset_right = 55.2
 offset_bottom = 25.115
-theme = ExtResource("3_yxlu4")
 disabled = true
 text = "Donate"
 
@@ -146,7 +140,6 @@ text = "Donate"
 visible = false
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
-theme = ExtResource("3_yxlu4")
 current_tab = 0
 metadata/_tab_index = 1
 
@@ -197,7 +190,6 @@ texture = ExtResource("9_lfu6p")
 visible = false
 custom_minimum_size = Vector2(400, 500)
 layout_mode = 2
-theme = ExtResource("3_yxlu4")
 theme_override_font_sizes/font_size = 22
 text = "This is an unofficial, fan-made, free-to-use app designed to be used alongside official works by Game Freak and The Pokémon Company.
 

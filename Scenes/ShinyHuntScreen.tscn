@@ -1,17 +1,17 @@
 [gd_scene load_steps=14 format=3 uid="uid://ugxewxi8b38p"]
 
 [ext_resource type="Script" uid="uid://bmthsl75yon5c" path="res://Scripts/ShinyHuntScreen.cs" id="1_3hrlr"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="2_dwvgu"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_dwvgu"]
 [ext_resource type="StyleBox" uid="uid://dos6ncolrg4g7" path="res://DefaultColorStylebox.tres" id="2_impdu"]
-[ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/Buttons/shine.png" id="3_hjc35"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="4_q83cm"]
-[ext_resource type="Texture2D" uid="uid://b8dikjnfmu4dg" path="res://Assets/Buttons/settings.png" id="4_vw1h5"]
-[ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/Buttons/minus.png" id="5_su54o"]
-[ext_resource type="LabelSettings" uid="uid://cy8qj2uwfhd77" path="res://NumText.tres" id="6_6p3kc"]
-[ext_resource type="Texture2D" uid="uid://cxgafcteoag7d" path="res://Assets/Buttons/shine_disabled.png" id="6_f30yi"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="7_inhld"]
-[ext_resource type="Texture2D" uid="uid://bk5jx211bvn30" path="res://Assets/Buttons/settings_disabled.png" id="8_5gv3s"]
-[ext_resource type="Texture2D" uid="uid://yyefeyqnciwl" path="res://Assets/Buttons/minus_disabled.png" id="10_i22no"]
+[ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/Buttons/1/shine.png" id="3_hjc35"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="4_q83cm"]
+[ext_resource type="Texture2D" uid="uid://b8dikjnfmu4dg" path="res://Assets/Buttons/1/settings.png" id="4_vw1h5"]
+[ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/Buttons/1/minus.png" id="5_su54o"]
+[ext_resource type="Texture2D" uid="uid://cxgafcteoag7d" path="res://Assets/Buttons/Disabled/shine_disabled.png" id="6_f30yi"]
+[ext_resource type="Texture2D" uid="uid://bk5jx211bvn30" path="res://Assets/Buttons/Disabled/settings_disabled.png" id="8_5gv3s"]
+[ext_resource type="Texture2D" uid="uid://yyefeyqnciwl" path="res://Assets/Buttons/Disabled/minus_disabled.png" id="10_i22no"]
+[ext_resource type="Texture2D" uid="uid://dwjwd2p7jdlx8" path="res://Assets/Buttons/1/reset.png" id="13_5gv3s"]
+[ext_resource type="Texture2D" uid="uid://dklwe8u7gn2ov" path="res://Assets/Buttons/Disabled/reset_disabled.png" id="14_i22no"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_impdu"]
 
@@ -158,6 +158,21 @@ texture_normal = ExtResource("5_su54o")
 texture_disabled = ExtResource("10_i22no")
 stretch_mode = 0
 
+[node name="ResetButton" type="TextureButton" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -89.0
+offset_right = 108.0
+offset_bottom = 7.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("13_5gv3s")
+texture_disabled = ExtResource("14_i22no")
+stretch_mode = 0
+
 [node name="Count" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
@@ -167,7 +182,7 @@ offset_left = -63.0
 offset_top = 150.0
 offset_right = 62.0
 offset_bottom = 208.0
-label_settings = ExtResource("6_6p3kc")
+theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 
 [node name="HuntInfo" type="Label" parent="."]
@@ -175,12 +190,12 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -94.0
+offset_left = -106.0
 offset_top = 120.0
 offset_right = -10.0
-offset_bottom = 198.0
-theme = ExtResource("7_inhld")
+offset_bottom = 221.0
 text = "1/1365
+Combo
 00:00:00
 0s"
 horizontal_alignment = 2
@@ -191,3 +206,4 @@ horizontal_alignment = 2
 [connection signal="pressed" from="ShinyButton" to="." method="ShinyFound"]
 [connection signal="pressed" from="SettingsButton" to="." method="OpenSettings"]
 [connection signal="pressed" from="SubButton" to="." method="Decrement"]
+[connection signal="pressed" from="ResetButton" to="." method="ResetCombo"]

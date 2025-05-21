@@ -26,13 +26,15 @@ public class HuntData
 		startDate = time;
 		huntID = ++instances;
 	}
-	public HuntData(List<string> names, string game, string method, bool shinyCharm, string time)
+	public HuntData(List<string> names, string game, string method, string route, bool shinyCharm, int bonus, string time)
 	{
 		pokemon = new List<string>();
 		pokemon = names;
 		huntGame = game;
 		huntMethod = method;
+		huntRoute = route;
 		charm = shinyCharm;
+		oddsBonus = bonus;
 		startDate = time;
 		huntID = ++instances;
 	}
@@ -85,10 +87,13 @@ public class HuntData
 		count = src.count;
 		incrementValue = src.incrementValue;
 		timeSpent = src.timeSpent;
+		oddsBonus = src.oddsBonus;
+		combo = src.combo;
 		
 		showShiny = src.showShiny;
 		showRegular = src.showRegular;
 		showOdds = src.showOdds;
+		showCombo = src.showCombo;
 		showFullTimer = src.showFullTimer;
 		showMiniTimer = src.showMiniTimer;
 		
@@ -126,6 +131,21 @@ public class HuntData
 	public static bool operator !=(HuntData hunt1, HuntData hunt2)
 	{
 		return !hunt1.Equals(hunt2);
+	}
+	
+	public void SetSettings(bool[] settings)
+	{
+		showShiny = settings[0];
+		showRegular = settings[1];
+		showOdds = settings[2];
+		showFullTimer = settings[4];
+		showMiniTimer = settings[5];
+		if (huntMethod == "Poke Radar" || huntMethod == "Chain Fishing" || huntMethod == "Dex Nav"
+			|| huntMethod == "SOS Chain" || huntMethod == "Catch Combo" || (huntMethod == "Mass Outbreak"
+			&& (huntGame == "Scarlet" || huntGame == "Violet")))
+		{
+			showCombo = settings[3];
+		}
 	}
 	
 	public bool isComplete { get; set; } = false; // Marked true if the hunt is completed
@@ -188,11 +208,14 @@ public class HuntData
 	public int count { get; set; } = 0; // The current number of encounters/resets for the pokemon
 	public int incrementValue { get; set; } = 1; // The number to increase the counter by
 	public int timeSpent { get; set; } = 0; // The number of seconds spent hunting
+	public int oddsBonus { get; set; } = 0; // A modifier used for various hunt methods to change the odds beyond the default
+	public int combo { get; set; } = 0; // A separate counter used to track hunt odds that can be reset
 	
 	//Hunt settings
 	public bool showShiny { get; set; } = true; // Toggles the visibility of the shiny sprite in hunt screen
 	public bool showRegular { get; set; } = true; // Toggles the visibility of the regular sprite in hunt screen
 	public bool showOdds { get; set; } = true; // Toggles the visibility of the hunt odds in hunt screen
+	public bool showCombo { get; set; } = false; // Toggles the visibility of the combo in hunt screen
 	public bool showFullTimer { get; set; } = true; // Toggles the visibility of the hunt timer in hunt screen
 	public bool showMiniTimer { get; set; } = true; // Toggles the visibility of the encounter timer in hunt screen
 	
@@ -227,6 +250,8 @@ public partial class ActiveHunt : Control
 		multiIndicator = GetNode<Label>("MultiIndicator");
 		timer = GetNode<Label>("Timer");
 		sortButton = GetNode<Button>("SortButton");
+		
+		SetColors();
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -244,6 +269,16 @@ public partial class ActiveHunt : Control
 			TimerPlusOne();
 			secondTimer -= 1.0;
 		}
+	}
+	
+	public void SetColors()
+	{
+		TextureButton addButton, subButton;
+		addButton = GetNode<TextureButton>("AddButton");
+		subButton = GetNode<TextureButton>("SubButton");
+		
+		addButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/plus.png");
+		subButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/minus.png");
 	}
 	
 	public void InitializeHunt(HuntData hunt)

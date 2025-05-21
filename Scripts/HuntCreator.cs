@@ -7,7 +7,9 @@ using System.IO;
 public partial class HuntCreator : Control
 {
 	Button gameSelect, pokemonSelect, methodSelect, routeSelect, startButton;
-	CheckBox charmButton;
+	CheckBox charmButton, bonusToggle;
+	NumberInputField bonusAmount;
+	Label bonusLabel;
 	
 	AvailabilityInformation dicts;
 	
@@ -17,7 +19,7 @@ public partial class HuntCreator : Control
 	bool screenVisible = true; // True when this screen is the only one visible to the user
 	
 	[Signal]
-	public delegate void StartHuntEventHandler(string gameName, string method, bool charm);
+	public delegate void StartHuntEventHandler(string gameName, string method, string route, bool charm, int oddsBonus);
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
 	
@@ -30,8 +32,24 @@ public partial class HuntCreator : Control
 		startButton = GetNode<Button>("StartButton");
 		charmButton = GetNode<CheckBox>("CharmButton");
 		
+		bonusToggle = GetNode<CheckBox>("BonusToggle");
+		bonusAmount = GetNode<NumberInputField>("BonusAmount");
+		bonusLabel = GetNode<Label>("BonusLabel");
+		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
 		pokemonSelected = new List<string>();
+		
+		SetColors();
+	}
+	
+	public void SetColors()
+	{
+		TextureButton backButton;
+		backButton = GetNode<TextureButton>("BackButton");
+		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/back.png");
+		
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
 	}
 	
 	public override void _Notification(int what)
@@ -48,11 +66,17 @@ public partial class HuntCreator : Control
 		startButton.Text = "Update Hunt";
 		pokemonSelect.Disabled = false;
 		methodSelect.Disabled = false;
-		routeSelect.Disabled = false;
 		
 		selections[0] = data.huntGame;
 		selections[2] = data.huntMethod;
+		
+		if (selections[2] == "Random Encounter")
+		{
+			routeSelect.Disabled = false;
+		}
+		
 		pokemonSelected = new List<string>(data.pokemon);
+		dicts.SetRoutes(selections[0]); // Initialize the dictionary of routes for the selected game
 		
 		GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
 		if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
@@ -69,6 +93,7 @@ public partial class HuntCreator : Control
 			selections[1] = pokemonSelected[0];
 		}
 		UpdateButtonText();
+		SetBonus(data.oddsBonus);
 		startButton.Disabled = false;
 		screenVisible = true;
 	}
@@ -125,6 +150,7 @@ public partial class HuntCreator : Control
 		{
 			GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
 			int gameCode = info.methodID; // Get the associated folder name for the current game
+			multiSelect = true;
 			
 			// If the pokemon is available in the selected game, add it to itemList
 			foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
@@ -133,11 +159,6 @@ public partial class HuntCreator : Control
 				{
 					itemList.Add(pokemon.Key);
 				}
-			}
-			
-			if (selections[2] == "Random Encounter" || selections[2] == "Symbol Encounter")
-			{
-				multiSelect = true;
 			}
 		}
 		else if (optionMode == 3) // Send list of methods
@@ -193,6 +214,12 @@ public partial class HuntCreator : Control
 			charmButton.Disabled = true;
 			pokemonSelect.Disabled = false;
 			methodSelect.Disabled = false;
+			
+			bonusToggle.Visible = false;
+			bonusToggle.ButtonPressed = false;
+			bonusAmount.Visible = false;
+			bonusAmount.Text = "0";
+			bonusLabel.Visible = false;
 			
 			dicts.SetRoutes(selectedOption); // Initialize the dictionary of routes for the selected game
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
@@ -274,6 +301,11 @@ public partial class HuntCreator : Control
 		
 		selections[optionMode - 1] = selectedOption;
 		
+		if (optionMode == 3)
+		{
+			SetBonus();
+		}
+		
 		UpdateButtonText();
 		CloseSelector();
 		optionMode = 0;
@@ -312,13 +344,83 @@ public partial class HuntCreator : Control
 		routeSelect.Text = "Route:\n" + selections[3];
 	}
 	
+	private void SetBonus()
+	{
+		bonusToggle.Visible = false;
+		bonusAmount.Visible = false;
+		bonusLabel.Visible = false;
+		
+		bonusToggle.ButtonPressed = false;
+		bonusAmount.Text = "0";
+		
+		if (selections[2] == "Shiny Family Breeding")
+		{
+			bonusToggle.Visible = true;
+			bonusToggle.Text = "With Ditto";
+		}
+		else if ((selections[0] == "Lets Go Pikachu" || selections[0] == "Lets Go Eevee") &&
+			(selections[2] == "Symbol Encounter" || selections[2] == "Catch Combo"))
+		{
+			bonusToggle.Visible = true;
+			bonusToggle.Text = "Lure";
+		}
+		else if (selections[2] == "Dex Nav")
+		{
+			bonusAmount.Visible = true;
+			bonusLabel.Visible = true;
+			
+			bonusAmount.MaxValue = 999;
+			bonusLabel.Text = "Search Level";
+		}
+		else if ((selections[0] == "Scarlet" || selections[0] == "Violet") &&
+				 (selections[2] == "Symbol Encounter" || selections[2] == "Mass Outbreak"))
+		{
+			bonusAmount.Visible = true;
+			bonusLabel.Visible = true;
+			
+			bonusAmount.MaxValue = 3;
+			bonusLabel.Text = "Sandwich Power";
+		}
+		else if (selections[0] == "Legends Arceus")
+		{
+			bonusAmount.Visible = true;
+			bonusLabel.Visible = true;
+			
+			bonusAmount.MaxValue = 3;
+			bonusLabel.Text = "Bonus Research Rolls";
+		}
+	}
+	
+	private void SetBonus(int bonusValue)
+	{
+		SetBonus();
+		
+		if (selections[2] == "Shiny Family Breeding" || selections[0] == "Lets Go Pikachu" || selections[0] == "Lets Go Eevee")
+		{
+			bonusToggle.ButtonPressed = bonusValue == 1 ? true : false;
+		}
+		else if (selections[2] == "Dex Nav" || selections[0] == "Scarlet" || selections[0] == "Violet" || selections[0] == "Legends Arceus")
+		{
+			bonusAmount.Text = $"{bonusValue}";
+		}
+	}
+	
 	private void EmitStartHunt()
 	{
 		// Only emit the signal if all selections have been made
 		if (selections[0] != "" && selections[1] != "" && selections[2] != "")
 		{
 			screenVisible = false;
-			EmitSignal("StartHunt", selections[0], selections[2], charmButton.ButtonPressed);
+			int oddsBonus;
+			if (bonusToggle.ButtonPressed)
+			{
+				oddsBonus = 1;
+			}
+			else
+			{
+				oddsBonus = bonusAmount.Value; // This value is set to 0 whenever not in use
+			}
+			EmitSignal("StartHunt", selections[0], selections[2], selections[3], charmButton.ButtonPressed, oddsBonus);
 		}
 	}
 	

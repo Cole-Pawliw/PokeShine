@@ -48,6 +48,18 @@ public partial class CapturedCreator : Control
 		string date = Time.GetDatetimeStringFromSystem().Split('T')[0];
 		startDate.UpdateDate(date);
 		endDate.UpdateDate(date);
+		
+		SetColors();
+	}
+	
+	public void SetColors()
+	{
+		TextureButton backButton;
+		backButton = GetNode<TextureButton>("BackButton");
+		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/back.png");
+		
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
 	}
 	
 	public override void _Notification(int what)

@@ -15,6 +15,12 @@ public partial class ErrorScreen : Control
 		label = GetNode<Label>("ScrollContainer/Label");
 	}
 	
+	public void SetColors()
+	{
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
+	}
+	
 	public void DisplayError(string e)
 	{
 		errorMessage = e;

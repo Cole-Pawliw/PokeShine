@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c1fphqg4nagq8"]
+[gd_scene load_steps=2 format=3 uid="uid://c1fphqg4nagq8"]
 
 [ext_resource type="Script" uid="uid://c8vylvd4gwnbu" path="res://Scripts/Verify.cs" id="1_6gjaf"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="1_t48tw"]
 
 [node name="Verify" type="Control"]
 layout_mode = 3
@@ -50,7 +49,6 @@ offset_right = 80.0
 offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_t48tw")
 text = "Are you sure?"
 
 [connection signal="pressed" from="CancelButton" to="." method="EmitCancel"]

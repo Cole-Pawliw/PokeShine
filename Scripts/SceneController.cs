@@ -6,7 +6,7 @@ using System.IO;
 
 /*
 Bugs and Changes
-- Add a "bonus" int to HuntData that tracks extra odds information in various methods
+- Add clear all button to OptionSelect
 - Different font
 - Edit button design
 - REMOVE TRY CATCH ON EVERYTHING BEFORE RELEASE
@@ -14,21 +14,19 @@ Bugs and Changes
 
 /*
 Extra features
-- Global Settings (for what sprites to show)
 - Active hunt stats page (odds graph, other detailed info)
-- customizable colours (means expanding save files)
 - Box sprites for ItemList
 - GSC sprites?
 */
 
-public partial class SceneController : Node
+public partial class SceneController : Control
 {
 	MainMenu mainScreen;
 	ShinyHuntScreen huntScreen;
 	JsonManager json;
 	string saveFileName = "savefile.save", activeFileName = "ActiveHunts.save", capturedFileName = "CapturedHunts.save";
 	string path = "user://";
-	string versionNumber = "0.9.4";
+	string versionNumber = "0.9.6";
 	
 	double timer = 0;
 	
@@ -42,7 +40,7 @@ public partial class SceneController : Node
 		mainScreen.HuntButtonPressed += OpenHunt;
 		mainScreen.CapturedButtonPressed += OpenStats;
 		mainScreen.NewHuntButtonPressed += CreateNewHunt;
-		mainScreen.InfoButtonPressed += OpenAppInfo;
+		mainScreen.SettingsButtonPressed += OpenSettings;
 		mainScreen.RequestFullSave += Save;
 		mainScreen.RequestSmallSave += SaveActiveHunts;
 		mainScreen.TreeExiting += AppClosing;
@@ -52,6 +50,8 @@ public partial class SceneController : Node
 		huntScreen.FinishHunt += FinishHunt;
 		
 		Load();
+		
+		SetColors();
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -113,7 +113,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void CloseHunt()
@@ -130,7 +129,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void CloseStats()
@@ -147,7 +145,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void CreateNewHunt(int mode)
@@ -184,7 +181,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void DeleteHunt()
@@ -201,7 +197,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void DeleteCaptured()
@@ -221,7 +216,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void UpdateActiveSprite()
@@ -237,7 +231,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void UpdateCaptured()
@@ -254,7 +247,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void CloseHuntCreator()
@@ -271,16 +263,29 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
-	private void StartHuntSignalReceiver(string gameName, string method, bool charm)
+	private void StartHuntSignalReceiver(string gameName, string method, string route, bool charm, int oddsBonus)
 	{
 		try
 		{
 			string startDT = Time.GetDatetimeStringFromSystem().Split('T')[0];
 			HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
-			HuntData huntToAdd = new HuntData(startHuntScreen.pokemonSelected, gameName, method, charm, startDT);
+			HuntData huntToAdd = new HuntData(startHuntScreen.pokemonSelected, gameName, method, route, charm, oddsBonus, startDT);
+			
+			// Set common settings (not made yet
+			huntToAdd.showShiny = mainScreen.globalSettings[0];
+			huntToAdd.showRegular = mainScreen.globalSettings[1];
+			huntToAdd.showOdds = mainScreen.globalSettings[2];
+			huntToAdd.showFullTimer = mainScreen.globalSettings[4];
+			huntToAdd.showMiniTimer = mainScreen.globalSettings[5];
+			// Gross if statement but this function is rarely called
+			if (huntToAdd.huntMethod == "Poke Radar" || huntToAdd.huntMethod == "Chain Fishing" || huntToAdd.huntMethod == "Dex Nav"
+				|| huntToAdd.huntMethod == "SOS Chain" || huntToAdd.huntMethod == "Catch Combo" || (huntToAdd.huntMethod == "Mass Outbreak"
+				&& (huntToAdd.huntGame == "Scarlet" || huntToAdd.huntGame == "Violet")))
+			{
+				huntToAdd.showCombo = mainScreen.globalSettings[3];
+			}
 			
 			mainScreen.AddHunt(huntToAdd);
 			Save(); // Update save file with newly added hunt
@@ -291,7 +296,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void CloseCapturedCreator()
@@ -308,7 +312,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void AddCaptured()
@@ -342,7 +345,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void FinishHunt(string nickname, string ball, string gender)
@@ -361,18 +363,19 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
-	private void OpenAppInfo()
+	private void OpenSettings()
 	{
 		try
 		{
-			AppInfoScreen infoScreen = (AppInfoScreen)GD.Load<PackedScene>("res://Scenes/AppInfoScreen.tscn").Instantiate();
-			AddChild(infoScreen);
-			infoScreen.BackButtonPressed += CloseAppInfo;
+			UserSettings settingsScreen = (UserSettings)GD.Load<PackedScene>("res://Scenes/UserSettings.tscn").Instantiate();
+			AddChild(settingsScreen);
+			settingsScreen.BackButtonPressed += CloseSettings;
+			settingsScreen.NewColors += SetColors;
+			settingsScreen.SetSettings(mainScreen.globalSettings);
 			
-			infoScreen.Visible = true;
+			settingsScreen.Visible = true;
 			mainScreen.Visible = false;
 			huntScreen.Visible = false;
 			
@@ -382,24 +385,35 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
-	private void CloseAppInfo()
+	private void CloseSettings()
 	{
 		try
 		{
-			AppInfoScreen infoScreen = GetNode<AppInfoScreen>("AppInfoScreen");
+			UserSettings settingsScreen = GetNode<UserSettings>("UserSettings");
+			
+			bool[] settings = {settingsScreen.shiny.ButtonPressed, settingsScreen.regular.ButtonPressed,
+								settingsScreen.odds.ButtonPressed, settingsScreen.combo.ButtonPressed,
+								settingsScreen.huntTimer.ButtonPressed, settingsScreen.encounterTimer.ButtonPressed};
+			mainScreen.UpdateAllSettings(settings);
+			
 			mainScreen.Visible = true;
-			infoScreen.Visible = false;
-			RemoveChild(infoScreen);
-			infoScreen.Cleanup();
+			settingsScreen.Visible = false;
+			RemoveChild(settingsScreen);
+			settingsScreen.Cleanup();
 		}
 		catch (Exception e)
 		{
 			ErrorOccurred(e);
 		}
-			
+	}
+	
+	private void SetColors()
+	{
+		mainScreen.SetColors();
+		huntScreen.SetColors();
+		Theme = (Theme)GD.Load($"res://ColorTheme{GameHuntInformation.colorMode}.tres");
 	}
 	
 	private void Save()
@@ -411,7 +425,14 @@ public partial class SceneController : Node
 				IncludeFields = true,
 			};
 			
-			string fullSave = $"v{versionNumber}\nsortby:{mainScreen.sortType}";
+			string fullSave = $"v{versionNumber}\nsortby:{mainScreen.sortType}\n";
+			fullSave += $"colors:{GameHuntInformation.colorMode}\n";
+			fullSave += $"show shiny:{mainScreen.globalSettings[0]}\n";
+			fullSave += $"show regular:{mainScreen.globalSettings[1]}\n";
+			fullSave += $"show odds:{mainScreen.globalSettings[2]}\n";
+			fullSave += $"show combo:{mainScreen.globalSettings[3]}\n";
+			fullSave += $"show hunt timer:{mainScreen.globalSettings[4]}\n";
+			fullSave += $"show encounter timer:{mainScreen.globalSettings[5]}\n";
 			json.SaveJsonToFile(path, saveFileName, fullSave);
 			SaveActiveHunts();
 			SaveCaptured();
@@ -505,6 +526,9 @@ public partial class SceneController : Node
 			
 			switch (datas[0])
 			{
+				case "v0.9.6":
+					Load096(fullLoad);
+					break;
 				case "v0.9.4":
 					Load094(fullLoad);
 					break;
@@ -523,6 +547,27 @@ public partial class SceneController : Node
 			
 	}
 	
+	private void Load096(string fullLoad)
+	{
+		try
+		{
+			string[] datas = fullLoad.Split("\n");
+			int size = datas.Length;
+			mainScreen.sortType = datas[1].Split(':')[1];
+			GameHuntInformation.colorMode = Int32.Parse(datas[2].Split(':')[1]);
+			mainScreen.globalSettings = [ bool.Parse(datas[3].Split(':')[1]), bool.Parse(datas[4].Split(':')[1]),
+										  bool.Parse(datas[5].Split(':')[1]), bool.Parse(datas[6].Split(':')[1]),
+										  bool.Parse(datas[7].Split(':')[1]), bool.Parse(datas[8].Split(':')[1]) ];
+			
+			LoadActiveHunts();
+			LoadCaptured();
+		}
+		catch (Exception e)
+		{
+			ErrorOccurred(e);
+		}
+	}
+	
 	private void Load094(string fullLoad)
 	{
 		try
@@ -538,7 +583,6 @@ public partial class SceneController : Node
 		{
 			ErrorOccurred(e);
 		}
-			
 	}
 	
 	private void LoadActiveHunts()
