@@ -6,6 +6,8 @@ using System.IO;
 
 /*
 Bugs and Changes
+- Route doesn't populate in HuntCreator or HuntSettings
+- Add luck to FinishedStats
 - Add clear all button to OptionSelect
 - Different font
 - Edit button design

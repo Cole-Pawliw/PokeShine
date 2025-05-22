@@ -61,17 +61,19 @@ public partial class ShinyHuntScreen : Control
 	
 	public void SetColors()
 	{
-		TextureButton backButton, shinyButton, settingsButton, subButton;
+		TextureButton backButton, shinyButton, settingsButton, subButton, infoButton;
 		backButton = GetNode<TextureButton>("BackButton");
 		shinyButton = GetNode<TextureButton>("ShinyButton");
 		settingsButton = GetNode<TextureButton>("SettingsButton");
 		subButton = GetNode<TextureButton>("SubButton");
+		infoButton = GetNode<TextureButton>("InfoButton");
 		
 		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/back.png");
 		shinyButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/shine.png");
 		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/settings.png");
 		subButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/minus.png");
 		resetButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/reset.png");
+		infoButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/info.png");
 		
 		ColorRect bg = GetNode<ColorRect>("Background");
 		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
@@ -575,6 +577,25 @@ public partial class ShinyHuntScreen : Control
 		
 		RemoveChild(settingsMenu);
 		settingsMenu.Cleanup();
+		activeHunt = true;
+	}
+	
+	private void OpenStats()
+	{
+		activeHunt = false;
+		ActiveStats statsMenu = (ActiveStats)GD.Load<PackedScene>("res://Scenes/ActiveStats.tscn").Instantiate();
+		AddChild(statsMenu);
+		statsMenu.Name = "Stats";
+		
+		statsMenu.BackButtonPressed += CloseStats;
+		statsMenu.InitializeStats(data);
+	}
+	
+	private void CloseStats()
+	{
+		ActiveStats statsMenu = GetNode<ActiveStats>("Stats");
+		RemoveChild(statsMenu);
+		statsMenu.Cleanup();
 		activeHunt = true;
 	}
 	

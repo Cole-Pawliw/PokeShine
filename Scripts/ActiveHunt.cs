@@ -203,7 +203,7 @@ public class HuntData
 	}
 	
 	public string huntMethod { get; set; } // The method being performed for the hunt, used to determine odds
-	public string huntRoute { get; set; } // Unused for now, will help to creat multi hunts
+	public string huntRoute { get; set; } // Used in random encounter hunts to auto fill the pokemon that can be encountered
 	public bool charm { get; set; } = false; // An item that increases shiny odds
 	public int count { get; set; } = 0; // The current number of encounters/resets for the pokemon
 	public int incrementValue { get; set; } = 1; // The number to increase the counter by

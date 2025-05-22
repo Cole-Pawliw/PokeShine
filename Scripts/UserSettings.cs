@@ -6,6 +6,7 @@ public partial class UserSettings : Control
 	ColorRect bg;
 	TextureButton backButton, infoButton;
 	public CheckButton shiny, regular, odds, huntTimer, encounterTimer, combo;
+	bool screenVisible = false;
 	
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
@@ -25,7 +26,16 @@ public partial class UserSettings : Control
 		bg = GetNode<ColorRect>("Background");
 		backButton = GetNode<TextureButton>("BackButton");
 		infoButton = GetNode<TextureButton>("InfoButton");
+		screenVisible = true;
 		SetColors();
+	}
+	
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMGoBackRequest && screenVisible)
+		{
+			EmitBackButtonPressed();
+		}
 	}
 	
 	public void SetSettings(bool[] settings)
@@ -75,17 +85,20 @@ public partial class UserSettings : Control
 		AppInfoScreen infoScreen = (AppInfoScreen)GD.Load<PackedScene>("res://Scenes/AppInfoScreen.tscn").Instantiate();
 		AddChild(infoScreen);
 		infoScreen.BackButtonPressed += CloseInfoScreen;
+		screenVisible = false;
 	}
 	
 	private void CloseInfoScreen()
 	{
 		AppInfoScreen infoScreen = GetNode<AppInfoScreen>("AppInfoScreen");
+		screenVisible = true;
 		RemoveChild(infoScreen);
 		infoScreen.Cleanup();
 	}
 	
 	private void EmitBackButtonPressed()
 	{
+		screenVisible = false;
 		EmitSignal("BackButtonPressed");
 	}
 	

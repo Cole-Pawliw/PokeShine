@@ -1,4 +1,9 @@
-[gd_scene format=3 uid="uid://cfnlythcavxa4"]
+[gd_scene load_steps=5 format=3 uid="uid://cfnlythcavxa4"]
+
+[ext_resource type="Script" uid="uid://ca41vpvyrgcbq" path="res://Scripts/ActiveStats.cs" id="1_30a38"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_30a38"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="3_owmep"]
+[ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="4_30a38"]
 
 [node name="ActiveStats" type="Control"]
 layout_mode = 3
@@ -7,3 +12,72 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_30a38")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="BackButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 12.0
+offset_right = 115.0
+offset_bottom = 108.0
+texture_normal = ExtResource("2_30a38")
+texture_disabled = ExtResource("3_owmep")
+stretch_mode = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.121
+anchor_top = 0.189
+anchor_right = 0.875
+anchor_bottom = 0.911
+offset_left = -0.0800018
+offset_top = -0.0800018
+offset_right = -3.05176e-05
+offset_bottom = 0.0799561
+
+[node name="Label" type="Label" parent="ScrollContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Pokemon seen:
+Time Spent:
+Current Odds:
+
+You see a pokemon every <>s on average. With <> pokemon seen at a time, that means each increment takes <>s.
+
+At the current odds, it will take you <>s to reach <> pokemon seen.
+
+The chances of you seeing a shiny by now are <>%, so you are in the <> percentile of unlucky hunts.
+
+
+
+The odds of getting a shiny after <> encounters is: <>%"
+autowrap_mode = 2
+
+[node name="NumberInputField" parent="ScrollContainer/Label" instance=ExtResource("4_30a38")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.453
+anchor_top = 0.827
+anchor_right = 0.453
+anchor_bottom = 0.827
+offset_left = -45.986
+offset_top = 0.302979
+offset_right = 47.014
+offset_bottom = 37.303
+grow_horizontal = 1
+grow_vertical = 1
+placeholder_text = "0"
+MaxValue = 99999
+
+[connection signal="pressed" from="BackButton" to="." method="EmitBackButtonPressed"]
+[connection signal="ValueChanged" from="ScrollContainer/Label/NumberInputField" to="." method="EncounterInputUpdated"]
