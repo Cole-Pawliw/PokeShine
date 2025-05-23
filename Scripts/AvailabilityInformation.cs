@@ -22,6 +22,9 @@ public class GameInfo
 
 public class GameHuntInformation
 {
+	public static string[] backgrounds = {"2D2E59", "EE4266", "32373B", "FFCAB1"}; // Color codes for background colors
+	public static int colorMode = 1; // A number 1-4 indicating what color scheme to use
+	
 	// Stores the repeated GameInfo objects for re-use in gameInfoDict
 	public static GameInfo[] infoStorage = {
 		new GameInfo(0, "GS"), new GameInfo(1, "RS"), new GameInfo(2, "FL"), new GameInfo(3, "DP"), 

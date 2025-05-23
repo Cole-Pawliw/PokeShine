@@ -38,6 +38,18 @@ public partial class FinishHunt : Control
 		finishButton = GetNode<Button>("FinishButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
+		
+		SetColors();
+	}
+	
+	public void SetColors()
+	{
+		TextureButton backButton;
+		backButton = GetNode<TextureButton>("BackButton");
+		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/back.png");
+		
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
 	}
 	
 	public override void _Notification(int what)

@@ -10,12 +10,9 @@ public partial class MainMenu : Control
 	List<Captured> completedHunts;
 	
 	TabContainer tabContainer;
-	Panel huntPanel;
-	Panel completedPanel;
-	Button mainButton;
-	Button completedButton;
-	TextureButton newHuntButton;
-	TextureButton sortButton;
+	Panel huntPanel, completedPanel;
+	Button mainButton, completedButton;
+	TextureButton newHuntButton, sortButton;
 	
 	int x = 7, y = 10, huntY = 84, halfHuntY = 42;
 	
@@ -25,6 +22,7 @@ public partial class MainMenu : Control
 	List<int> flags; // List of ActiveHunts that hav been flagged to be moved
 	
 	public string sortType = "";
+	public bool[] globalSettings = {true, true, true, true, true, true};
 	
 	[Signal]
 	public delegate void HuntButtonPressedEventHandler(int selectedHuntID);
@@ -33,7 +31,7 @@ public partial class MainMenu : Control
 	[Signal]
 	public delegate void CapturedButtonPressedEventHandler(int selectedHuntID);
 	[Signal]
-	public delegate void InfoButtonPressedEventHandler();
+	public delegate void SettingsButtonPressedEventHandler();
 	[Signal]
 	public delegate void RequestFullSaveEventHandler();
 	[Signal]
@@ -55,6 +53,8 @@ public partial class MainMenu : Control
 		completedButton = GetNode<Button>("CompletedButton");
 		newHuntButton = GetNode<TextureButton>("NewHuntButton");
 		sortButton = GetNode<TextureButton>("ToggleSortButton");
+		
+		SetColors();
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -110,6 +110,33 @@ public partial class MainMenu : Control
 		if (flags.Count > 0)
 		{
 			AdjustPositions(); // Move any swapped hunts toward their appropriate spot
+		}
+	}
+	
+	public void SetColors()
+	{
+		TextureButton settingsButton;
+		settingsButton = GetNode<TextureButton>("SettingsButton");
+		
+		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/settings.png");
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/create.png");
+		sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter_off.png");
+		
+		foreach (ActiveHunt hunt in activeHunts)
+		{
+			hunt.SetColors();
+		}
+		
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
+	}
+	
+	public void UpdateAllSettings(bool[] settings)
+	{
+		globalSettings = settings;
+		foreach (HuntData hunt in hunts)
+		{
+			hunt.SetSettings(settings);
 		}
 	}
 	
@@ -527,8 +554,8 @@ public partial class MainMenu : Control
 	
 	private void SetButtonTextures(string baseName)
 	{
-		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{baseName}.png");
-		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/Buttons/{baseName}_disabled.png");
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/{baseName}.png");
+		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/Buttons/disabled/{baseName}_disabled.png");
 	}
 	
 	private void SortButtonPressed()
@@ -549,14 +576,14 @@ public partial class MainMenu : Control
 		if (sortMode)
 		{
 			PauseHunts();
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/filter.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter.png");
 			mainButton.Disabled = true;
 			completedButton.Disabled = true;
 			newHuntButton.Disabled = true;
 		}
 		else
 		{
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/filter_off.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter_off.png");
 			mainButton.Disabled = false;
 			completedButton.Disabled = false;
 			newHuntButton.Disabled = false;
@@ -727,9 +754,9 @@ public partial class MainMenu : Control
 		EmitSignal("NewHuntButtonPressed", tabContainer.CurrentTab);
 	}
 	
-	private void OpenInfoScreen()
+	private void OpenSettingsScreen()
 	{
-		EmitSignal("InfoButtonPressed");
+		EmitSignal("SettingsButtonPressed");
 	}
 	
 	private void SaveAll()

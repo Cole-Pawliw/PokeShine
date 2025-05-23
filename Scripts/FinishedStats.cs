@@ -26,6 +26,18 @@ public partial class FinishedStats : Control
 		nameLabel = GetNode<Label>("ScrollContainer/Background/NameLabel");
 		sprite = GetNode<Sprite2D>("ScrollContainer/Background/Panel/ShinySprite");
 		verify = GetNode<Control>("Verify");
+		
+		SetColors();
+	}
+	
+	public void SetColors()
+	{
+		TextureButton backButton;
+		backButton = GetNode<TextureButton>("ScrollContainer/Background/BackButton");
+		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/back.png");
+		
+		ColorRect bg = GetNode<ColorRect>("ScrollContainer/Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
 	}
 	
 	public override void _Notification(int what)

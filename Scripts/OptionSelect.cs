@@ -24,6 +24,18 @@ public partial class OptionSelect : Control
 		numSelectedLabel = GetNode<Label>("NumSelectedLabel");
 		confirmButton = GetNode<TextureButton>("ConfirmButton");
 		selectedValues = new List<string>();
+		
+		SetColors();
+	}
+	
+	public void SetColors()
+	{
+		TextureButton confirmButton;
+		confirmButton = GetNode<TextureButton>("ConfirmButton");
+		confirmButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/shine.png");
+		
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
 	}
 	
 	public override void _Notification(int what)

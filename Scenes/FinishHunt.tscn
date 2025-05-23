@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b0kx3rtce3h8o"]
+[gd_scene load_steps=6 format=3 uid="uid://b0kx3rtce3h8o"]
 
 [ext_resource type="Script" uid="uid://p2sjns1xkxic" path="res://Scripts/FinishHunt.cs" id="1_km3h5"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_pbhrc"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_s238b"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_0xk1e"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="4_l8w8v"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="6_22wlt"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="4_l8w8v"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="6_22wlt"]
 
 [node name="FinishHunt" type="Control"]
 layout_mode = 3
@@ -38,7 +37,6 @@ offset_left = -75.0
 offset_top = -75.32
 offset_right = 75.0
 offset_bottom = 74.68
-theme = ExtResource("3_0xk1e")
 
 [node name="ShinySprite" type="Sprite2D" parent="PokemonSelect"]
 position = Vector2(75, 77)
@@ -56,7 +54,6 @@ offset_left = -100.0
 offset_top = -55.24
 offset_right = 100.0
 offset_bottom = 55.76
-theme = ExtResource("3_0xk1e")
 theme_override_font_sizes/font_size = 25
 text = "XXXXX
 00:00
@@ -76,7 +73,6 @@ offset_left = -72.04
 offset_top = -15.48
 offset_right = 67.96
 offset_bottom = 15.52
-theme = ExtResource("3_0xk1e")
 text = "Shiny Charm"
 
 [node name="BackButton" type="TextureButton" parent="."]
@@ -100,7 +96,6 @@ offset_left = -50.0
 offset_top = -70.0
 offset_right = 50.0
 offset_bottom = -20.0
-theme = ExtResource("3_0xk1e")
 text = "Finish Hunt"
 
 [node name="GameSelect" type="Button" parent="."]
@@ -114,7 +109,6 @@ offset_left = -74.96
 offset_top = -35.2
 offset_right = 75.04
 offset_bottom = 34.8
-theme = ExtResource("3_0xk1e")
 text = "Game:"
 
 [node name="MethodSelect" type="Button" parent="."]
@@ -128,7 +122,6 @@ offset_left = -75.04
 offset_top = -35.2
 offset_right = 74.96
 offset_bottom = 34.8
-theme = ExtResource("3_0xk1e")
 text = "Method:"
 
 [node name="RouteSelect" type="Button" parent="."]
@@ -142,7 +135,6 @@ offset_left = -74.96
 offset_top = -35.16
 offset_right = 75.04
 offset_bottom = 34.84
-theme = ExtResource("3_0xk1e")
 text = "Route:"
 
 [node name="BallSelect" type="Button" parent="."]
@@ -156,7 +148,6 @@ offset_left = -75.04
 offset_top = -35.16
 offset_right = 74.96
 offset_bottom = 34.84
-theme = ExtResource("3_0xk1e")
 text = "Ball:"
 
 [node name="GenderSelect" type="Button" parent="."]
@@ -170,7 +161,6 @@ offset_left = -74.96
 offset_top = -35.12
 offset_right = 75.04
 offset_bottom = 34.88
-theme = ExtResource("3_0xk1e")
 text = "Gender:"
 
 [node name="Nickname" type="LineEdit" parent="."]

@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cnm6ue8flowug"]
+[gd_scene load_steps=8 format=3 uid="uid://cnm6ue8flowug"]
 
 [ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
-[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/back.png" id="2_bdfeo"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_bdfeo"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_tsjlh"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_x5ic5"]
-[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/back_disabled.png" id="4_3rmve"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="4_3rmve"]
 [ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="5_ru4jw"]
 [ext_resource type="PackedScene" uid="uid://c3f5qolpt0clw" path="res://Scenes/DateInputField.tscn" id="6_p2qf2"]
 [ext_resource type="PackedScene" uid="uid://cq272tc8wj4m" path="res://Scenes/TimeInputField.tscn" id="8_5tvdg"]
@@ -47,8 +46,8 @@ offset_left = -74.96
 offset_top = -24.72
 offset_right = 75.04
 offset_bottom = 25.28
-theme = ExtResource("3_x5ic5")
 text = "Game:"
+text_overrun_behavior = 3
 
 [node name="RouteSelect" type="Button" parent="."]
 layout_mode = 1
@@ -63,9 +62,9 @@ offset_right = 74.96
 offset_bottom = 25.12
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_x5ic5")
 disabled = true
 text = "Route:"
+text_overrun_behavior = 3
 
 [node name="MethodSelect" type="Button" parent="."]
 layout_mode = 1
@@ -78,9 +77,9 @@ offset_left = -74.96
 offset_top = -24.88
 offset_right = 75.04
 offset_bottom = 25.12
-theme = ExtResource("3_x5ic5")
 disabled = true
 text = "Method:"
+text_overrun_behavior = 3
 
 [node name="PokemonSelect" type="Button" parent="."]
 layout_mode = 1
@@ -93,9 +92,9 @@ offset_left = -75.04
 offset_top = -24.72
 offset_right = 74.96
 offset_bottom = 25.28
-theme = ExtResource("3_x5ic5")
 disabled = true
 text = "Pokemon:"
+text_overrun_behavior = 3
 
 [node name="BallSelect" type="Button" parent="."]
 layout_mode = 1
@@ -108,9 +107,9 @@ offset_left = -74.96
 offset_top = -24.72
 offset_right = 75.04
 offset_bottom = 25.28
-theme = ExtResource("3_x5ic5")
 disabled = true
 text = "Ball:"
+text_overrun_behavior = 3
 
 [node name="GenderSelect" type="Button" parent="."]
 layout_mode = 1
@@ -123,8 +122,8 @@ offset_left = -75.04
 offset_top = -24.72
 offset_right = 74.96
 offset_bottom = 25.28
-theme = ExtResource("3_x5ic5")
 text = "Gender:"
+text_overrun_behavior = 3
 
 [node name="CharmButton" type="CheckBox" parent="."]
 visible = false
@@ -138,7 +137,6 @@ offset_left = -65.0
 offset_top = -17.2
 offset_right = 65.0
 offset_bottom = 17.8
-theme = ExtResource("3_x5ic5")
 text = "Shiny Charm"
 
 [node name="StartDate" parent="." instance=ExtResource("6_p2qf2")]
@@ -163,7 +161,6 @@ offset_left = -54.96
 offset_top = -13.04
 offset_right = 60.04
 offset_bottom = 12.96
-theme = ExtResource("3_x5ic5")
 text = "Start Date:"
 
 [node name="EndDate" parent="." instance=ExtResource("6_p2qf2")]
@@ -188,7 +185,6 @@ offset_left = -75.04
 offset_top = -13.04
 offset_right = 39.96
 offset_bottom = 12.96
-theme = ExtResource("3_x5ic5")
 text = "End Date:"
 
 [node name="Nickname" type="LineEdit" parent="."]
@@ -214,7 +210,6 @@ offset_left = -54.96
 offset_top = -12.96
 offset_right = 60.04
 offset_bottom = 13.04
-theme = ExtResource("3_x5ic5")
 text = "Nickname:"
 
 [node name="CounterValue" parent="." instance=ExtResource("5_ru4jw")]
@@ -232,7 +227,7 @@ grow_horizontal = 1
 grow_vertical = 1
 AllowGreater = true
 
-[node name="Label2" type="Label" parent="."]
+[node name="CountLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -243,7 +238,6 @@ offset_left = -54.96
 offset_top = -12.88
 offset_right = 65.04
 offset_bottom = 13.12
-theme = ExtResource("3_x5ic5")
 text = "Pokemon Seen:"
 
 [node name="TimerValue" parent="." instance=ExtResource("8_5tvdg")]
@@ -257,7 +251,7 @@ offset_top = 17.12
 offset_right = 54.96
 offset_bottom = 57.12
 
-[node name="Label" type="Label" parent="."]
+[node name="TimeLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -268,7 +262,6 @@ offset_left = -75.04
 offset_top = -12.88
 offset_right = 40.96
 offset_bottom = 13.12
-theme = ExtResource("3_x5ic5")
 text = "Time Spent:"
 
 [node name="AddButton" type="Button" parent="."]
@@ -282,7 +275,6 @@ offset_left = -45.0
 offset_top = -70.0
 offset_right = 45.0
 offset_bottom = -20.0
-theme = ExtResource("3_x5ic5")
 disabled = true
 text = "Add Hunt"
 

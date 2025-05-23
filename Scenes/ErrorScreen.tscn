@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://04udkrh8muty"]
+[gd_scene load_steps=2 format=3 uid="uid://04udkrh8muty"]
 
 [ext_resource type="Script" uid="uid://b8kcclhwstqr8" path="res://Scripts/ErrorScreen.cs" id="1_mr2x2"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_j2wq2"]
 
 [node name="ErrorScreen" type="Control"]
 layout_mode = 3
@@ -42,7 +41,6 @@ offset_left = 126.0
 offset_top = 638.0
 offset_right = 217.0
 offset_bottom = 692.0
-theme = ExtResource("2_j2wq2")
 text = "Copy Error
 Message"
 
@@ -52,7 +50,6 @@ offset_left = 272.0
 offset_top = 639.0
 offset_right = 360.0
 offset_bottom = 693.0
-theme = ExtResource("2_j2wq2")
 text = "Close
 Screen"
 

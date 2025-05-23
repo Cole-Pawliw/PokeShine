@@ -1,0 +1,221 @@
+[gd_scene load_steps=10 format=3 uid="uid://b7im4no7ocb1j"]
+
+[ext_resource type="Script" uid="uid://du2vpxi1io3fg" path="res://Scripts/UserSettings.cs" id="1_vmw2y"]
+[ext_resource type="Texture2D" uid="uid://cg1muj0g04uvf" path="res://Assets/ColorOptions/colors_1.png" id="2_8fe5c"]
+[ext_resource type="Texture2D" uid="uid://bf58lsqf4x878" path="res://Assets/ColorOptions/colors_2.png" id="3_ikw1w"]
+[ext_resource type="Texture2D" uid="uid://boh2kb50vt33l" path="res://Assets/ColorOptions/colors_3.png" id="4_ba8rx"]
+[ext_resource type="Texture2D" uid="uid://tb3b8k3d6mon" path="res://Assets/ColorOptions/colors_4.png" id="5_g3cy3"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="6_yuy5g"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="7_80dyv"]
+[ext_resource type="Texture2D" uid="uid://d1bsd50cxr1qt" path="res://Assets/Buttons/1/info.png" id="8_21cq6"]
+[ext_resource type="Texture2D" uid="uid://b7obej8q4drmx" path="res://Assets/Buttons/Disabled/info_disabled.png" id="9_t77y4"]
+
+[node name="UserSettings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vmw2y")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="ShinySprite" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -180.0
+offset_top = -73.48
+offset_right = -40.0
+offset_bottom = -42.48
+button_pressed = true
+text = "Shiny Sprite"
+
+[node name="RegularSprite" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_top = -73.48
+offset_right = 157.0
+offset_bottom = -42.48
+button_pressed = true
+text = "Regular Sprite"
+
+[node name="HuntOdds" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -180.0
+offset_top = 46.52
+offset_right = -48.0
+offset_bottom = 77.52
+button_pressed = true
+text = "Hunt Odds"
+
+[node name="EncounterTimer" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_top = -13.48
+offset_right = 177.0
+offset_bottom = 17.52
+button_pressed = true
+text = "Encounter Timer"
+
+[node name="HuntTimer" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -180.0
+offset_top = -13.48
+offset_right = -44.0
+offset_bottom = 17.52
+button_pressed = true
+text = "Hunt Timer"
+
+[node name="Combo" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_top = 46.52
+offset_right = 103.0
+offset_bottom = 77.52
+button_pressed = true
+text = "Combo"
+
+[node name="ColorButton1" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.35
+anchor_right = 0.5
+anchor_bottom = 0.35
+offset_left = -190.0
+offset_top = -32.0
+offset_right = -126.0
+offset_bottom = 32.0
+texture_normal = ExtResource("2_8fe5c")
+
+[node name="ColorButton2" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.35
+anchor_right = 0.5
+anchor_bottom = 0.35
+offset_left = -90.0
+offset_top = -32.0
+offset_right = -26.0
+offset_bottom = 32.0
+texture_normal = ExtResource("3_ikw1w")
+
+[node name="ColorButton3" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.35
+anchor_right = 0.5
+anchor_bottom = 0.35
+offset_left = 10.0
+offset_top = -32.0
+offset_right = 74.0
+offset_bottom = 32.0
+texture_normal = ExtResource("4_ba8rx")
+
+[node name="ColorButton4" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.35
+anchor_right = 0.5
+anchor_bottom = 0.35
+offset_left = 110.0
+offset_top = -32.0
+offset_right = 174.0
+offset_bottom = 32.0
+texture_normal = ExtResource("5_g3cy3")
+
+[node name="BackButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.14
+anchor_right = 0.14
+offset_left = -48.2
+offset_top = 12.0
+offset_right = 47.8
+offset_bottom = 108.0
+texture_normal = ExtResource("6_yuy5g")
+texture_disabled = ExtResource("7_80dyv")
+stretch_mode = 0
+
+[node name="InfoButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.86
+anchor_right = 0.86
+offset_left = -47.8
+offset_top = 12.0
+offset_right = 48.2
+offset_bottom = 108.0
+texture_normal = ExtResource("8_21cq6")
+texture_disabled = ExtResource("9_t77y4")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.35
+anchor_right = 0.5
+anchor_bottom = 0.35
+offset_left = -85.0
+offset_top = -89.0
+offset_right = 86.0
+offset_bottom = -55.0
+theme_override_font_sizes/font_size = 24
+text = "Color Schemes"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.709
+anchor_right = 0.5
+anchor_bottom = 0.709
+offset_left = -120.0
+offset_top = -120.48
+offset_right = 120.0
+offset_bottom = -86.48
+theme_override_font_sizes/font_size = 24
+text = "Global Hunt Settings"
+
+[connection signal="pressed" from="ColorButton1" to="." method="Color1Pressed"]
+[connection signal="pressed" from="ColorButton2" to="." method="Color2Pressed"]
+[connection signal="pressed" from="ColorButton3" to="." method="Color3Pressed"]
+[connection signal="pressed" from="ColorButton4" to="." method="Color4Pressed"]
+[connection signal="pressed" from="BackButton" to="." method="EmitBackButtonPressed"]
+[connection signal="pressed" from="InfoButton" to="." method="OpenInfoScreen"]

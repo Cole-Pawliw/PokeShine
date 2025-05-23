@@ -8,7 +8,7 @@ public partial class HuntSettings : Control
 	NumberInputField counter, increment;
 	DateInputField date;
 	TimeInputField timer;
-	CheckButton shiny, regular, odds, huntTimer, encounterTimer;
+	CheckButton shiny, regular, odds, huntTimer, encounterTimer, combo;
 	
 	// Functional Buttons
 	TextureButton backButton;
@@ -38,11 +38,24 @@ public partial class HuntSettings : Control
 		odds = GetNode<CheckButton>("HuntOdds");
 		huntTimer = GetNode<CheckButton>("HuntTimer");
 		encounterTimer = GetNode<CheckButton>("EncounterTimer");
+		combo = GetNode<CheckButton>("Combo");
 	
 		backButton = GetNode<TextureButton>("BackButton");
 		deleteButton = GetNode<Button>("DeleteButton");
 		
 		verify = GetNode<Control>("Verify");
+		
+		SetColors();
+	}
+	
+	public void SetColors()
+	{
+		TextureButton backButton;
+		backButton = GetNode<TextureButton>("BackButton");
+		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/back.png");
+		
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
 	}
 	
 	public override void _Notification(int what)
@@ -66,6 +79,7 @@ public partial class HuntSettings : Control
 		odds.ButtonPressed = settings.showOdds;
 		huntTimer.ButtonPressed = settings.showFullTimer;
 		encounterTimer.ButtonPressed = settings.showMiniTimer;
+		SetComboButton();
 		
 		if (settings.pokemon.Count > 1)
 		{
@@ -76,6 +90,23 @@ public partial class HuntSettings : Control
 			regular.Disabled = false;
 		}
 		screenVisible = true;
+	}
+	
+	private void SetComboButton()
+	{
+		// Gross if statement but this function is rarely called
+		if (settings.huntMethod == "Poke Radar" || settings.huntMethod == "Chain Fishing" || settings.huntMethod == "Dex Nav"
+			|| settings.huntMethod == "SOS Chain" || settings.huntMethod == "Catch Combo" || (settings.huntMethod == "Mass Outbreak"
+			&& (settings.huntGame == "Scarlet" || settings.huntGame == "Violet")))
+		{
+			combo.Disabled = false;
+			combo.ButtonPressed = settings.showCombo;
+		}
+		else
+		{
+			combo.Disabled = true;
+			combo.ButtonPressed = false;
+		}
 	}
 	
 	private void OpenHuntCreator()
@@ -89,7 +120,7 @@ public partial class HuntSettings : Control
 		screenVisible = false;
 	}
 	
-	private void ChangeHunt(string gameName, string method, bool charm)
+	private void ChangeHunt(string gameName, string method, string route, bool charm, int oddsBonus)
 	{
 		List<string> pokemon = GetNode<HuntCreator>("HuntCreator").pokemonSelected;
 		
@@ -100,10 +131,14 @@ public partial class HuntSettings : Control
 			settings.huntGame = gameName;
 			settings.huntMethod = method;
 			settings.pokemon = pokemon;
+			SetComboButton();
 		}
 		
-		// Charm information is a minor change
+		// Route changes can result in no meaningful difference, any meaningful difference will be caught by checking pokemon
+		settings.huntRoute = route;
+		// Charm and odds information is a minor change
 		settings.charm = charm;
+		settings.oddsBonus = oddsBonus;
 		
 		CloseCreator();
 	}
@@ -127,6 +162,7 @@ public partial class HuntSettings : Control
 		settings.showShiny = shiny.ButtonPressed;
 		settings.showRegular = regular.ButtonPressed;
 		settings.showOdds = odds.ButtonPressed;
+		settings.showCombo = combo.ButtonPressed;
 		settings.showFullTimer = huntTimer.ButtonPressed;
 		settings.showMiniTimer = encounterTimer.ButtonPressed;
 		screenVisible = false;

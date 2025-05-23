@@ -1,0 +1,86 @@
+[gd_scene load_steps=5 format=3 uid="uid://cfnlythcavxa4"]
+
+[ext_resource type="Script" uid="uid://ca41vpvyrgcbq" path="res://Scripts/ActiveStats.cs" id="1_30a38"]
+[ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_30a38"]
+[ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="3_owmep"]
+[ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="4_30a38"]
+
+[node name="ActiveStats" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_30a38")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="BackButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 12.0
+offset_right = 115.0
+offset_bottom = 108.0
+texture_normal = ExtResource("2_30a38")
+texture_disabled = ExtResource("3_owmep")
+stretch_mode = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 0.194
+anchor_right = 0.875
+anchor_bottom = 0.917
+offset_top = 0.319992
+offset_right = -3.05176e-05
+offset_bottom = -0.240051
+scroll_deadzone = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical = true
+
+[node name="Label" type="Label" parent="ScrollContainer/BoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Pokemon seen:
+Time Spent:
+Current Odds:
+
+You see a pokemon every <>s on average. With <> pokemon seen at a time, that means each increment takes <>s.
+
+At the current odds, it will take you <>s to reach <> pokemon seen.
+
+The chances of you seeing a shiny by now are <>%, so you are in the <> percentile of unlucky hunts.
+"
+autowrap_mode = 2
+
+[node name="NumberInputField" parent="ScrollContainer/BoxContainer" instance=ExtResource("4_30a38")]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "0"
+MaxValue = 99999
+
+[node name="InputLabel" type="Label" parent="ScrollContainer/BoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "The odds of getting a shiny after <> encounters is: <>%"
+autowrap_mode = 2
+
+[node name="Buffer" type="Label" parent="ScrollContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+
+[connection signal="pressed" from="BackButton" to="." method="EmitBackButtonPressed"]
+[connection signal="ValueChanged" from="ScrollContainer/BoxContainer/NumberInputField" to="." method="EncounterInputUpdated"]

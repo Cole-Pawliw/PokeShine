@@ -14,8 +14,8 @@ public partial class DateInputField : Control
 		month = GetNode<NumberInputField>("Month");
 		day = GetNode<NumberInputField>("Day");
 		
-		year.ValueChanged += UpdateDate;
-		month.ValueChanged += UpdateDate;
+		year.ValueChanged += MonthUpdated; // This call seems weird but it doesn't cause any problems and prevents bugs with leap years
+		month.ValueChanged += MonthUpdated;
 		day.ValueChanged += UpdateDate;
 	}
 	

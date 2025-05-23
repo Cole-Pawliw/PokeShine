@@ -10,6 +10,18 @@ public partial class Verify : Control
 	[Signal]
 	public delegate void ConfirmEventHandler();
 	
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		SetColors();
+	}
+	
+	public void SetColors()
+	{
+		ColorRect bg = GetNode<ColorRect>("Background");
+		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
+	}
+	
 	public override void _Notification(int what)
 	{
 		if (what == NotificationWMGoBackRequest && screenVisible)

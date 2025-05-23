@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://jiq0ec4wmt54"]
+[gd_scene load_steps=6 format=3 uid="uid://jiq0ec4wmt54"]
 
 [ext_resource type="Script" uid="uid://440ccrg5g5i4" path="res://Scripts/OptionSelect.cs" id="1_un06g"]
 [ext_resource type="PackedScene" uid="uid://tw8gg5lshia7" path="res://Scenes/ItemScrollList.tscn" id="2_got7x"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="2_pele7"]
-[ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/Buttons/shine.png" id="4_7cp8t"]
-[ext_resource type="Texture2D" uid="uid://cxgafcteoag7d" path="res://Assets/Buttons/shine_disabled.png" id="5_jedbl"]
+[ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/Buttons/1/shine.png" id="4_7cp8t"]
+[ext_resource type="Texture2D" uid="uid://cxgafcteoag7d" path="res://Assets/Buttons/Disabled/shine_disabled.png" id="5_jedbl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jedbl"]
 
@@ -20,10 +19,9 @@ script = ExtResource("1_un06g")
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.361
+anchor_top = 0.25
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 0.0799866
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.176471, 0.180392, 0.34902, 1)
@@ -31,10 +29,10 @@ color = Color(0.176471, 0.180392, 0.34902, 1)
 [node name="ListContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.465
+anchor_top = 0.354
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 0.199982
+offset_top = 0.119995
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 4
@@ -46,7 +44,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
-theme = ExtResource("2_pele7")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jedbl")
 allow_search = false
@@ -54,29 +51,29 @@ auto_height = true
 text_overrun_behavior = 0
 wraparound_items = false
 item_count = 0
+fixed_icon_size = Vector2i(15, 15)
 ScrollDeadzone = 10
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 0.361
+anchor_bottom = 0.25
 offset_left = 10.0
 offset_top = 10.0
 offset_right = -10.0
-offset_bottom = 0.0799866
 
 [node name="ConfirmButton" type="TextureButton" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.914
-anchor_top = 0.415
+anchor_top = 0.304
 anchor_right = 0.914
-anchor_bottom = 0.415
+anchor_bottom = 0.304
 offset_left = -33.72
-offset_top = -33.8
+offset_top = -33.88
 offset_right = 62.28
-offset_bottom = 62.2
+offset_bottom = 62.12
 scale = Vector2(0.7, 0.7)
 disabled = true
 texture_normal = ExtResource("4_7cp8t")
@@ -87,26 +84,24 @@ stretch_mode = 0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.426
-anchor_top = 0.412
+anchor_top = 0.303
 anchor_right = 0.426
-anchor_bottom = 0.412
+anchor_bottom = 0.303
 offset_left = -92.48
-offset_top = -17.64
+offset_top = -18.16
 offset_right = 92.52
-offset_bottom = 18.36
+offset_bottom = 17.84
 
 [node name="NumSelectedLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.021
-anchor_top = 0.361
+anchor_top = 0.25
 anchor_right = 0.021
-anchor_bottom = 0.361
+anchor_bottom = 0.25
 offset_left = 4.92
-offset_top = -22.92
+offset_top = -23.0
 offset_right = 106.92
-offset_bottom = 0.0799866
-theme = ExtResource("2_pele7")
 text = "0/1 selected"
 
 [connection signal="ItemPressed" from="ListContainer/List" to="." method="ItemSelected"]

@@ -1,12 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvnw7d40js5ir"]
+[gd_scene load_steps=8 format=3 uid="uid://bvnw7d40js5ir"]
 
 [ext_resource type="Script" uid="uid://po1mrq7whdm3" path="res://Scripts/ActiveHunt.cs" id="1_x6net"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_dweee"]
-[ext_resource type="Theme" uid="uid://bhogmfqdxs21d" path="res://BlueTextTheme.tres" id="3_o1qik"]
-[ext_resource type="Texture2D" uid="uid://be32drmjwk5yf" path="res://Assets/Buttons/plus.png" id="4_j34iw"]
-[ext_resource type="Texture2D" uid="uid://brw57ykf3wbmo" path="res://Assets/Buttons/plus_disabled.png" id="5_307le"]
-[ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/Buttons/minus.png" id="5_pmkmo"]
-[ext_resource type="Texture2D" uid="uid://yyefeyqnciwl" path="res://Assets/Buttons/minus_disabled.png" id="7_85t6y"]
+[ext_resource type="Texture2D" uid="uid://be32drmjwk5yf" path="res://Assets/Buttons/1/plus.png" id="4_j34iw"]
+[ext_resource type="Texture2D" uid="uid://brw57ykf3wbmo" path="res://Assets/Buttons/Disabled/plus_disabled.png" id="5_307le"]
+[ext_resource type="Texture2D" uid="uid://dhdrntuk6qwnx" path="res://Assets/Buttons/1/minus.png" id="5_pmkmo"]
+[ext_resource type="Texture2D" uid="uid://yyefeyqnciwl" path="res://Assets/Buttons/Disabled/minus_disabled.png" id="7_85t6y"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_307le"]
 
@@ -54,7 +53,6 @@ anchor_bottom = 0.655
 offset_left = 0.174995
 offset_right = -0.163025
 offset_bottom = -0.0200043
-theme = ExtResource("3_o1qik")
 theme_override_font_sizes/font_size = 40
 text = "XXXXX"
 horizontal_alignment = 1
@@ -70,7 +68,6 @@ anchor_bottom = 1.0
 offset_left = 0.174995
 offset_top = -0.0200043
 offset_right = -0.162994
-theme = ExtResource("3_o1qik")
 theme_override_font_sizes/font_size = 20
 text = "00:00:00     0s"
 horizontal_alignment = 1
@@ -124,7 +121,6 @@ anchor_bottom = 0.271
 offset_left = -0.0999985
 offset_right = -0.12001
 offset_bottom = -0.0350018
-theme = ExtResource("3_o1qik")
 
 [connection signal="pressed" from="SelectButton" to="." method="SelectButton"]
 [connection signal="pressed" from="AddButton" to="." method="Increment"]
