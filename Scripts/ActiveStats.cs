@@ -3,7 +3,7 @@ using System;
 
 public partial class ActiveStats : Control
 {
-	Label label;
+	Label inputLabel;
 	NumberInputField encounterInput;
 	HuntData data;
 	bool screenVisible = false;
@@ -15,8 +15,8 @@ public partial class ActiveStats : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		label = GetNode<Label>("ScrollContainer/Label");
-		encounterInput = GetNode<NumberInputField>("ScrollContainer/Label/NumberInputField");
+		inputLabel = GetNode<Label>("ScrollContainer/BoxContainer/InputLabel");
+		encounterInput = GetNode<NumberInputField>("ScrollContainer/BoxContainer/NumberInputField");
 		screenVisible = true;
 		SetColors();
 	}
@@ -43,23 +43,28 @@ public partial class ActiveStats : Control
 	{
 		data = hunt;
 		SetStats();
+		
+		// Set Buffer size
+		int sizeY = (int)Size.Y / 4;
+		GetNode<Label>("ScrollContainer/BoxContainer/Buffer").CustomMinimumSize = new Vector2(0, sizeY);
 	}
 	
 	private void SetStats()
 	{
+		Label label = GetNode<Label>("ScrollContainer/BoxContainer/Label");
 		float baseOdds = CalculateBaseOdds(data.combo);
 		int encounterTime = data.count > 0 ? data.timeSpent / data.count : data.timeSpent;
 		int fullOdds = (int)Math.Ceiling(baseOdds);
 		fullOdds += fullOdds > 0 ? fullOdds * (data.count / fullOdds) : 0; // Find the next multiple of fullOdds
 		float luck = (float)Math.Round(CalculateVariableLuck(data.count) * 100, 2); // Round the luck percent to 2 decimal places
 		
-		string labelInfo = $"Pokemon seen: {data.count}\nTime Spent: {CalculateTimeString()}\nCurrent Odds: 1/{baseOdds}\n\n";
+		string labelInfo = $"Pokemon seen: {data.count}\nTime Spent: {CalculateTimeString()}\nCurrent Odds: 1/{Math.Round(baseOdds, 2)}\n\n";
 		labelInfo += $"You see a pokemon every {encounterTime}s on average. ";
 		labelInfo += $"With {data.incrementValue} pokemon seen at a time, that means each increment takes {encounterTime * data.incrementValue}s.\n\n";
 		labelInfo += $"At the current odds, it will take you {encounterTime * (fullOdds - data.count) / 60}mins to reach {fullOdds} pokemon seen.\n\n";
-		labelInfo += $"The chances of you seeing a shiny by now are {Math.Round(100 - luck, 2)}%, so you are in the {luck}th percentile of unlucky hunts.\n\n\n\n";
+		labelInfo += $"The chances of you seeing a shiny by now are {Math.Round(100 - luck, 2)}%, so you are in the {luck}th percentile of unlucky hunts.\n";
 		
-		constantPortion = labelInfo; // Store the current info so it doesn't need to be calculated anymore
+		label.Text = labelInfo;
 		EncounterInputUpdated();
 	}
 	
@@ -68,7 +73,7 @@ public partial class ActiveStats : Control
 		string newLabelText = constantPortion;
 		float luck = CalculateVariableLuck(encounterInput.Value) * 100;
 		newLabelText += $"The odds of getting a shiny after {encounterInput.Value} encounters is: {Math.Round(100 - luck, 2)}%.";
-		label.Text = newLabelText;
+		inputLabel.Text = newLabelText;
 	}
 	
 	private string CalculateTimeString()

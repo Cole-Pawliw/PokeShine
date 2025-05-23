@@ -34,16 +34,21 @@ stretch_mode = 0
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.121
-anchor_top = 0.189
+anchor_left = 0.125
+anchor_top = 0.194
 anchor_right = 0.875
-anchor_bottom = 0.911
-offset_left = -0.0800018
-offset_top = -0.0800018
+anchor_bottom = 0.917
+offset_top = 0.319992
 offset_right = -3.05176e-05
-offset_bottom = 0.0799561
+offset_bottom = -0.240051
+scroll_deadzone = 10
 
-[node name="Label" type="Label" parent="ScrollContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical = true
+
+[node name="Label" type="Label" parent="ScrollContainer/BoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -57,27 +62,25 @@ You see a pokemon every <>s on average. With <> pokemon seen at a time, that mea
 At the current odds, it will take you <>s to reach <> pokemon seen.
 
 The chances of you seeing a shiny by now are <>%, so you are in the <> percentile of unlucky hunts.
-
-
-
-The odds of getting a shiny after <> encounters is: <>%"
+"
 autowrap_mode = 2
 
-[node name="NumberInputField" parent="ScrollContainer/Label" instance=ExtResource("4_30a38")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.453
-anchor_top = 0.827
-anchor_right = 0.453
-anchor_bottom = 0.827
-offset_left = -45.986
-offset_top = 0.302979
-offset_right = 47.014
-offset_bottom = 37.303
-grow_horizontal = 1
-grow_vertical = 1
+[node name="NumberInputField" parent="ScrollContainer/BoxContainer" instance=ExtResource("4_30a38")]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
 placeholder_text = "0"
 MaxValue = 99999
 
+[node name="InputLabel" type="Label" parent="ScrollContainer/BoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "The odds of getting a shiny after <> encounters is: <>%"
+autowrap_mode = 2
+
+[node name="Buffer" type="Label" parent="ScrollContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+
 [connection signal="pressed" from="BackButton" to="." method="EmitBackButtonPressed"]
-[connection signal="ValueChanged" from="ScrollContainer/Label/NumberInputField" to="." method="EncounterInputUpdated"]
+[connection signal="ValueChanged" from="ScrollContainer/BoxContainer/NumberInputField" to="." method="EncounterInputUpdated"]

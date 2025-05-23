@@ -69,6 +69,7 @@ public partial class HuntCreator : Control
 		
 		selections[0] = data.huntGame;
 		selections[2] = data.huntMethod;
+		selections[3] = data.huntRoute;
 		
 		if (selections[2] == "Random Encounter")
 		{
