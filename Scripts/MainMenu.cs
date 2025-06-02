@@ -9,6 +9,7 @@ public partial class MainMenu : Control
 	List<ActiveHunt> activeHunts;
 	List<Captured> completedHunts;
 	
+	AudioStreamPlayer tickPlayer;
 	TabContainer tabContainer;
 	Panel huntPanel, completedPanel;
 	Button mainButton, completedButton;
@@ -20,9 +21,6 @@ public partial class MainMenu : Control
 	int selectedHuntToSort = -1; // -1 means no hunt selected
 	int selectedHuntSiblingIndex = -1;
 	List<int> flags; // List of ActiveHunts that hav been flagged to be moved
-	
-	public string sortType = "";
-	public bool[] globalSettings = {true, true, true, true, true, true};
 	
 	[Signal]
 	public delegate void HuntButtonPressedEventHandler(int selectedHuntID);
@@ -46,6 +44,7 @@ public partial class MainMenu : Control
 		completedHunts = new List<Captured>();
 		flags = new List<int>();
 		
+		tickPlayer = GetNode<AudioStreamPlayer>("TickPlayer");
 		tabContainer = GetNode<TabContainer>("TabContainer");
 		huntPanel = GetNode<Panel>("TabContainer/HuntContainer/HuntPanel");
 		completedPanel = GetNode<Panel>("TabContainer/CompletedContainer/CompletedPanel");
@@ -118,9 +117,9 @@ public partial class MainMenu : Control
 		TextureButton settingsButton;
 		settingsButton = GetNode<TextureButton>("SettingsButton");
 		
-		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/settings.png");
-		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/create.png");
-		sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter_off.png");
+		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/settings.png");
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/create.png");
+		sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/filter_off.png");
 		
 		foreach (ActiveHunt hunt in activeHunts)
 		{
@@ -128,15 +127,29 @@ public partial class MainMenu : Control
 		}
 		
 		ColorRect bg = GetNode<ColorRect>("Background");
-		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
+		bg.Color = new Color(GlobalSettings.backgrounds[GlobalSettings.colorMode - 1]);
 	}
 	
 	public void UpdateAllSettings(bool[] settings)
 	{
-		globalSettings = settings;
+		int[] changes = {-1, -1, -1, -1, -1, -1}; // Markers for changed settings
+		for (int i = 0; i < settings.Length; i++)
+		{
+			if (GlobalSettings.huntInfo[i] != settings[i])
+			{
+				changes[i] = settings[i] ? 1 : 0; // 1 for true, 0 for false
+			}
+		}
+		
+		GlobalSettings.huntInfo = settings; // Update global settings
 		foreach (HuntData hunt in hunts)
 		{
-			hunt.SetSettings(settings);
+			hunt.SetSettings(changes); // Update each hunt with changes
+		}
+		
+		foreach (ActiveHunt hunt in activeHunts)
+		{
+			hunt.UpdateLabels(); // Edit labels to reflect new settings
 		}
 	}
 	
@@ -184,7 +197,7 @@ public partial class MainMenu : Control
 		newHuntScene.SelectButtonPressed += EmitHuntButtonPressed;
 		newHuntScene.SortButtonDown += HuntToSortSelected;
 		newHuntScene.SortButtonUp += HuntToSortDeselected;
-		newHuntScene.HuntIncremented += SaveActive;
+		newHuntScene.HuntIncremented += PlayTick;
 		newHuntScene.InitializeHunt(hunt);
 	}
 	
@@ -209,7 +222,7 @@ public partial class MainMenu : Control
 		
 		// Connect signals and initialize the hunt
 		newHuntScene.SelectButtonPressed += EmitCapturedButtonPressed;
-		newHuntScene.InitializeInfo(hunt, sortType);
+		newHuntScene.InitializeInfo(hunt);
 	}
 	
 	public void AddHunt(HuntData hunt)
@@ -320,7 +333,7 @@ public partial class MainMenu : Control
 			if (hunt.data.huntID == finished[huntIndex].huntID)
 			{
 				hunt.data = finished[huntIndex];
-				hunt.UpdateLabel(sortType);
+				hunt.UpdateLabel();
 			}
 		}
 	}
@@ -441,7 +454,7 @@ public partial class MainMenu : Control
 		Captured hunt = completedHunts[index];
 		// This is bad but it saves writing a function that does 90% of this function
 		// Basically jump starts the ActiveHunt to change its sprite
-		hunt.InitializeInfo(hunt.data, sortType);
+		hunt.InitializeInfo(hunt.data);
 	}
 	
 	public void SortHunts()
@@ -554,7 +567,7 @@ public partial class MainMenu : Control
 	
 	private void SetButtonTextures(string baseName)
 	{
-		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/{baseName}.png");
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/{baseName}.png");
 		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/Buttons/disabled/{baseName}_disabled.png");
 	}
 	
@@ -576,14 +589,14 @@ public partial class MainMenu : Control
 		if (sortMode)
 		{
 			PauseHunts();
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/filter.png");
 			mainButton.Disabled = true;
 			completedButton.Disabled = true;
 			newHuntButton.Disabled = true;
 		}
 		else
 		{
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter_off.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/filter_off.png");
 			mainButton.Disabled = false;
 			completedButton.Disabled = false;
 			newHuntButton.Disabled = false;
@@ -670,7 +683,7 @@ public partial class MainMenu : Control
 		{
 			return;
 		}
-		sortType = selectedOption;
+		GlobalSettings.sort = selectedOption;
 		SortCaptured(selectedOption);
 		
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
@@ -683,7 +696,7 @@ public partial class MainMenu : Control
 		
 		foreach (Captured hunt in completedHunts)
 		{
-			hunt.UpdateLabel(sortType);
+			hunt.UpdateLabel();
 		}
 	}
 	
@@ -737,6 +750,14 @@ public partial class MainMenu : Control
 		
 		UpdateCompletedPositions();
 		UpdateHuntIndices();
+	}
+	
+	private void PlayTick()
+	{
+		if (GlobalSettings.soundOn)
+		{
+			tickPlayer.Play();
+		}
 	}
 	
 	private void EmitHuntButtonPressed(int id)

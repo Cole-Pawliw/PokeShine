@@ -133,18 +133,36 @@ public class HuntData
 		return !hunt1.Equals(hunt2);
 	}
 	
-	public void SetSettings(bool[] settings)
+	public void SetSettings(int[] settings)
 	{
-		showShiny = settings[0];
-		showRegular = settings[1];
-		showOdds = settings[2];
-		showFullTimer = settings[4];
-		showMiniTimer = settings[5];
-		if (huntMethod == "Poke Radar" || huntMethod == "Chain Fishing" || huntMethod == "Dex Nav"
-			|| huntMethod == "SOS Chain" || huntMethod == "Catch Combo" || (huntMethod == "Mass Outbreak"
-			&& (huntGame == "Scarlet" || huntGame == "Violet")))
+		if (settings[0] != -1)
 		{
-			showCombo = settings[3];
+			showShiny = settings[0] == 1 ? true : false;
+		}
+		if (settings[1] != -1)
+		{
+			showRegular = settings[1] == 1 ? true : false;
+		}
+		if (settings[2] != -1)
+		{
+			showOdds = settings[2] == 1 ? true : false;
+		}
+		if (settings[3] != -1)
+		{
+			if (huntMethod == "Poke Radar" || huntMethod == "Chain Fishing" || huntMethod == "Dex Nav"
+				|| huntMethod == "SOS Chain" || huntMethod == "Catch Combo" || (huntMethod == "Mass Outbreak"
+				&& (huntGame == "Scarlet" || huntGame == "Violet")))
+			{
+				showCombo = settings[3] == 1 ? true : false;
+			}
+		}
+		if (settings[4] != -1)
+		{
+			showFullTimer = settings[4] == 1 ? true : false;
+		}
+		if (settings[5] != -1)
+		{
+			showMiniTimer = settings[5] == 1 ? true : false;
 		}
 	}
 	
@@ -277,8 +295,8 @@ public partial class ActiveHunt : Control
 		addButton = GetNode<TextureButton>("AddButton");
 		subButton = GetNode<TextureButton>("SubButton");
 		
-		addButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/plus.png");
-		subButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/minus.png");
+		addButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/plus.png");
+		subButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/minus.png");
 	}
 	
 	public void InitializeHunt(HuntData hunt)
@@ -368,12 +386,14 @@ public partial class ActiveHunt : Control
 		UpdateCount();
 		UpdateTimer();
 		StartTimer();
+		MakeSound();
 	}
 	
 	private void Decrement()
 	{
 		data.count = Math.Max(data.count - data.incrementValue, 0);
 		UpdateCount();
+		MakeSound();
 	}
 	
 	public void ToggleSort()
@@ -396,7 +416,7 @@ public partial class ActiveHunt : Control
 		EmitSignal("SortButtonUp");
 	}
 	
-	private void Save()
+	private void MakeSound()
 	{
 		EmitSignal("HuntIncremented");
 	}

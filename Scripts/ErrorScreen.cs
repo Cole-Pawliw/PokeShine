@@ -18,7 +18,7 @@ public partial class ErrorScreen : Control
 	public void SetColors()
 	{
 		ColorRect bg = GetNode<ColorRect>("Background");
-		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
+		bg.Color = new Color(GlobalSettings.backgrounds[GlobalSettings.colorMode - 1]);
 	}
 	
 	public void DisplayError(string e)

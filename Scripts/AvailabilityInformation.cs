@@ -22,8 +22,6 @@ public class GameInfo
 
 public class GameHuntInformation
 {
-	public static string[] backgrounds = {"2D2E59", "EE4266", "32373B", "FFCAB1"}; // Color codes for background colors
-	public static int colorMode = 1; // A number 1-4 indicating what color scheme to use
 	
 	// Stores the repeated GameInfo objects for re-use in gameInfoDict
 	public static GameInfo[] infoStorage = {
@@ -53,6 +51,15 @@ public class GameHuntInformation
 		{"Brilliant Diamond", infoStorage[13]}, {"Shining Pearl", infoStorage[13]},
 		{"Legends Arceus", infoStorage[14]},
 		{"Scarlet", infoStorage[15]}, {"Violet", infoStorage[15]} };
+}
+
+public class GlobalSettings
+{
+	public static string[] backgrounds = {"2D2E59", "EE4266", "32373B", "FFCAB1"}; // Color codes for background colors
+	public static int colorMode = 1; // A number 1-4 indicating what color scheme to use
+	public static string sort = ""; // The variable used to sort completed hunts by
+	public static bool soundOn = true; // Determines if a sound is made on increment.decrement
+	public static bool[] huntInfo = {true, true, true, true, true, true}; // Corresponds to what is visible in hunts
 }
 
 public partial class AvailabilityInformation : Node

@@ -5,12 +5,14 @@ using System.Collections.Generic;
 public partial class ShinyHuntScreen : Control
 {
 	public HuntData data = new HuntData();
+	AudioStreamPlayer tickPlayer;
 	Label counter, info;
 	TextureButton resetButton;
 	List<Sprite2D> sprites;
 	double secondTimer = 0; // Tracks how much time has passed up to 1 second
 	int resetTimer = 0; // Times how long each reset takes
 	bool activeHunt = false; // True when this screen is being used by a hunt
+	bool muted = false; // Determines whether to play a tick sound or not
 	
 	float halfXAnchor = 0.5f, thirdXAnchor = 0.333f, quarterXAnchor = 0.25f, yAnchor = 0.833f; // Proportions for settings constants
 	int halfX = 240, thirdX = 160, quarterX = 120, y = 600, yOffset = 120; // Constant values used for placing sprites in a grid
@@ -29,6 +31,7 @@ public partial class ShinyHuntScreen : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		tickPlayer = GetNode<AudioStreamPlayer>("TickPlayer");
 		counter = GetNode<Label>("Count");
 		info = GetNode<Label>("HuntInfo");
 		resetButton = GetNode<TextureButton>("ResetButton");
@@ -68,15 +71,15 @@ public partial class ShinyHuntScreen : Control
 		subButton = GetNode<TextureButton>("SubButton");
 		infoButton = GetNode<TextureButton>("InfoButton");
 		
-		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/back.png");
-		shinyButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/shine.png");
-		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/settings.png");
-		subButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/minus.png");
-		resetButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/reset.png");
-		infoButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/info.png");
+		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/back.png");
+		shinyButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/shine.png");
+		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/settings.png");
+		subButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/minus.png");
+		resetButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/reset.png");
+		infoButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/info.png");
 		
 		ColorRect bg = GetNode<ColorRect>("Background");
-		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
+		bg.Color = new Color(GlobalSettings.backgrounds[GlobalSettings.colorMode - 1]);
 	}
 	
 	public override void _Notification(int what)
@@ -485,6 +488,7 @@ public partial class ShinyHuntScreen : Control
 			data.oddsBonus += data.incrementValue; // oddsBonus increases for dex nav only
 		}
 		resetTimer = 0;
+		PlayTick();
 		UpdateCounterLabel();
 		UpdateInfoLabel();
 	}
@@ -508,6 +512,7 @@ public partial class ShinyHuntScreen : Control
 			}
 			
 			data.count -= data.incrementValue;
+			PlayTick();
 			UpdateCounterLabel();
 			UpdateInfoLabel();
 		}
@@ -517,6 +522,14 @@ public partial class ShinyHuntScreen : Control
 	{
 		data.combo = 0;
 		UpdateInfoLabel();
+	}
+	
+	private void PlayTick()
+	{
+		if (GlobalSettings.soundOn)
+		{
+			tickPlayer.Play();
+		}
 	}
 	
 	private void BackToMenu()

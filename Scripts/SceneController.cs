@@ -6,13 +6,12 @@ using System.IO;
 
 /*
 Bugs and Changes
+- Expand on routes
 - Clean up code
 - Add luck to FinishedStats
 - Add clear all button to OptionSelect
 - Different font
 - Edit button design
-- REMOVE TRY CATCH ON EVERYTHING BEFORE RELEASE
-- Enable donate button
 */
 
 /*
@@ -28,7 +27,7 @@ public partial class SceneController : Control
 	JsonManager json;
 	string saveFileName = "savefile.save", activeFileName = "ActiveHunts.save", capturedFileName = "CapturedHunts.save";
 	string path = "user://";
-	string versionNumber = "1.0";
+	string versionNumber = "1.0.1";
 	
 	double timer = 0;
 	
@@ -203,17 +202,17 @@ public partial class SceneController : Control
 		HuntData huntToAdd = new HuntData(startHuntScreen.pokemonSelected, gameName, method, route, charm, oddsBonus, startDT);
 		
 		// Set common settings (not made yet
-		huntToAdd.showShiny = mainScreen.globalSettings[0];
-		huntToAdd.showRegular = mainScreen.globalSettings[1];
-		huntToAdd.showOdds = mainScreen.globalSettings[2];
-		huntToAdd.showFullTimer = mainScreen.globalSettings[4];
-		huntToAdd.showMiniTimer = mainScreen.globalSettings[5];
+		huntToAdd.showShiny = GlobalSettings.huntInfo[0];
+		huntToAdd.showRegular = GlobalSettings.huntInfo[1];
+		huntToAdd.showOdds = GlobalSettings.huntInfo[2];
+		huntToAdd.showFullTimer = GlobalSettings.huntInfo[4];
+		huntToAdd.showMiniTimer = GlobalSettings.huntInfo[5];
 		// Gross if statement but this function is rarely called
 		if (huntToAdd.huntMethod == "Poke Radar" || huntToAdd.huntMethod == "Chain Fishing" || huntToAdd.huntMethod == "Dex Nav"
 			|| huntToAdd.huntMethod == "SOS Chain" || huntToAdd.huntMethod == "Catch Combo" || (huntToAdd.huntMethod == "Mass Outbreak"
 			&& (huntToAdd.huntGame == "Scarlet" || huntToAdd.huntGame == "Violet")))
 		{
-			huntToAdd.showCombo = mainScreen.globalSettings[3];
+			huntToAdd.showCombo = GlobalSettings.huntInfo[3];
 		}
 		
 		mainScreen.AddHunt(huntToAdd);
@@ -274,7 +273,7 @@ public partial class SceneController : Control
 		AddChild(settingsScreen);
 		settingsScreen.BackButtonPressed += CloseSettings;
 		settingsScreen.NewColors += SetColors;
-		settingsScreen.SetSettings(mainScreen.globalSettings);
+		settingsScreen.SetSettings();
 		
 		settingsScreen.Visible = true;
 		mainScreen.Visible = false;
@@ -302,7 +301,7 @@ public partial class SceneController : Control
 	{
 		mainScreen.SetColors();
 		huntScreen.SetColors();
-		Theme = (Theme)GD.Load($"res://ColorTheme{GameHuntInformation.colorMode}.tres");
+		Theme = (Theme)GD.Load($"res://ColorTheme{GlobalSettings.colorMode}.tres");
 	}
 	
 	private void Save()
@@ -312,14 +311,15 @@ public partial class SceneController : Control
 			IncludeFields = true,
 		};
 		
-		string fullSave = $"v{versionNumber}\nsortby:{mainScreen.sortType}\n";
-		fullSave += $"colors:{GameHuntInformation.colorMode}\n";
-		fullSave += $"show shiny:{mainScreen.globalSettings[0]}\n";
-		fullSave += $"show regular:{mainScreen.globalSettings[1]}\n";
-		fullSave += $"show odds:{mainScreen.globalSettings[2]}\n";
-		fullSave += $"show combo:{mainScreen.globalSettings[3]}\n";
-		fullSave += $"show hunt timer:{mainScreen.globalSettings[4]}\n";
-		fullSave += $"show encounter timer:{mainScreen.globalSettings[5]}\n";
+		string fullSave = $"v{versionNumber}\nsortby:{GlobalSettings.sort}\n";
+		fullSave += $"colors:{GlobalSettings.colorMode}\n";
+		fullSave += $"volume:{GlobalSettings.soundOn}\n";
+		fullSave += $"show shiny:{GlobalSettings.huntInfo[0]}\n";
+		fullSave += $"show regular:{GlobalSettings.huntInfo[1]}\n";
+		fullSave += $"show odds:{GlobalSettings.huntInfo[2]}\n";
+		fullSave += $"show combo:{GlobalSettings.huntInfo[3]}\n";
+		fullSave += $"show hunt timer:{GlobalSettings.huntInfo[4]}\n";
+		fullSave += $"show encounter timer:{GlobalSettings.huntInfo[5]}\n";
 		json.SaveJsonToFile(path, saveFileName, fullSave);
 		SaveActiveHunts();
 		SaveCaptured();
@@ -388,6 +388,9 @@ public partial class SceneController : Control
 		
 		switch (datas[0])
 		{
+			case "v1.0.1":
+				Load101(fullLoad);
+				break;
 			case "v1.0":
 				Load096(fullLoad);
 				break;
@@ -406,13 +409,28 @@ public partial class SceneController : Control
 		}
 	}
 	
+	private void Load101(string fullLoad)
+	{
+		string[] datas = fullLoad.Split("\n");
+		int size = datas.Length;
+		GlobalSettings.sort = datas[1].Split(':')[1];
+		GlobalSettings.colorMode = Int32.Parse(datas[2].Split(':')[1]);
+		GlobalSettings.soundOn = bool.Parse(datas[3].Split(':')[1]);
+		GlobalSettings.huntInfo = [ bool.Parse(datas[4].Split(':')[1]), bool.Parse(datas[5].Split(':')[1]),
+									  bool.Parse(datas[6].Split(':')[1]), bool.Parse(datas[7].Split(':')[1]),
+									  bool.Parse(datas[8].Split(':')[1]), bool.Parse(datas[9].Split(':')[1]) ];
+		
+		LoadActiveHunts();
+		LoadCaptured();
+	}
+	
 	private void Load096(string fullLoad)
 	{
 		string[] datas = fullLoad.Split("\n");
 		int size = datas.Length;
-		mainScreen.sortType = datas[1].Split(':')[1];
-		GameHuntInformation.colorMode = Int32.Parse(datas[2].Split(':')[1]);
-		mainScreen.globalSettings = [ bool.Parse(datas[3].Split(':')[1]), bool.Parse(datas[4].Split(':')[1]),
+		GlobalSettings.sort = datas[1].Split(':')[1];
+		GlobalSettings.colorMode = Int32.Parse(datas[2].Split(':')[1]);
+		GlobalSettings.huntInfo = [ bool.Parse(datas[3].Split(':')[1]), bool.Parse(datas[4].Split(':')[1]),
 									  bool.Parse(datas[5].Split(':')[1]), bool.Parse(datas[6].Split(':')[1]),
 									  bool.Parse(datas[7].Split(':')[1]), bool.Parse(datas[8].Split(':')[1]) ];
 		
@@ -424,7 +442,7 @@ public partial class SceneController : Control
 	{
 		string[] datas = fullLoad.Split("\n");
 		int size = datas.Length;
-		mainScreen.sortType = datas[1].Split(':')[1];
+		GlobalSettings.sort = datas[1].Split(':')[1];
 		
 		LoadActiveHunts();
 		LoadCaptured();
@@ -496,7 +514,7 @@ public partial class SceneController : Control
 	{
 		string[] datas = fullLoad.Split("\n");
 		int size = datas.Length;
-		mainScreen.sortType = datas[1].Split(':')[1];
+		GlobalSettings.sort = datas[1].Split(':')[1];
 		
 		var options = new JsonSerializerOptions
 		{
