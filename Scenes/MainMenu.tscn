@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dgj5yuhlagrg8"]
+[gd_scene load_steps=10 format=3 uid="uid://dgj5yuhlagrg8"]
 
 [ext_resource type="Script" uid="uid://crb4ie5d888n1" path="res://Scripts/MainMenu.cs" id="1_xcoif"]
 [ext_resource type="Texture2D" uid="uid://lrsmx4iisltv" path="res://Assets/Buttons/1/create.png" id="2_cmrfp"]
+[ext_resource type="AudioStream" uid="uid://drh7mpbf4vh0d" path="res://Assets/tick_sound.mp3" id="2_loo7a"]
 [ext_resource type="Texture2D" uid="uid://dldpprj3fbyid" path="res://Assets/Buttons/Disabled/create_disabled.png" id="3_loo7a"]
 [ext_resource type="ButtonGroup" uid="uid://bcu6mtho33lvp" path="res://MenuButtonGroup.tres" id="5_3ghdq"]
 [ext_resource type="Texture2D" uid="uid://dplhrfhm5q8ju" path="res://Assets/Buttons/1/filter_off.png" id="5_w3t6f"]
@@ -24,6 +25,9 @@ anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="TickPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_loo7a")
 
 [node name="NewHuntButton" type="TextureButton" parent="."]
 layout_mode = 1

@@ -9,6 +9,7 @@ public partial class MainMenu : Control
 	List<ActiveHunt> activeHunts;
 	List<Captured> completedHunts;
 	
+	AudioStreamPlayer tickPlayer;
 	TabContainer tabContainer;
 	Panel huntPanel, completedPanel;
 	Button mainButton, completedButton;
@@ -20,9 +21,6 @@ public partial class MainMenu : Control
 	int selectedHuntToSort = -1; // -1 means no hunt selected
 	int selectedHuntSiblingIndex = -1;
 	List<int> flags; // List of ActiveHunts that hav been flagged to be moved
-	
-	public string sortType = "";
-	public bool[] globalSettings = {true, true, true, true, true, true};
 	
 	[Signal]
 	public delegate void HuntButtonPressedEventHandler(int selectedHuntID);
@@ -46,6 +44,7 @@ public partial class MainMenu : Control
 		completedHunts = new List<Captured>();
 		flags = new List<int>();
 		
+		tickPlayer = GetNode<AudioStreamPlayer>("TickPlayer");
 		tabContainer = GetNode<TabContainer>("TabContainer");
 		huntPanel = GetNode<Panel>("TabContainer/HuntContainer/HuntPanel");
 		completedPanel = GetNode<Panel>("TabContainer/CompletedContainer/CompletedPanel");
@@ -118,9 +117,9 @@ public partial class MainMenu : Control
 		TextureButton settingsButton;
 		settingsButton = GetNode<TextureButton>("SettingsButton");
 		
-		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/settings.png");
-		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/create.png");
-		sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter_off.png");
+		settingsButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/settings.png");
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/create.png");
+		sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/filter_off.png");
 		
 		foreach (ActiveHunt hunt in activeHunts)
 		{
@@ -128,15 +127,29 @@ public partial class MainMenu : Control
 		}
 		
 		ColorRect bg = GetNode<ColorRect>("Background");
-		bg.Color = new Color(GameHuntInformation.backgrounds[GameHuntInformation.colorMode - 1]);
+		bg.Color = new Color(GlobalSettings.backgrounds[GlobalSettings.colorMode - 1]);
 	}
 	
 	public void UpdateAllSettings(bool[] settings)
 	{
-		globalSettings = settings;
+		int[] changes = {-1, -1, -1, -1, -1, -1}; // Markers for changed settings
+		for (int i = 0; i < settings.Length; i++)
+		{
+			if (GlobalSettings.huntInfo[i] != settings[i])
+			{
+				changes[i] = settings[i] ? 1 : 0; // 1 for true, 0 for false
+			}
+		}
+		
+		GlobalSettings.huntInfo = settings; // Update global settings
 		foreach (HuntData hunt in hunts)
 		{
-			hunt.SetSettings(settings);
+			hunt.SetSettings(changes); // Update each hunt with changes
+		}
+		
+		foreach (ActiveHunt hunt in activeHunts)
+		{
+			hunt.UpdateLabels(); // Edit labels to reflect new settings
 		}
 	}
 	
@@ -166,26 +179,22 @@ public partial class MainMenu : Control
 		// Add a new scene to hold the HuntData
 		ActiveHunt newHuntScene = (ActiveHunt)GD.Load<PackedScene>("res://Scenes/ActiveHunt.tscn").Instantiate();
 		
-		// Insert at the right location
-		if (hunt.huntIndex >= activeHunts.Count)
-		{
-			activeHunts.Add(newHuntScene);
-		}
-		else
-		{
-			activeHunts.Insert(hunt.huntIndex, newHuntScene);
-		}
+		// Insert the new hunt
+		activeHunts.Add(newHuntScene);
 		
 		// Add the hunt to the current scene at the bottom of the list
 		huntPanel.AddChild(newHuntScene);
-		UpdateActivePositions();
 		
 		// Connect signals and initialize the hunt
 		newHuntScene.SelectButtonPressed += EmitHuntButtonPressed;
 		newHuntScene.SortButtonDown += HuntToSortSelected;
 		newHuntScene.SortButtonUp += HuntToSortDeselected;
-		newHuntScene.HuntIncremented += SaveActive;
+		newHuntScene.HuntIncremented += PlayTick;
 		newHuntScene.InitializeHunt(hunt);
+		
+		// Sort the hunts with the new hunt added and update all positions
+		SortActiveHunts();
+		UpdateActivePositions();
 	}
 	
 	private void AddCompletedHunt(CapturedData hunt)
@@ -193,23 +202,19 @@ public partial class MainMenu : Control
 		// Add a new scene to hold the HuntData
 		Captured newHuntScene = (Captured)GD.Load<PackedScene>("res://Scenes/Captured.tscn").Instantiate();
 		
-		// Insert at the right location
-		if (hunt.huntIndex >= completedHunts.Count)
-		{
-			completedHunts.Add(newHuntScene);
-		}
-		else
-		{
-			completedHunts.Insert(hunt.huntIndex, newHuntScene);
-		}
+		// Insert the new hunt
+		completedHunts.Add(newHuntScene);
 		
 		// Add the hunt to the current scene in the right position
 		completedPanel.AddChild(newHuntScene);
-		UpdateCompletedPositions();
 		
 		// Connect signals and initialize the hunt
 		newHuntScene.SelectButtonPressed += EmitCapturedButtonPressed;
-		newHuntScene.InitializeInfo(hunt, sortType);
+		newHuntScene.InitializeInfo(hunt);
+		
+		// Sort the hunts with the new hunt added and update all positions
+		SortCapturedHunts();
+		UpdateCompletedPositions();
 	}
 	
 	public void AddHunt(HuntData hunt)
@@ -219,18 +224,10 @@ public partial class MainMenu : Control
 			return; // Return to prevent adding the same hunt twice
 		}
 		
-		// Insert at the right location
-		if (hunt.huntIndex > hunts.Count)
-		{
-			hunts.Add(hunt);
-		}
-		else
-		{
-			hunts.Insert(hunt.huntIndex, hunt);
-		}
+		// Add the new hunt
+		hunts.Add(hunt);
 		
 		AddActiveHunt(hunt);
-		UpdateHuntIndices();
 	}
 	
 	public void AddCaptured(CapturedData hunt)
@@ -240,18 +237,10 @@ public partial class MainMenu : Control
 			return; // Return to prevent adding the same hunt twice
 		}
 		
-		// Insert at the right location
-		if (hunt.huntIndex > finished.Count)
-		{
-			finished.Add(hunt);
-		}
-		else
-		{
-			finished.Insert(hunt.huntIndex, hunt);
-		}
+		// Add the new hunt
+		finished.Add(hunt);
 		
 		AddCompletedHunt(hunt);
-		UpdateHuntIndices();
 	}
 	
 	public bool UpdateHunt(HuntData updatedHunt)
@@ -320,7 +309,7 @@ public partial class MainMenu : Control
 			if (hunt.data.huntID == finished[huntIndex].huntID)
 			{
 				hunt.data = finished[huntIndex];
-				hunt.UpdateLabel(sortType);
+				hunt.UpdateLabel();
 			}
 		}
 	}
@@ -441,12 +430,57 @@ public partial class MainMenu : Control
 		Captured hunt = completedHunts[index];
 		// This is bad but it saves writing a function that does 90% of this function
 		// Basically jump starts the ActiveHunt to change its sprite
-		hunt.InitializeInfo(hunt.data, sortType);
+		hunt.InitializeInfo(hunt.data);
 	}
 	
 	public void SortHunts()
 	{
 		hunts.Sort((x, y) => x.huntIndex.CompareTo(y.huntIndex));
+	}
+	
+	private void SortActiveHunts()
+	{
+		activeHunts.Sort((x, y) => x.data.huntIndex.CompareTo(y.data.huntIndex));
+	}
+	
+	private void SortCapturedHunts()
+	{
+		completedHunts.Sort((x, y) => x.data.huntIndex.CompareTo(y.data.huntIndex));
+	}
+	
+	private void SortCapturedHunts(string sortMethod)
+	{
+		switch (sortMethod)
+		{
+			case "Start Date":
+				completedHunts.Sort((x, y) => x.data.startDate.CompareTo(y.data.startDate));
+				break;
+			case "End Date":
+				completedHunts.Sort((x, y) => x.data.endDate.CompareTo(y.data.endDate));
+				break;
+			case "Pokemon":
+				completedHunts.Sort((x, y) => x.data.pokemon.CompareTo(y.data.pokemon));
+				break;
+			case "Game":
+				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
+				break;
+			case "Generation":
+				// Start by sorting by game
+				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
+				
+				// Then sort by generation
+				completedHunts.Sort((x, y) => 
+					GameHuntInformation.gameInfoDict[x.data.huntGame].methodID.CompareTo(
+						GameHuntInformation.gameInfoDict[y.data.huntGame].methodID
+					));
+				break;
+			case "Encounters":
+				completedHunts.Sort((x, y) => x.data.count.CompareTo(y.data.count));
+				break;
+		}
+		
+		UpdateCompletedPositions();
+		UpdateHuntIndices();
 	}
 	
 	public int GetHuntIndex(int id)
@@ -554,7 +588,7 @@ public partial class MainMenu : Control
 	
 	private void SetButtonTextures(string baseName)
 	{
-		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/{baseName}.png");
+		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/{baseName}.png");
 		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/Buttons/disabled/{baseName}_disabled.png");
 	}
 	
@@ -576,14 +610,14 @@ public partial class MainMenu : Control
 		if (sortMode)
 		{
 			PauseHunts();
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/filter.png");
 			mainButton.Disabled = true;
 			completedButton.Disabled = true;
 			newHuntButton.Disabled = true;
 		}
 		else
 		{
-			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GameHuntInformation.colorMode}/filter_off.png");
+			sortButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/filter_off.png");
 			mainButton.Disabled = false;
 			completedButton.Disabled = false;
 			newHuntButton.Disabled = false;
@@ -657,7 +691,7 @@ public partial class MainMenu : Control
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
 		selectScreen.Name = "TypeSelect";
 		AddChild(selectScreen);
-		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game", "Generation"]);
+		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game", "Generation", "Encounters"]);
 		
 		selectScreen.CreateList(itemList, false);
 		selectScreen.CloseMenu += SortTypeSelected;
@@ -670,8 +704,8 @@ public partial class MainMenu : Control
 		{
 			return;
 		}
-		sortType = selectedOption;
-		SortCaptured(selectedOption);
+		GlobalSettings.sort = selectedOption;
+		SortCapturedHunts(selectedOption);
 		
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
 		selectScreen.Name = "AscendingSelect";
@@ -683,7 +717,7 @@ public partial class MainMenu : Control
 		
 		foreach (Captured hunt in completedHunts)
 		{
-			hunt.UpdateLabel(sortType);
+			hunt.UpdateLabel();
 		}
 	}
 	
@@ -707,36 +741,12 @@ public partial class MainMenu : Control
 		SaveAll();
 	}
 	
-	private void SortCaptured(string sortMethod)
+	private void PlayTick()
 	{
-		switch (sortMethod)
+		if (GlobalSettings.soundOn)
 		{
-			case "Start Date":
-				completedHunts.Sort((x, y) => x.data.startDate.CompareTo(y.data.startDate));
-				break;
-			case "End Date":
-				completedHunts.Sort((x, y) => x.data.endDate.CompareTo(y.data.endDate));
-				break;
-			case "Pokemon":
-				completedHunts.Sort((x, y) => x.data.pokemon.CompareTo(y.data.pokemon));
-				break;
-			case "Game":
-				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
-				break;
-			case "Generation":
-				// Start by sorting by game
-				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
-				
-				// Then sort by generation
-				completedHunts.Sort((x, y) => 
-					GameHuntInformation.gameInfoDict[x.data.huntGame].methodID.CompareTo(
-						GameHuntInformation.gameInfoDict[y.data.huntGame].methodID
-					));
-				break;
+			tickPlayer.Play();
 		}
-		
-		UpdateCompletedPositions();
-		UpdateHuntIndices();
 	}
 	
 	private void EmitHuntButtonPressed(int id)

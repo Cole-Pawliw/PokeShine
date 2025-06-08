@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://ugxewxi8b38p"]
+[gd_scene load_steps=17 format=3 uid="uid://ugxewxi8b38p"]
 
 [ext_resource type="Script" uid="uid://bmthsl75yon5c" path="res://Scripts/ShinyHuntScreen.cs" id="1_3hrlr"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_dwvgu"]
+[ext_resource type="AudioStream" uid="uid://drh7mpbf4vh0d" path="res://Assets/tick_sound.mp3" id="2_i22no"]
 [ext_resource type="StyleBox" uid="uid://dos6ncolrg4g7" path="res://DefaultColorStylebox.tres" id="2_impdu"]
 [ext_resource type="Texture2D" uid="uid://bk1lrtyw07huu" path="res://Assets/Buttons/1/shine.png" id="3_hjc35"]
 [ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="4_q83cm"]
@@ -32,6 +33,9 @@ anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
+
+[node name="TickPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_i22no")
 
 [node name="IncrementCounterButton" type="Button" parent="."]
 layout_mode = 1
