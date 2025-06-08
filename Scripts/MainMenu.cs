@@ -179,19 +179,11 @@ public partial class MainMenu : Control
 		// Add a new scene to hold the HuntData
 		ActiveHunt newHuntScene = (ActiveHunt)GD.Load<PackedScene>("res://Scenes/ActiveHunt.tscn").Instantiate();
 		
-		// Insert at the right location
-		if (hunt.huntIndex >= activeHunts.Count)
-		{
-			activeHunts.Add(newHuntScene);
-		}
-		else
-		{
-			activeHunts.Insert(hunt.huntIndex, newHuntScene);
-		}
+		// Insert the new hunt
+		activeHunts.Add(newHuntScene);
 		
 		// Add the hunt to the current scene at the bottom of the list
 		huntPanel.AddChild(newHuntScene);
-		UpdateActivePositions();
 		
 		// Connect signals and initialize the hunt
 		newHuntScene.SelectButtonPressed += EmitHuntButtonPressed;
@@ -199,6 +191,10 @@ public partial class MainMenu : Control
 		newHuntScene.SortButtonUp += HuntToSortDeselected;
 		newHuntScene.HuntIncremented += PlayTick;
 		newHuntScene.InitializeHunt(hunt);
+		
+		// Sort the hunts with the new hunt added and update all positions
+		SortActiveHunts();
+		UpdateActivePositions();
 	}
 	
 	private void AddCompletedHunt(CapturedData hunt)
@@ -206,23 +202,19 @@ public partial class MainMenu : Control
 		// Add a new scene to hold the HuntData
 		Captured newHuntScene = (Captured)GD.Load<PackedScene>("res://Scenes/Captured.tscn").Instantiate();
 		
-		// Insert at the right location
-		if (hunt.huntIndex >= completedHunts.Count)
-		{
-			completedHunts.Add(newHuntScene);
-		}
-		else
-		{
-			completedHunts.Insert(hunt.huntIndex, newHuntScene);
-		}
+		// Insert the new hunt
+		completedHunts.Add(newHuntScene);
 		
 		// Add the hunt to the current scene in the right position
 		completedPanel.AddChild(newHuntScene);
-		UpdateCompletedPositions();
 		
 		// Connect signals and initialize the hunt
 		newHuntScene.SelectButtonPressed += EmitCapturedButtonPressed;
 		newHuntScene.InitializeInfo(hunt);
+		
+		// Sort the hunts with the new hunt added and update all positions
+		SortCapturedHunts();
+		UpdateCompletedPositions();
 	}
 	
 	public void AddHunt(HuntData hunt)
@@ -232,18 +224,10 @@ public partial class MainMenu : Control
 			return; // Return to prevent adding the same hunt twice
 		}
 		
-		// Insert at the right location
-		if (hunt.huntIndex > hunts.Count)
-		{
-			hunts.Add(hunt);
-		}
-		else
-		{
-			hunts.Insert(hunt.huntIndex, hunt);
-		}
+		// Add the new hunt
+		hunts.Add(hunt);
 		
 		AddActiveHunt(hunt);
-		UpdateHuntIndices();
 	}
 	
 	public void AddCaptured(CapturedData hunt)
@@ -253,18 +237,10 @@ public partial class MainMenu : Control
 			return; // Return to prevent adding the same hunt twice
 		}
 		
-		// Insert at the right location
-		if (hunt.huntIndex > finished.Count)
-		{
-			finished.Add(hunt);
-		}
-		else
-		{
-			finished.Insert(hunt.huntIndex, hunt);
-		}
+		// Add the new hunt
+		finished.Add(hunt);
 		
 		AddCompletedHunt(hunt);
-		UpdateHuntIndices();
 	}
 	
 	public bool UpdateHunt(HuntData updatedHunt)
@@ -460,6 +436,51 @@ public partial class MainMenu : Control
 	public void SortHunts()
 	{
 		hunts.Sort((x, y) => x.huntIndex.CompareTo(y.huntIndex));
+	}
+	
+	private void SortActiveHunts()
+	{
+		activeHunts.Sort((x, y) => x.data.huntIndex.CompareTo(y.data.huntIndex));
+	}
+	
+	private void SortCapturedHunts()
+	{
+		completedHunts.Sort((x, y) => x.data.huntIndex.CompareTo(y.data.huntIndex));
+	}
+	
+	private void SortCapturedHunts(string sortMethod)
+	{
+		switch (sortMethod)
+		{
+			case "Start Date":
+				completedHunts.Sort((x, y) => x.data.startDate.CompareTo(y.data.startDate));
+				break;
+			case "End Date":
+				completedHunts.Sort((x, y) => x.data.endDate.CompareTo(y.data.endDate));
+				break;
+			case "Pokemon":
+				completedHunts.Sort((x, y) => x.data.pokemon.CompareTo(y.data.pokemon));
+				break;
+			case "Game":
+				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
+				break;
+			case "Generation":
+				// Start by sorting by game
+				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
+				
+				// Then sort by generation
+				completedHunts.Sort((x, y) => 
+					GameHuntInformation.gameInfoDict[x.data.huntGame].methodID.CompareTo(
+						GameHuntInformation.gameInfoDict[y.data.huntGame].methodID
+					));
+				break;
+			case "Encounters":
+				completedHunts.Sort((x, y) => x.data.count.CompareTo(y.data.count));
+				break;
+		}
+		
+		UpdateCompletedPositions();
+		UpdateHuntIndices();
 	}
 	
 	public int GetHuntIndex(int id)
@@ -670,7 +691,7 @@ public partial class MainMenu : Control
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
 		selectScreen.Name = "TypeSelect";
 		AddChild(selectScreen);
-		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game", "Generation"]);
+		List<string> itemList = new List<string>(["Start Date", "End Date", "Pokemon", "Game", "Generation", "Encounters"]);
 		
 		selectScreen.CreateList(itemList, false);
 		selectScreen.CloseMenu += SortTypeSelected;
@@ -684,7 +705,7 @@ public partial class MainMenu : Control
 			return;
 		}
 		GlobalSettings.sort = selectedOption;
-		SortCaptured(selectedOption);
+		SortCapturedHunts(selectedOption);
 		
 		OptionSelect selectScreen = (OptionSelect)GD.Load<PackedScene>("res://Scenes/OptionSelect.tscn").Instantiate();
 		selectScreen.Name = "AscendingSelect";
@@ -718,38 +739,6 @@ public partial class MainMenu : Control
 		RemoveChild(selector);
 		selector.Cleanup();
 		SaveAll();
-	}
-	
-	private void SortCaptured(string sortMethod)
-	{
-		switch (sortMethod)
-		{
-			case "Start Date":
-				completedHunts.Sort((x, y) => x.data.startDate.CompareTo(y.data.startDate));
-				break;
-			case "End Date":
-				completedHunts.Sort((x, y) => x.data.endDate.CompareTo(y.data.endDate));
-				break;
-			case "Pokemon":
-				completedHunts.Sort((x, y) => x.data.pokemon.CompareTo(y.data.pokemon));
-				break;
-			case "Game":
-				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
-				break;
-			case "Generation":
-				// Start by sorting by game
-				completedHunts.Sort((x, y) => x.data.huntGame.CompareTo(y.data.huntGame));
-				
-				// Then sort by generation
-				completedHunts.Sort((x, y) => 
-					GameHuntInformation.gameInfoDict[x.data.huntGame].methodID.CompareTo(
-						GameHuntInformation.gameInfoDict[y.data.huntGame].methodID
-					));
-				break;
-		}
-		
-		UpdateCompletedPositions();
-		UpdateHuntIndices();
 	}
 	
 	private void PlayTick()

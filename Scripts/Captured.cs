@@ -238,7 +238,7 @@ public partial class Captured : Control
 			case "Generation":
 				sortInfo = data.huntGame;
 				break;
-			default: // Empty case
+			default: // Empty case, also used for "Encounters"
 				sortInfo = data.endDate.Split('T')[0];
 				break;
 		}

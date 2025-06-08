@@ -201,7 +201,7 @@ public partial class SceneController : Control
 		HuntCreator startHuntScreen = GetNode<HuntCreator>("HuntCreator");
 		HuntData huntToAdd = new HuntData(startHuntScreen.pokemonSelected, gameName, method, route, charm, oddsBonus, startDT);
 		
-		// Set common settings (not made yet
+		// Set common settings
 		huntToAdd.showShiny = GlobalSettings.huntInfo[0];
 		huntToAdd.showRegular = GlobalSettings.huntInfo[1];
 		huntToAdd.showOdds = GlobalSettings.huntInfo[2];
@@ -215,7 +215,9 @@ public partial class SceneController : Control
 			huntToAdd.showCombo = GlobalSettings.huntInfo[3];
 		}
 		
+		huntToAdd.huntIndex = 0; // Set index to go at the top of the list
 		mainScreen.AddHunt(huntToAdd);
+		mainScreen.UpdateHuntIndices();
 		Save(); // Update save file with newly added hunt
 		
 		CloseHuntCreator();
@@ -250,7 +252,9 @@ public partial class SceneController : Control
 			huntToAdd.endDate = DT;
 		}
 		
+		huntToAdd.huntIndex = 0; // Set index to go at the top of the list
 		mainScreen.AddCaptured(huntToAdd);
+		mainScreen.UpdateHuntIndices();
 		Save(); // Update save file with newly added hunt
 		
 		CloseCapturedCreator();
@@ -476,6 +480,7 @@ public partial class SceneController : Control
 				GD.Print(e);
 			}
 		}
+		mainScreen.UpdateHuntIndices();
 	}
 	
 	private void LoadCaptured()
@@ -504,9 +509,9 @@ public partial class SceneController : Control
 				string backupFile = "capturedbackup.save";
 				json.SaveJsonToFile(path, backupFile, fullLoad);
 				GD.Print(e);
-				ErrorOccurred(e);
 			}
 		}
+		mainScreen.UpdateHuntIndices();
 	}
 	
 	// Load a save file labelled v0.9.3
@@ -541,7 +546,6 @@ public partial class SceneController : Control
 			string backupFile = "savebackup.save";
 			json.SaveJsonToFile(path, backupFile, fullLoad);
 			GD.Print(e);
-			ErrorOccurred(e);
 		}
 	}
 	
@@ -576,7 +580,6 @@ public partial class SceneController : Control
 			string backupFile = "savebackup.save";
 			json.SaveJsonToFile(path, backupFile, fullLoad);
 			GD.Print(e);
-			ErrorOccurred(e);
 		}
 	}
 	
