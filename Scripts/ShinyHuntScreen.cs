@@ -477,16 +477,7 @@ public partial class ShinyHuntScreen : Control
 	
 	private void Increment()
 	{
-		data.count += data.incrementValue;
-		data.combo += data.incrementValue;
-		if (data.huntMethod == "Dex Nav")
-		{
-			if (data.combo > 100)
-			{
-				data.combo -= 100; // Combo in this method loops after 100
-			}
-			data.oddsBonus += data.incrementValue; // oddsBonus increases for dex nav only
-		}
+		data.IncreaseCounts();
 		resetTimer = 0;
 		PlayTick();
 		UpdateCounterLabel();
@@ -497,21 +488,7 @@ public partial class ShinyHuntScreen : Control
 	{
 		if (data.count > 0)
 		{
-			data.combo -= data.incrementValue;
-			if (data.huntMethod == "Dex Nav")
-			{
-				if (data.combo < 0)
-				{
-					data.combo += 100; // Combo in this method loops, so decrementing must loop backwards
-				}
-				data.oddsBonus = Math.Max(data.oddsBonus - data.incrementValue, 0); // oddsBonus increases for dex nav only
-			}
-			else if (data.combo < 0)
-			{
-				data.combo = 0; // All other combos stop at 0
-			}
-			
-			data.count -= data.incrementValue;
+			data.DecreaseCounts();
 			PlayTick();
 			UpdateCounterLabel();
 			UpdateInfoLabel();

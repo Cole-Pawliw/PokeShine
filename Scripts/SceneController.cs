@@ -27,7 +27,7 @@ public partial class SceneController : Control
 	JsonManager json;
 	string saveFileName = "savefile.save", activeFileName = "ActiveHunts.save", capturedFileName = "CapturedHunts.save";
 	string path = "user://";
-	string versionNumber = "1.0.1";
+	string versionNumber = "1.0.2";
 	
 	double timer = 0;
 	
@@ -392,6 +392,9 @@ public partial class SceneController : Control
 		
 		switch (datas[0])
 		{
+			case "v1.0.2":
+				Load101(fullLoad);
+				break;
 			case "v1.0.1":
 				Load101(fullLoad);
 				break;

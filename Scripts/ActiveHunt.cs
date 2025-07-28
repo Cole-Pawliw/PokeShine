@@ -166,6 +166,47 @@ public class HuntData
 		}
 	}
 	
+	public void IncreaseCounts()
+	{
+		count += incrementValue;
+		combo += incrementValue;
+		if (huntMethod == "Dex Nav")
+		{
+			if (combo > 100)
+			{
+				combo -= 100; // Combo in this method loops after 100
+			}
+			oddsBonus += incrementValue; // oddsBonus increases for dex nav only
+		}
+		else if (huntMethod == "SOS Chain" && (huntGame == "Sun" || huntGame == "Moon") && combo > 255)
+		{
+			combo -= 255; // Combo uses 8-bit storage in sun and moon only, unlimited in USUM
+		}
+	}
+	
+	public void DecreaseCounts()
+	{
+		combo -= incrementValue;
+		if (huntMethod == "Dex Nav")
+		{
+			if (combo < 0)
+			{
+				combo += 100; // Combo in this method loops, so decrementing must loop backwards
+			}
+			oddsBonus = Math.Max(oddsBonus - incrementValue, 0); // oddsBonus increases for dex nav only
+		}
+		else if (huntMethod == "SOS Chain" && (huntGame == "Sun" || huntGame == "Moon") && combo < 0)
+		{
+			combo += 255; // Combo in this method loops only in these games, so decrementing must loop backwards
+		}
+		else if (combo < 0)
+		{
+			combo = 0; // All other combos stop at 0
+		}
+		
+		count -= incrementValue;
+	}
+	
 	public bool isComplete { get; set; } = false; // Marked true if the hunt is completed
 	public string startDate { get; set; } // Datetime formatted string storing when the hunt was created
 	
@@ -380,7 +421,7 @@ public partial class ActiveHunt : Control
 	
 	private void Increment()
 	{
-		data.count += data.incrementValue;
+		data.IncreaseCounts();
 		data.timeSpent += resetTimer;
 		resetTimer = 0;
 		UpdateCount();
@@ -391,9 +432,12 @@ public partial class ActiveHunt : Control
 	
 	private void Decrement()
 	{
-		data.count = Math.Max(data.count - data.incrementValue, 0);
-		UpdateCount();
-		MakeSound();
+		if (data.count > 0)
+		{
+			data.DecreaseCounts();
+			UpdateCount();
+			MakeSound();
+		}
 	}
 	
 	public void ToggleSort()
