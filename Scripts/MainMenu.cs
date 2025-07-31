@@ -180,7 +180,15 @@ public partial class MainMenu : Control
 		ActiveHunt newHuntScene = (ActiveHunt)GD.Load<PackedScene>("res://Scenes/ActiveHunt.tscn").Instantiate();
 		
 		// Insert the new hunt
-		activeHunts.Add(newHuntScene);
+		if (hunt.huntIndex == 0)
+		{
+			activeHunts.Insert(0, newHuntScene); // Index 0 means it should go at the start to prevent issues with adding new hunts
+		}
+		else
+		{
+			activeHunts.Add(newHuntScene); // Any other index will have no problems
+		}
+		
 		
 		// Add the hunt to the current scene at the bottom of the list
 		huntPanel.AddChild(newHuntScene);
