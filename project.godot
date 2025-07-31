@@ -13,7 +13,7 @@ config_version=5
 config/name="PokeShine"
 run/main_scene="res://Scenes/SceneController.tscn"
 config/quit_on_go_back=false
-config/features=PackedStringArray("4.4", "C#", "Mobile")
+config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="uid://smxcxumnf6ak"
 
 [display]
