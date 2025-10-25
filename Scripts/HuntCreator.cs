@@ -71,7 +71,7 @@ public partial class HuntCreator : Control
 		selections[2] = data.huntMethod;
 		selections[3] = data.huntRoute;
 		
-		if (selections[2] == "Random Encounter")
+		if (selections[2] == "Random Encounter" || selections[2] == "Symbol Encounter" || selections[2] == "Area Respawn")
 		{
 			routeSelect.Disabled = false;
 		}
@@ -284,7 +284,7 @@ public partial class HuntCreator : Control
 				selections[1] = "";
 			}
 			
-			if (selectedOption == "Random Encounter")
+			if (selectedOption == "Random Encounter" || selectedOption == "Symbol Encounter" || selectedOption == "Area Respawn")
 			{
 				routeSelect.Disabled = false;
 			}

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Linq;
 
 public class GameInfo
 {
@@ -29,7 +30,7 @@ public class GameHuntInformation
 		new GameInfo(4, "HS"), new GameInfo(5, "BW"), new GameInfo(6, "BW"), new GameInfo(7, "BankModels"),
 		new GameInfo(8, "BankModels"), new GameInfo(9, "BankModels"), new GameInfo(10, "BankModels"),
 		new GameInfo(11, "BankModels"), new GameInfo(12, "BankModels"), new GameInfo(13, "BankModels"),
-		new GameInfo(14, "BankModels"), new GameInfo(15, "BankModels") };
+		new GameInfo(14, "BankModels"), new GameInfo(15, "BankModels"), new GameInfo(16, "BankModels") };
 		
 	// This dictionary maps the names of pokemon games to corresponding information
 	// The int corresponds with an index to be used in methodAvailabilityDict
@@ -50,7 +51,8 @@ public class GameHuntInformation
 		{"Sword", infoStorage[12]}, {"Shield", infoStorage[12]},
 		{"Brilliant Diamond", infoStorage[13]}, {"Shining Pearl", infoStorage[13]},
 		{"Legends Arceus", infoStorage[14]},
-		{"Scarlet", infoStorage[15]}, {"Violet", infoStorage[15]} };
+		{"Scarlet", infoStorage[15]}, {"Violet", infoStorage[15]},
+		{"Legends Z-A", infoStorage[16]} };
 }
 
 public class GlobalSettings
@@ -110,5 +112,43 @@ public partial class AvailabilityInformation : Node
 			IncludeFields = true,
 		};
 		pokemonRouteAvailabilityDict = JsonSerializer.Deserialize<Dictionary<string, string[]>>(routes, options)!;
+	}
+	
+	/*
+	This is only to be used when a new game comes out
+	Provide a list of pokemon in the regional pokedex (in any order)
+	A new pokemon.json file will be saved to the app_userdata/ folder
+	*/
+	public void UpdatePokemon(string[] dex)
+	{
+		bool[] availability;
+		int availLength = pokemonAvailabilityDict["Bulbasaur"].Length + 1;
+		foreach(KeyValuePair<string, bool[]> pokemon in pokemonAvailabilityDict)
+		{
+			availability = new bool[availLength];
+			for(int i = 0; i < pokemon.Value.Length; i++)
+			{
+				availability[i] = pokemon.Value[i];
+			}
+			
+			if (dex.Contains(pokemon.Key))
+			{
+				availability[availLength - 1] = true;
+			}
+			else
+			{
+				availability[availLength - 1] = false;
+			}
+			pokemonAvailabilityDict[pokemon.Key] = availability;
+		}
+		
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		string finalAvail = JsonSerializer.Serialize<Dictionary<string, bool[]>>(pokemonAvailabilityDict, options);
+		
+		string path = "user://";
+		json.SaveJsonToFile(path, "pokemon.json", finalAvail);
 	}
 }

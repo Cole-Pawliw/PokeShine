@@ -20,7 +20,7 @@ script = ExtResource("1_74s7v")
 [node name="AvailabilityInformation" parent="." instance=ExtResource("2_tsjlh")]
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 2
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
