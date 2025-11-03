@@ -17,6 +17,7 @@ Bugs and Changes
 /*
 Extra features
 - Box sprites for ItemList
+- Dex completion
 - GSC sprites?
 */
 
