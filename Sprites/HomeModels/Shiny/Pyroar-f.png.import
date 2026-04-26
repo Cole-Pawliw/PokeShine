@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj2ky6c57vwsr"
-path="res://.godot/imported/Pyroar-f.png-d3cd7209a2c0b3298cd22f1ab399b68e.ctex"
+path="res://.godot/imported/Pyroar-F.png-a562bbeec175f6c1d35c4f23b73b3a81.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/HomeModels/Shiny/Pyroar-f.png"
-dest_files=["res://.godot/imported/Pyroar-f.png-d3cd7209a2c0b3298cd22f1ab399b68e.ctex"]
+source_file="res://Sprites/HomeModels/Shiny/Pyroar-F.png"
+dest_files=["res://.godot/imported/Pyroar-F.png-a562bbeec175f6c1d35c4f23b73b3a81.ctex"]
 
 [params]
 

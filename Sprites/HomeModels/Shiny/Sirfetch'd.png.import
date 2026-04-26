@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x1557t3suyj3"
-path="res://.godot/imported/Farfetch’d.png-baf140d620da129733a87d5259be452d.ctex"
+uid="uid://bpku6xc45q12u"
+path="res://.godot/imported/Sirfetch'd.png-6c9d626e9da15f00f1c1ebe4585c1731.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/GS/Shiny/Farfetch’d.png"
-dest_files=["res://.godot/imported/Farfetch’d.png-baf140d620da129733a87d5259be452d.ctex"]
+source_file="res://Sprites/HomeModels/Shiny/Sirfetch'd.png"
+dest_files=["res://.godot/imported/Sirfetch'd.png-6c9d626e9da15f00f1c1ebe4585c1731.ctex"]
 
 [params]
 

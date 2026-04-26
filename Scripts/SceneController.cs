@@ -28,7 +28,7 @@ public partial class SceneController : Control
 	JsonManager json;
 	string saveFileName = "savefile.save", activeFileName = "ActiveHunts.save", capturedFileName = "CapturedHunts.save";
 	string path = "user://";
-	string versionNumber = "1.1";
+	string versionNumber = "1.2";
 	
 	double timer = 0;
 	
@@ -309,6 +309,32 @@ public partial class SceneController : Control
 		Theme = (Theme)GD.Load($"res://ColorTheme{GlobalSettings.colorMode}.tres");
 	}
 	
+	/*
+	// Edit this function to change the pokemon.json file when needed
+	private void UpdateJsons()
+	{
+		var options = new JsonSerializerOptions
+		{
+			IncludeFields = true,
+		};
+		
+		string[] added_mons = ["Mankey","Primeape","Annihilape","Meowth","Alolan Meowth","Galarian Meowth","Persian","Alolan Persian","Perrserker","Farfetch\u0027d","Galarian Farfetch\u0027d","Sirfetch\u0027d","Cubone","Marowak","Alolan Marowak","Porygon","Porygon2","Porygon-Z","Capsakid","Scovillain","Tinkatink","Tinkatuff","Tinkaton","Cyclizar","Glimmet","Glimmora","Rotom","Greavard","Houndstone","Sandygast","Palossand","Kecleon","Flamigo","Cryogonal","Dondozo","Tatsugiri-Droopy","Tatsugiri-Stretchy","Tatsugiri-Curly","Frigibax","Arctibax","Baxcalibur","Gimmighoul","Gholdengo","Qwilfish","Hisuian Qwilfish","Overqwil","Treecko","Grovyle","Sceptile","Torchic","Combusken","Blaziken","Mudkip","Marshtomp","Swampert","Feebas","Milotic","Chingling","Chimecho","Indeedee-M","Indeedee-F","Purrloin","Liepard","Munna","Musharna","Throh","Sawk","Yamask","Galarian Yamask","Cofagrigus","Runerigus","Wimpod","Golisopod","Nickit","Thievul","Clobbopus","Grapploct","Mimikyu","Kleavor","Morpeko","Golett","Golurk","Rookidee","Corvisquire","Corviknight","Igglybuff","Jigglypuff","Wigglytuff","Fidough","Dachsbun","Starly","Staravia","Staraptor","Spoink","Grumpig","Squawkabilly-Green","Squawkabilly-Blue","Squawkabilly-Yellow","Squawkabilly-White","Crabrawler","Crabominable","Nacli","Naclstack","Garganacl","Gulpin","Swalot","Zubat","Golbat","Crobat","Charcadet","Armarouge","Ceruledge","Maschiff","Mabosstiff","Toxel","Toxtricity-Amped","Toxtricity-Lowkey","Shroodle","Grafaiai","Zangoose","Seviper","Mime Jr","Mr Mime","Galarian Mr Mime","Mr Rime","Foongus","Amoonguss","Heatran","Volcanion","Cobalion","Terrakion","Virizion","Keldeo","Meloetta","Genesect","Hoopa","Marshadow","Meltan","Melmetal","Darkrai","Latias","Latios","Kyogre","Groudon","Rayquaza","Magearna","Zeraora"];
+		
+		string pokemon_path = "res://Jsons/";
+		string pokemon_file = "pokemon.json";
+		string raw_info = json.LoadResourceFromFile(pokemon_path, pokemon_file);
+		Dictionary<string, bool[]> pokemon_info = JsonSerializer.Deserialize<Dictionary<string, bool[]>>(raw_info, options)!;
+		
+		// Add and change boolean values
+		foreach (string mon in added_mons) {
+			pokemon_info[mon][16] = true;
+		}
+		
+		string finished_raw = JsonSerializer.Serialize<Dictionary<string, bool[]>>(pokemon_info, options);
+		json.SaveJsonToFile(path, pokemon_file, finished_raw);
+	}
+	*/
+	
 	private void Save()
 	{
 		var options = new JsonSerializerOptions
@@ -393,6 +419,9 @@ public partial class SceneController : Control
 		
 		switch (datas[0])
 		{
+			case "v1.2":
+				Load101(fullLoad);
+				break;
 			case "v1.1":
 				Load101(fullLoad);
 				break;

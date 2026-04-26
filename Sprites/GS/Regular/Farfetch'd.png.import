@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1egjgc8k1d0u"
-path="res://.godot/imported/Farfetch’d.png-799f06089d02a195b4ecadd3c9c63fba.ctex"
+uid="uid://bmbwuhtfn3ei4"
+path="res://.godot/imported/Farfetch'd.png-7e036eaca4482211b01a18f03b6cd6be.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/BankModels/Shiny/Farfetch’d.png"
-dest_files=["res://.godot/imported/Farfetch’d.png-799f06089d02a195b4ecadd3c9c63fba.ctex"]
+source_file="res://Sprites/GS/Regular/Farfetch'd.png"
+dest_files=["res://.godot/imported/Farfetch'd.png-7e036eaca4482211b01a18f03b6cd6be.ctex"]
 
 [params]
 
