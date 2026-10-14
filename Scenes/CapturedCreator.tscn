@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cnm6ue8flowug"]
+[gd_scene format=3 uid="uid://cnm6ue8flowug"]
 
 [ext_resource type="Script" uid="uid://dorfj2gxbc5nj" path="res://Scripts/CapturedCreator.cs" id="1_74s7v"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_bdfeo"]
@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c3f5qolpt0clw" path="res://Scenes/DateInputField.tscn" id="6_p2qf2"]
 [ext_resource type="PackedScene" uid="uid://cq272tc8wj4m" path="res://Scenes/TimeInputField.tscn" id="8_5tvdg"]
 
-[node name="CapturedCreator" type="Control"]
+[node name="CapturedCreator" type="Control" unique_id=471139560]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,15 +17,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_74s7v")
 
-[node name="AvailabilityInformation" parent="." instance=ExtResource("2_tsjlh")]
+[node name="AvailabilityInformation" parent="." unique_id=1855582691 instance=ExtResource("2_tsjlh")]
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1695377688]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="TextureButton" parent="." unique_id=1020976838]
 layout_mode = 0
 offset_left = 19.0
 offset_top = 12.0
@@ -35,7 +35,7 @@ texture_normal = ExtResource("2_bdfeo")
 texture_disabled = ExtResource("4_3rmve")
 stretch_mode = 0
 
-[node name="GameSelect" type="Button" parent="."]
+[node name="GameSelect" type="Button" parent="." unique_id=724522646]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -49,7 +49,7 @@ offset_bottom = 25.28
 text = "Game:"
 text_overrun_behavior = 3
 
-[node name="RouteSelect" type="Button" parent="."]
+[node name="RouteSelect" type="Button" parent="." unique_id=122626544]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -66,7 +66,7 @@ disabled = true
 text = "Route:"
 text_overrun_behavior = 3
 
-[node name="MethodSelect" type="Button" parent="."]
+[node name="MethodSelect" type="Button" parent="." unique_id=958254038]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -81,7 +81,7 @@ disabled = true
 text = "Method:"
 text_overrun_behavior = 3
 
-[node name="PokemonSelect" type="Button" parent="."]
+[node name="PokemonSelect" type="Button" parent="." unique_id=265392573]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -96,7 +96,7 @@ disabled = true
 text = "Pokemon:"
 text_overrun_behavior = 3
 
-[node name="BallSelect" type="Button" parent="."]
+[node name="BallSelect" type="Button" parent="." unique_id=1867542958]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -111,7 +111,7 @@ disabled = true
 text = "Ball:"
 text_overrun_behavior = 3
 
-[node name="GenderSelect" type="Button" parent="."]
+[node name="GenderSelect" type="Button" parent="." unique_id=2015003283]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -125,7 +125,7 @@ offset_bottom = 25.28
 text = "Gender:"
 text_overrun_behavior = 3
 
-[node name="CharmButton" type="CheckBox" parent="."]
+[node name="CharmButton" type="CheckBox" parent="." unique_id=460499828]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -139,7 +139,7 @@ offset_right = 65.0
 offset_bottom = 17.8
 text = "Shiny Charm"
 
-[node name="StartDate" parent="." instance=ExtResource("6_p2qf2")]
+[node name="StartDate" parent="." unique_id=142553832 instance=ExtResource("6_p2qf2")]
 layout_mode = 1
 anchor_left = 0.302
 anchor_top = 0.282
@@ -150,7 +150,7 @@ offset_top = 16.96
 offset_right = 75.04
 offset_bottom = 56.96
 
-[node name="StartDateLabel" type="Label" parent="."]
+[node name="StartDateLabel" type="Label" parent="." unique_id=1707021450]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -163,7 +163,7 @@ offset_right = 60.04
 offset_bottom = 12.96
 text = "Start Date:"
 
-[node name="EndDate" parent="." instance=ExtResource("6_p2qf2")]
+[node name="EndDate" parent="." unique_id=1982627376 instance=ExtResource("6_p2qf2")]
 layout_mode = 1
 anchor_left = 0.698
 anchor_top = 0.282
@@ -174,7 +174,7 @@ offset_top = 16.96
 offset_right = 54.96
 offset_bottom = 56.96
 
-[node name="EndDateLabel" type="Label" parent="."]
+[node name="EndDateLabel" type="Label" parent="." unique_id=1019876198]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -187,7 +187,7 @@ offset_right = 39.96
 offset_bottom = 12.96
 text = "End Date:"
 
-[node name="Nickname" type="LineEdit" parent="."]
+[node name="Nickname" type="LineEdit" parent="." unique_id=147181534]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -199,7 +199,7 @@ offset_top = 17.04
 offset_right = 75.04
 offset_bottom = 57.04
 
-[node name="NicknameLabel" type="Label" parent="."]
+[node name="NicknameLabel" type="Label" parent="." unique_id=1413143462]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -212,7 +212,7 @@ offset_right = 60.04
 offset_bottom = 13.04
 text = "Nickname:"
 
-[node name="CounterValue" parent="." instance=ExtResource("5_ru4jw")]
+[node name="CounterValue" parent="." unique_id=2009132012 instance=ExtResource("5_ru4jw")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -227,7 +227,7 @@ grow_horizontal = 1
 grow_vertical = 1
 AllowGreater = true
 
-[node name="CountLabel" type="Label" parent="."]
+[node name="CountLabel" type="Label" parent="." unique_id=2141642569]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -240,7 +240,7 @@ offset_right = 65.04
 offset_bottom = 13.12
 text = "Pokemon Seen:"
 
-[node name="TimerValue" parent="." instance=ExtResource("8_5tvdg")]
+[node name="TimerValue" parent="." unique_id=46059832 instance=ExtResource("8_5tvdg")]
 layout_mode = 1
 anchor_left = 0.698
 anchor_top = 0.504
@@ -251,7 +251,7 @@ offset_top = 17.12
 offset_right = 54.96
 offset_bottom = 57.12
 
-[node name="TimeLabel" type="Label" parent="."]
+[node name="TimeLabel" type="Label" parent="." unique_id=278451771]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -264,7 +264,7 @@ offset_right = 40.96
 offset_bottom = 13.12
 text = "Time Spent:"
 
-[node name="AddButton" type="Button" parent="."]
+[node name="AddButton" type="Button" parent="." unique_id=1766301323]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5

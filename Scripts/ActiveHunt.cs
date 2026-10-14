@@ -137,15 +137,15 @@ public class HuntData
 	{
 		if (settings[0] != -1)
 		{
-			showShiny = settings[0] == 1 ? true : false;
+			showShiny = settings[0] == 1;
 		}
 		if (settings[1] != -1)
 		{
-			showRegular = settings[1] == 1 ? true : false;
+			showRegular = settings[1] == 1;
 		}
-		if (settings[2] != -1)
+		if (settings[2] != -1 && huntGame != "Other")
 		{
-			showOdds = settings[2] == 1 ? true : false;
+			showOdds = settings[2] == 1;
 		}
 		if (settings[3] != -1)
 		{
@@ -153,16 +153,16 @@ public class HuntData
 				|| huntMethod == "SOS Chain" || huntMethod == "Catch Combo" || (huntMethod == "Mass Outbreak"
 				&& (huntGame == "Scarlet" || huntGame == "Violet")))
 			{
-				showCombo = settings[3] == 1 ? true : false;
+				showCombo = settings[3] == 1;
 			}
 		}
 		if (settings[4] != -1)
 		{
-			showFullTimer = settings[4] == 1 ? true : false;
+			showFullTimer = settings[4] == 1;
 		}
 		if (settings[5] != -1)
 		{
-			showMiniTimer = settings[5] == 1 ? true : false;
+			showMiniTimer = settings[5] == 1;
 		}
 	}
 	
@@ -257,6 +257,11 @@ public class HuntData
 			else
 			{
 				huntFolder = "HomeModels";
+			}
+			
+			if (value == "Other")
+			{
+				showOdds = false;
 			}
 		}
 	}

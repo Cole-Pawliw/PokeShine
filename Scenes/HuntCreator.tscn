@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4vgfm2j2x2w"]
+[gd_scene format=3 uid="uid://b4vgfm2j2x2w"]
 
 [ext_resource type="Script" uid="uid://b6n3gwfs2d0eu" path="res://Scripts/HuntCreator.cs" id="1_qvm6q"]
 [ext_resource type="PackedScene" uid="uid://c6sqrm3iu8b4o" path="res://Scenes/AvailabilityInformation.tscn" id="2_1gh5o"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://4r5ir7tsbs5r" path="res://Assets/Buttons/Disabled/back_disabled.png" id="5_8id2o"]
 [ext_resource type="PackedScene" uid="uid://8842ucoyvihn" path="res://Scenes/NumberInputField.tscn" id="6_3wkdq"]
 
-[node name="HuntCreator" type="Control"]
+[node name="HuntCreator" type="Control" unique_id=1845245785]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,9 +15,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qvm6q")
 
-[node name="AvailabilityInformation" parent="." instance=ExtResource("2_1gh5o")]
+[node name="AvailabilityInformation" parent="." unique_id=264558449 instance=ExtResource("2_1gh5o")]
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1637694730]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,7 +26,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
-[node name="GameSelect" type="Button" parent="."]
+[node name="GameSelect" type="Button" parent="." unique_id=1990988808]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -40,7 +40,7 @@ offset_bottom = 50.0
 text = "Game:"
 text_overrun_behavior = 3
 
-[node name="MethodSelect" type="Button" parent="."]
+[node name="MethodSelect" type="Button" parent="." unique_id=217945883]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.302
@@ -55,7 +55,7 @@ disabled = true
 text = "Method:"
 text_overrun_behavior = 3
 
-[node name="RouteSelect" type="Button" parent="."]
+[node name="RouteSelect" type="Button" parent="." unique_id=1222113654]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.698
@@ -70,7 +70,7 @@ disabled = true
 text = "Route:"
 text_overrun_behavior = 3
 
-[node name="PokemonSelect" type="Button" parent="."]
+[node name="PokemonSelect" type="Button" parent="." unique_id=2004863217]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -85,7 +85,7 @@ disabled = true
 text = "Pokemon:"
 text_overrun_behavior = 3
 
-[node name="CharmButton" type="CheckBox" parent="."]
+[node name="CharmButton" type="CheckBox" parent="." unique_id=2119119015]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -99,7 +99,7 @@ offset_bottom = 91.0
 disabled = true
 text = "Shiny Charm"
 
-[node name="StartButton" type="Button" parent="."]
+[node name="StartButton" type="Button" parent="." unique_id=1230631790]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -113,7 +113,7 @@ offset_bottom = -20.0
 disabled = true
 text = "Start Hunt"
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="TextureButton" parent="." unique_id=1502551027]
 layout_mode = 1
 anchors_preset = -1
 offset_left = 19.0
@@ -124,7 +124,7 @@ texture_normal = ExtResource("3_bv7v0")
 texture_disabled = ExtResource("5_8id2o")
 stretch_mode = 0
 
-[node name="BonusToggle" type="CheckBox" parent="."]
+[node name="BonusToggle" type="CheckBox" parent="." unique_id=193034750]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -138,7 +138,7 @@ offset_right = 32.04
 offset_bottom = 91.08
 text = "Include Bonus"
 
-[node name="BonusAmount" parent="." instance=ExtResource("6_3wkdq")]
+[node name="BonusAmount" parent="." unique_id=823390004 instance=ExtResource("6_3wkdq")]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -156,7 +156,7 @@ text = "3"
 MaxValue = 3
 Value = 3
 
-[node name="BonusLabel" type="Label" parent="."]
+[node name="BonusLabel" type="Label" parent="." unique_id=302752049]
 visible = false
 layout_mode = 1
 anchors_preset = -1

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://8842ucoyvihn"]
+[gd_scene format=3 uid="uid://8842ucoyvihn"]
 
 [ext_resource type="Script" uid="uid://bx7kpoje0gsnh" path="res://Scripts/NumberInputField.cs" id="1_nyalx"]
 
-[node name="NumberInputField" type="TextEdit"]
+[node name="NumberInputField" type="TextEdit" unique_id=1480645727]
 offset_right = 8.0
 offset_bottom = 8.0
 grow_horizontal = 2

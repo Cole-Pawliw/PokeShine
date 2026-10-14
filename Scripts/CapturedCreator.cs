@@ -97,7 +97,7 @@ public partial class CapturedCreator : Control
 		endDate.UpdateDate(data.endDate);
 		
 		GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
-		if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
+		if (info.methodID >= 6 && selections[0] != "Other") // Shiny charm introduced in Black2/White2
 		{
 			charmButton.Visible = true;
 			charmButton.ButtonPressed = data.charm;
@@ -105,7 +105,7 @@ public partial class CapturedCreator : Control
 		UpdateButtons();
 		pokemonSelect.Disabled = false;
 		methodSelect.Disabled = false;
-		routeSelect.Disabled = false;
+		routeSelect.Disabled = data.huntGame == "Other";
 		ballSelect.Disabled = false;
 		addButton.Disabled = false;
 		screenVisible = true;
@@ -159,29 +159,43 @@ public partial class CapturedCreator : Control
 		} 
 		else if (optionMode == 2) // Send list of pokemon
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
-			
-			// If the pokemon is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
+			if (selections[0] == "Other") // Send all pokemon
 			{
-				if (pokemon.Value[gameCode] == true)
+				itemList = new List<string>(dicts.pokemonAvailabilityDict.Keys);
+			}
+			else // Send only pokemon in specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the pokemon is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
 				{
-					itemList.Add(pokemon.Key);
+					if (pokemon.Value[gameCode] == true)
+					{
+						itemList.Add(pokemon.Key);
+					}
 				}
 			}
 		}
 		else if (optionMode == 3) // Send list of methods
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
-			
-			// If the method is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> method in dicts.methodAvailabilityDict)
+			if (selections[0] == "Other") // Send all methods
 			{
-				if (method.Value[gameCode] == true)
+				itemList = new List<string>(dicts.methodAvailabilityDict.Keys);
+			}
+			else // Send only methods for specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the method is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> method in dicts.methodAvailabilityDict)
 				{
-					itemList.Add(method.Key);
+					if (method.Value[gameCode] == true)
+					{
+						itemList.Add(method.Key);
+					}
 				}
 			}
 		}
@@ -191,15 +205,22 @@ public partial class CapturedCreator : Control
 		}
 		else if (optionMode == 5) // Send list of poke balls
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
-			
-			// If the ball is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> ball in dicts.ballAvailabilityDict)
+			if (selections[0] == "Other") // Send all balls
 			{
-				if (ball.Value[gameCode] == true)
+				itemList = new List<string>(dicts.ballAvailabilityDict.Keys);
+			}
+			else // Send only balls for specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the ball is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> ball in dicts.ballAvailabilityDict)
 				{
-					itemList.Add(ball.Key);
+					if (ball.Value[gameCode] == true)
+					{
+						itemList.Add(ball.Key);
+					}
 				}
 			}
 		}
@@ -237,38 +258,47 @@ public partial class CapturedCreator : Control
 			
 			pokemonSelect.Disabled = false;
 			methodSelect.Disabled = false;
-			routeSelect.Disabled = false;
+			routeSelect.Disabled = true;
 			ballSelect.Disabled = false;
 			
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
 			
-			// Reset method if it isn't available
-			if (selections[2] != "" && !dicts.methodAvailabilityDict[selections[2]][info.methodID])
+			if (selectedOption == "Other")
 			{
-				selections[2] = "";
+				selections[5] = "";
 			}
-			// Reset pokemon if it isn't available
-			if (selections[1] != "" && !dicts.pokemonAvailabilityDict[selections[1]][info.methodID])
+			else
 			{
-				selections[1] = "";
-			}
-			// Reset ball if it isn't available
-			if (selections[4] != "" && !dicts.ballAvailabilityDict[selections[4]][info.methodID])
-			{
-				selections[4] = "";
-			}
-			if (selections[0] != "")
-			{
-				// Reset route if the game changed codes (or if switching to/from emerald or platinum)
-				GameInfo currentInfo = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the current game
-				if (currentInfo.methodID != info.methodID || selectedOption == "Emerald" || selectedOption == "Platinum"
-					|| selections[0] == "Emerald" || selections[0] == "Platinum")
+				routeSelect.Disabled = false;
+				
+				// Reset method if it isn't available
+				if (selections[2] != "" && !dicts.methodAvailabilityDict[selections[2]][info.methodID])
 				{
-					selections[5] = "";
+					selections[2] = "";
+				}
+				// Reset pokemon if it isn't available
+				if (selections[1] != "" && !dicts.pokemonAvailabilityDict[selections[1]][info.methodID])
+				{
+					selections[1] = "";
+				}
+				// Reset ball if it isn't available
+				if (selections[4] != "" && !dicts.ballAvailabilityDict[selections[4]][info.methodID])
+				{
+					selections[4] = "";
+				}
+				if (selections[0] != "")
+				{
+					// Reset route if the game changed codes (or if switching to/from emerald or platinum)
+					GameInfo currentInfo = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the current game
+					if (currentInfo.methodID != info.methodID || selectedOption == "Emerald" || selectedOption == "Platinum"
+						|| selections[0] == "Emerald" || selections[0] == "Platinum")
+					{
+						selections[5] = "";
+					}
 				}
 			}
 			
-			if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
+			if (info.methodID >= 6 && selectedOption != "Other") // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
 			}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvnw7d40js5ir"]
+[gd_scene format=3 uid="uid://bvnw7d40js5ir"]
 
 [ext_resource type="Script" uid="uid://po1mrq7whdm3" path="res://Scripts/ActiveHunt.cs" id="1_x6net"]
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="2_dweee"]
@@ -9,7 +9,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_307le"]
 
-[node name="ActiveHunt" type="Control"]
+[node name="ActiveHunt" type="Control" unique_id=1476029683]
 custom_minimum_size = Vector2(457, 84)
 layout_mode = 3
 anchors_preset = 0
@@ -18,7 +18,7 @@ offset_bottom = 84.0
 mouse_filter = 2
 script = ExtResource("1_x6net")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=319623152]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,24 +27,24 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="SelectButton" type="Button" parent="."]
+[node name="SelectButton" type="Button" parent="." unique_id=841295784]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.65
 anchor_bottom = 1.0
 offset_right = -3.05176e-05
 mouse_filter = 1
-theme_override_colors/icon_hover_color = Color(0, 0, 0, 0)
-theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_hover_color = Color(0, 0, 0, 0)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_307le")
 flat = true
 
-[node name="ShinySprite" type="Sprite2D" parent="."]
+[node name="ShinySprite" type="Sprite2D" parent="." unique_id=858355853]
 position = Vector2(45, 42)
 texture = ExtResource("2_dweee")
 
-[node name="Count" type="Label" parent="."]
+[node name="Count" type="Label" parent="." unique_id=1489540295]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.225
@@ -58,7 +58,7 @@ text = "XXXXX"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Timer" type="Label" parent="."]
+[node name="Timer" type="Label" parent="." unique_id=1769682155]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.225
@@ -73,7 +73,7 @@ text = "00:00:00     0s"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AddButton" type="TextureButton" parent="."]
+[node name="AddButton" type="TextureButton" parent="." unique_id=868714876]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.833
@@ -88,7 +88,7 @@ texture_normal = ExtResource("4_j34iw")
 texture_disabled = ExtResource("5_307le")
 stretch_mode = 0
 
-[node name="SubButton" type="TextureButton" parent="."]
+[node name="SubButton" type="TextureButton" parent="." unique_id=1970262990]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.667
@@ -103,7 +103,7 @@ texture_normal = ExtResource("5_pmkmo")
 texture_disabled = ExtResource("7_85t6y")
 stretch_mode = 0
 
-[node name="SortButton" type="Button" parent="."]
+[node name="SortButton" type="Button" parent="." unique_id=1449559274]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -112,7 +112,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MultiIndicator" type="Label" parent="."]
+[node name="MultiIndicator" type="Label" parent="." unique_id=212073452]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.185

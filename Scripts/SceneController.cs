@@ -62,7 +62,7 @@ public partial class SceneController : Control
 		timer += delta;
 		
 		// Update the main menu and save everything every 5 minutes
-		if (timer > 300.0)
+		if (timer > 120.0)
 		{
 			Save();
 			timer = 0.0;
@@ -638,6 +638,6 @@ public partial class SceneController : Control
 	
 	private void AppClosing()
 	{
-		Save();
+		// Save();
 	}
 }

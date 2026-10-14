@@ -77,7 +77,7 @@ public partial class FinishHunt : Control
 		string date = data.startDate.Split('T')[0];
 		
 		GameInfo gameInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-		if (gameInfo.methodID >= 5) // Shiny charm introduced in Black2/White2
+		if (gameInfo.methodID >= 6 && data.huntGame != "Other") // Shiny charm introduced in Black2/White2
 		{
 			charmButton.Visible = true;
 		}
@@ -88,6 +88,7 @@ public partial class FinishHunt : Control
 		{
 			finishButton.Disabled = true;
 		}
+		routeSelect.Disabled = data.huntGame == "Other";
 		screenVisible = true;
 	}
 	
@@ -144,29 +145,43 @@ public partial class FinishHunt : Control
 		} 
 		else if (optionMode == 2) // Send list of pokemon
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
-			
-			// If the pokemon is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
+			if (data.huntGame == "Other") // Send all pokemon
 			{
-				if (pokemon.Value[gameCode] == true)
+				itemList = new List<string>(dicts.pokemonAvailabilityDict.Keys);
+			}
+			else // Send only pokemon in specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the pokemon is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
 				{
-					itemList.Add(pokemon.Key);
+					if (pokemon.Value[gameCode] == true)
+					{
+						itemList.Add(pokemon.Key);
+					}
 				}
 			}
 		}
 		else if (optionMode == 3) // Send list of methods
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
-			
-			// If the method is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> method in dicts.methodAvailabilityDict)
+			if (data.huntGame == "Other") // Send all methods
 			{
-				if (method.Value[gameCode] == true)
+				itemList = new List<string>(dicts.methodAvailabilityDict.Keys);
+			}
+			else // Send only methods for specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the method is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> method in dicts.methodAvailabilityDict)
 				{
-					itemList.Add(method.Key);
+					if (method.Value[gameCode] == true)
+					{
+						itemList.Add(method.Key);
+					}
 				}
 			}
 		}
@@ -176,15 +191,22 @@ public partial class FinishHunt : Control
 		}
 		else if (optionMode == 5) // Send list of poke balls
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
-			
-			// If the ball is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> ball in dicts.ballAvailabilityDict)
+			if (data.huntGame == "Other") // Send all balls
 			{
-				if (ball.Value[gameCode] == true)
+				itemList = new List<string>(dicts.ballAvailabilityDict.Keys);
+			}
+			else // Send only balls for specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the ball is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> ball in dicts.ballAvailabilityDict)
 				{
-					itemList.Add(ball.Key);
+					if (ball.Value[gameCode] == true)
+					{
+						itemList.Add(ball.Key);
+					}
 				}
 			}
 		}
@@ -214,40 +236,51 @@ public partial class FinishHunt : Control
 		methodSelect.Visible = false;
 		genderSelect.Visible = false;
 		ballSelect.Visible = false;
+		routeSelect.Visible = false;
 		
 		if (optionMode == 1 && data.huntGame != selectedOption)
 		{
 			charmButton.Visible = false;
 			
-			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
-			
-			// Reset method if it isn't available
-			if (data.huntMethod != "" && !dicts.methodAvailabilityDict[data.huntMethod][info.methodID])
+			if (selectedOption == "Other")
 			{
-				data.huntMethod = "";
-			}
-			// Reset pokemon if it isn't available
-			if (data.pokemon.Count > 0 && !dicts.pokemonAvailabilityDict[data.pokemon[0]][info.methodID])
-			{
-				data.pokemon.Clear();
-				finishButton.Disabled = true;
-			}
-			// Reset ball if it isn't available
-			if (altSelections[0] != "" && !dicts.ballAvailabilityDict[altSelections[0]][info.methodID])
-			{
-				altSelections[0] = "";
-			}
-			// Reset route if the game changed codes (or if switching to/from emerald or platinum)
-			GameInfo currentInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the current game
-			if (currentInfo.methodID != info.methodID || selectedOption == "Emerald" || selectedOption == "Platinum"
-				|| data.huntGame == "Emerald" || data.huntGame == "Platinum")
-			{
+				data.huntGame = selectedOption;
 				data.huntRoute = "";
+				routeSelect.Disabled = true;
 			}
-			
+			else
+			{
+				routeSelect.Disabled = false;
+				GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
+				
+				// Reset method if it isn't available
+				if (data.huntMethod != "" && !dicts.methodAvailabilityDict[data.huntMethod][info.methodID])
+				{
+					data.huntMethod = "";
+				}
+				// Reset pokemon if it isn't available
+				if (data.pokemon.Count > 0 && !dicts.pokemonAvailabilityDict[data.pokemon[0]][info.methodID])
+				{
+					data.pokemon.Clear();
+					finishButton.Disabled = true;
+				}
+				// Reset ball if it isn't available
+				if (altSelections[0] != "" && !dicts.ballAvailabilityDict[altSelections[0]][info.methodID])
+				{
+					altSelections[0] = "";
+				}
+				// Reset route if the game changed codes (or if switching to/from emerald or platinum)
+				GameInfo currentInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the current game
+				if (currentInfo.methodID != info.methodID || selectedOption == "Emerald" || selectedOption == "Platinum"
+					|| data.huntGame == "Emerald" || data.huntGame == "Platinum")
+				{
+					data.huntRoute = "";
+				}
+			}
+				
 			data.huntGame = selectedOption;
 			GameInfo gameInfo = GameHuntInformation.gameInfoDict[data.huntGame]; // Get the code for the selected game
-			if (gameInfo.methodID >= 6) // Shiny charm introduced in Black2/White2
+			if (gameInfo.methodID >= 6 && selectedOption != "Other") // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Visible = true;
 			}
@@ -290,6 +323,7 @@ public partial class FinishHunt : Control
 		methodSelect.Visible = true;
 		genderSelect.Visible = true;
 		ballSelect.Visible = true;
+		routeSelect.Visible = true;
 	}
 	
 	private void CloseSelector()

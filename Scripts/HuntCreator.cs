@@ -71,7 +71,7 @@ public partial class HuntCreator : Control
 		selections[2] = data.huntMethod;
 		selections[3] = data.huntRoute;
 		
-		if (selections[2] == "Random Encounter" || selections[2] == "Symbol Encounter" || selections[2] == "Area Respawn")
+		if ((selections[2] == "Random Encounter" || selections[2] == "Symbol Encounter" || selections[2] == "Area Respawn") && selections[0] != "Other")
 		{
 			routeSelect.Disabled = false;
 		}
@@ -80,7 +80,7 @@ public partial class HuntCreator : Control
 		dicts.SetRoutes(selections[0]); // Initialize the dictionary of routes for the selected game
 		
 		GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
-		if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
+		if (info.methodID >= 6 && selections[0] != "Other") // Shiny charm introduced in Black2/White2
 		{
 			charmButton.Disabled = false;
 			charmButton.ButtonPressed = data.charm;
@@ -149,32 +149,48 @@ public partial class HuntCreator : Control
 		} 
 		else if (optionMode == 2) // Send list of pokemon
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
 			multiSelect = true;
-			
-			// If the pokemon is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
+			if (selections[0] == "Other") // Send all pokemon
 			{
-				if (pokemon.Value[gameCode] == true)
+				itemList = new List<string>(dicts.pokemonAvailabilityDict.Keys);
+			}
+			else // Send only pokemon in specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the pokemon is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> pokemon in dicts.pokemonAvailabilityDict)
 				{
-					itemList.Add(pokemon.Key);
+					if (pokemon.Value[gameCode] == true)
+					{
+						itemList.Add(pokemon.Key);
+					}
 				}
 			}
+			
 		}
 		else if (optionMode == 3) // Send list of methods
 		{
-			GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
-			int gameCode = info.methodID; // Get the associated folder name for the current game
-			
-			// If the method is available in the selected game, add it to itemList
-			foreach(KeyValuePair<string, bool[]> method in dicts.methodAvailabilityDict)
+			if (selections[0] == "Other") // Send all methods
 			{
-				if (method.Value[gameCode] == true)
+				itemList = new List<string>(dicts.methodAvailabilityDict.Keys);
+			}
+			else // Send only methods for specific game
+			{
+				GameInfo info = GameHuntInformation.gameInfoDict[selections[0]]; // Get the code for the selected game
+				int gameCode = info.methodID; // Get the associated folder name for the current game
+				
+				// If the method is available in the selected game, add it to itemList
+				foreach(KeyValuePair<string, bool[]> method in dicts.methodAvailabilityDict)
 				{
-					itemList.Add(method.Key);
+					if (method.Value[gameCode] == true)
+					{
+						itemList.Add(method.Key);
+					}
 				}
 			}
+			
 		}
 		else if (optionMode == 4) // Send list of routes
 		{
@@ -215,6 +231,7 @@ public partial class HuntCreator : Control
 			charmButton.Disabled = true;
 			pokemonSelect.Disabled = false;
 			methodSelect.Disabled = false;
+			routeSelect.Disabled = true;
 			
 			bonusToggle.Visible = false;
 			bonusToggle.ButtonPressed = false;
@@ -222,47 +239,55 @@ public partial class HuntCreator : Control
 			bonusAmount.Text = "0";
 			bonusLabel.Visible = false;
 			
-			dicts.SetRoutes(selectedOption); // Initialize the dictionary of routes for the selected game
 			GameInfo info = GameHuntInformation.gameInfoDict[selectedOption]; // Get the code for the selected game
-			
-			if (selections[2] != "" && !dicts.methodAvailabilityDict[selections[2]][info.methodID])
+			if (selectedOption == "Other")
 			{
-				selections[2] = "";
-				if (pokemonSelected.Count > 1)
+				selections[3] = "";
+			}
+			else
+			{
+				routeSelect.Disabled = false;
+				dicts.SetRoutes(selectedOption); // Initialize the dictionary of routes for the selected game
+				
+				if (selections[2] != "" && !dicts.methodAvailabilityDict[selections[2]][info.methodID])
 				{
-					pokemonSelected.Clear();
+					selections[2] = "";
+					if (pokemonSelected.Count > 1)
+					{
+						pokemonSelected.Clear();
+						selections[1] = "";
+					}
+				}
+				
+				if (selections[3] != "" && !dicts.pokemonRouteAvailabilityDict.ContainsKey(selections[3]))
+				{
+					selections[3] = "";
+				}
+				else if (selections[3] != "")
+				{
+					pokemonSelected = new List<string>(dicts.pokemonRouteAvailabilityDict[selections[3]]);
+				}
+				
+				for (int i = pokemonSelected.Count - 1; i >= 0; i--)
+				{
+					// Check if each pokemon is available in the new game
+					if (!dicts.pokemonAvailabilityDict[pokemonSelected[i]][info.methodID])
+					{
+						// Remove the pokemon if it is not available
+						pokemonSelected.Remove(pokemonSelected[i]);
+					}
+				}
+				if (pokemonSelected.Count == 1)
+				{
+					selections[1] = pokemonSelected[0];
+				}
+				else if (pokemonSelected.Count == 0)
+				{
 					selections[1] = "";
 				}
 			}
 			
-			if (selections[3] != "" && !dicts.pokemonRouteAvailabilityDict.ContainsKey(selections[3]))
-			{
-				selections[3] = "";
-			}
-			else if (selections[3] != "")
-			{
-				pokemonSelected = new List<string>(dicts.pokemonRouteAvailabilityDict[selections[3]]);
-			}
-			
-			for (int i = pokemonSelected.Count - 1; i >= 0; i--)
-			{
-				// Check if each pokemon is available in the new game
-				if (!dicts.pokemonAvailabilityDict[pokemonSelected[i]][info.methodID])
-				{
-					// Remove the pokemon if it is not available
-					pokemonSelected.Remove(pokemonSelected[i]);
-				}
-			}
-			if (pokemonSelected.Count == 1)
-			{
-				selections[1] = pokemonSelected[0];
-			}
-			else if (pokemonSelected.Count == 0)
-			{
-				selections[1] = "";
-			}
-			
-			if (info.methodID >= 6) // Shiny charm introduced in Black2/White2
+			if (info.methodID >= 6 && selectedOption != "Other") // Shiny charm introduced in Black2/White2
 			{
 				charmButton.Disabled = false;
 			}
@@ -270,6 +295,7 @@ public partial class HuntCreator : Control
 			{
 				charmButton.ButtonPressed = false;
 			}
+			
 		} 
 		else if (optionMode == 2)
 		{
@@ -284,7 +310,7 @@ public partial class HuntCreator : Control
 				selections[1] = "";
 			}
 			
-			if (selectedOption == "Random Encounter" || selectedOption == "Symbol Encounter" || selectedOption == "Area Respawn")
+			if ((selectedOption == "Random Encounter" || selectedOption == "Symbol Encounter" || selectedOption == "Area Respawn") && selections[0] != "Other")
 			{
 				routeSelect.Disabled = false;
 			}

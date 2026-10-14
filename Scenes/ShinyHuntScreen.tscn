@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ugxewxi8b38p"]
+[gd_scene format=3 uid="uid://ugxewxi8b38p"]
 
 [ext_resource type="Script" uid="uid://bmthsl75yon5c" path="res://Scripts/ShinyHuntScreen.cs" id="1_3hrlr"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="2_dwvgu"]
@@ -18,7 +18,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_impdu"]
 
-[node name="ShinyHuntScreen" type="Control"]
+[node name="ShinyHuntScreen" type="Control" unique_id=181197305]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,17 +27,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3hrlr")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1545596844]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
-[node name="TickPlayer" type="AudioStreamPlayer" parent="."]
+[node name="TickPlayer" type="AudioStreamPlayer" parent="." unique_id=75907905]
 stream = ExtResource("2_i22no")
 
-[node name="IncrementCounterButton" type="Button" parent="."]
+[node name="IncrementCounterButton" type="Button" parent="." unique_id=2004390911]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -48,71 +48,71 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_impdu")
-theme_override_styles/hover = ExtResource("2_impdu")
 theme_override_styles/pressed = ExtResource("2_impdu")
+theme_override_styles/hover = ExtResource("2_impdu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_impdu")
 
-[node name="Sprite1" type="Sprite2D" parent="."]
+[node name="Sprite1" type="Sprite2D" parent="." unique_id=2025368129]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite2" type="Sprite2D" parent="."]
+[node name="Sprite2" type="Sprite2D" parent="." unique_id=872054409]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite3" type="Sprite2D" parent="."]
+[node name="Sprite3" type="Sprite2D" parent="." unique_id=1060585667]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite4" type="Sprite2D" parent="."]
+[node name="Sprite4" type="Sprite2D" parent="." unique_id=1364279483]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite5" type="Sprite2D" parent="."]
+[node name="Sprite5" type="Sprite2D" parent="." unique_id=272057716]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite6" type="Sprite2D" parent="."]
+[node name="Sprite6" type="Sprite2D" parent="." unique_id=294377230]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite7" type="Sprite2D" parent="."]
+[node name="Sprite7" type="Sprite2D" parent="." unique_id=1660418503]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite8" type="Sprite2D" parent="."]
+[node name="Sprite8" type="Sprite2D" parent="." unique_id=855251134]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite9" type="Sprite2D" parent="."]
+[node name="Sprite9" type="Sprite2D" parent="." unique_id=1385166511]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite10" type="Sprite2D" parent="."]
+[node name="Sprite10" type="Sprite2D" parent="." unique_id=1286182878]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite11" type="Sprite2D" parent="."]
+[node name="Sprite11" type="Sprite2D" parent="." unique_id=721068269]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite12" type="Sprite2D" parent="."]
+[node name="Sprite12" type="Sprite2D" parent="." unique_id=1944503037]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite13" type="Sprite2D" parent="."]
+[node name="Sprite13" type="Sprite2D" parent="." unique_id=1574286395]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite14" type="Sprite2D" parent="."]
+[node name="Sprite14" type="Sprite2D" parent="." unique_id=1066766902]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="Sprite15" type="Sprite2D" parent="."]
+[node name="Sprite15" type="Sprite2D" parent="." unique_id=1181864951]
 position = Vector2(240, 330)
 scale = Vector2(2.5, 2.5)
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="TextureButton" parent="." unique_id=692216699]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.14
@@ -125,7 +125,7 @@ texture_normal = ExtResource("2_dwvgu")
 texture_disabled = ExtResource("4_q83cm")
 stretch_mode = 0
 
-[node name="ShinyButton" type="TextureButton" parent="."]
+[node name="ShinyButton" type="TextureButton" parent="." unique_id=1183135683]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.86
@@ -138,7 +138,7 @@ texture_normal = ExtResource("3_hjc35")
 texture_disabled = ExtResource("6_f30yi")
 stretch_mode = 0
 
-[node name="SettingsButton" type="TextureButton" parent="."]
+[node name="SettingsButton" type="TextureButton" parent="." unique_id=1137327609]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.379
@@ -151,7 +151,7 @@ texture_normal = ExtResource("4_vw1h5")
 texture_disabled = ExtResource("8_5gv3s")
 stretch_mode = 0
 
-[node name="SubButton" type="TextureButton" parent="."]
+[node name="SubButton" type="TextureButton" parent="." unique_id=523600294]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.621
@@ -164,7 +164,7 @@ texture_normal = ExtResource("5_su54o")
 texture_disabled = ExtResource("10_i22no")
 stretch_mode = 0
 
-[node name="ResetButton" type="TextureButton" parent="."]
+[node name="ResetButton" type="TextureButton" parent="." unique_id=556100578]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -178,7 +178,7 @@ texture_normal = ExtResource("13_5gv3s")
 texture_disabled = ExtResource("14_i22no")
 stretch_mode = 0
 
-[node name="InfoButton" type="TextureButton" parent="."]
+[node name="InfoButton" type="TextureButton" parent="." unique_id=1673915262]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -194,7 +194,7 @@ texture_normal = ExtResource("13_i22no")
 texture_disabled = ExtResource("14_hdh7k")
 stretch_mode = 0
 
-[node name="Count" type="Label" parent="."]
+[node name="Count" type="Label" parent="." unique_id=857965827]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -206,7 +206,7 @@ offset_bottom = 208.0
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 
-[node name="HuntInfo" type="Label" parent="."]
+[node name="HuntInfo" type="Label" parent="." unique_id=45894775]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0

@@ -7,7 +7,7 @@ public partial class ShinyHuntScreen : Control
 	public HuntData data = new HuntData();
 	AudioStreamPlayer tickPlayer;
 	Label counter, info;
-	TextureButton resetButton;
+	TextureButton resetButton, infoButton;
 	List<Sprite2D> sprites;
 	double secondTimer = 0; // Tracks how much time has passed up to 1 second
 	int resetTimer = 0; // Times how long each reset takes
@@ -35,6 +35,7 @@ public partial class ShinyHuntScreen : Control
 		counter = GetNode<Label>("Count");
 		info = GetNode<Label>("HuntInfo");
 		resetButton = GetNode<TextureButton>("ResetButton");
+		infoButton = GetNode<TextureButton>("InfoButton");
 		
 		sprites = new List<Sprite2D>(15); // Up to 15 sprites can be supported for multi-hunts
 		for (int i = 1; i <= 15; i++)
@@ -64,12 +65,11 @@ public partial class ShinyHuntScreen : Control
 	
 	public void SetColors()
 	{
-		TextureButton backButton, shinyButton, settingsButton, subButton, infoButton;
+		TextureButton backButton, shinyButton, settingsButton, subButton;
 		backButton = GetNode<TextureButton>("BackButton");
 		shinyButton = GetNode<TextureButton>("ShinyButton");
 		settingsButton = GetNode<TextureButton>("SettingsButton");
 		subButton = GetNode<TextureButton>("SubButton");
-		infoButton = GetNode<TextureButton>("InfoButton");
 		
 		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/back.png");
 		shinyButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/shine.png");
@@ -101,6 +101,9 @@ public partial class ShinyHuntScreen : Control
 		resetTimer = 0;
 		secondTimer = 0;
 		UpdateInfoLabel();
+		
+		// Hide infoButton if game is other
+		infoButton.Visible = hunt.huntGame != "Other";
 		
 		activeHunt = true;
 	}

@@ -30,7 +30,8 @@ public class GameHuntInformation
 		new GameInfo(4, "HS"), new GameInfo(5, "BW"), new GameInfo(6, "BW"), new GameInfo(7, "BankModels"),
 		new GameInfo(8, "BankModels"), new GameInfo(9, "BankModels"), new GameInfo(10, "BankModels"),
 		new GameInfo(11, "BankModels"), new GameInfo(12, "BankModels"), new GameInfo(13, "BankModels"),
-		new GameInfo(14, "BankModels"), new GameInfo(15, "BankModels"), new GameInfo(16, "BankModels") };
+		new GameInfo(14, "BankModels"), new GameInfo(15, "BankModels"), new GameInfo(16, "BankModels"),
+		new GameInfo(17, "BankModels") };
 		
 	// This dictionary maps the names of pokemon games to corresponding information
 	// The int corresponds with an index to be used in methodAvailabilityDict
@@ -52,7 +53,8 @@ public class GameHuntInformation
 		{"Brilliant Diamond", infoStorage[13]}, {"Shining Pearl", infoStorage[13]},
 		{"Legends Arceus", infoStorage[14]},
 		{"Scarlet", infoStorage[15]}, {"Violet", infoStorage[15]},
-		{"Legends Z-A", infoStorage[16]} };
+		{"Legends Z-A", infoStorage[16]},
+		{"Other", infoStorage[17]} };
 }
 
 public class GlobalSettings
@@ -102,6 +104,10 @@ public partial class AvailabilityInformation : Node
 	
 	public void SetRoutes(string game)
 	{
+		if (game == "Other")
+		{
+			return;
+		}
 		string path = "res://Jsons/Games/";
 		
 		// Load the json for the specified game

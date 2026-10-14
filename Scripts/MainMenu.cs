@@ -597,7 +597,7 @@ public partial class MainMenu : Control
 	private void SetButtonTextures(string baseName)
 	{
 		newHuntButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/{baseName}.png");
-		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/Buttons/disabled/{baseName}_disabled.png");
+		newHuntButton.TextureDisabled = (Texture2D)GD.Load($"res://Assets/Buttons/Disabled/{baseName}_disabled.png");
 	}
 	
 	private void SortButtonPressed()

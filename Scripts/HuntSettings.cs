@@ -76,9 +76,9 @@ public partial class HuntSettings : Control
 		
 		shiny.ButtonPressed = settings.showShiny;
 		regular.ButtonPressed = settings.showRegular;
-		odds.ButtonPressed = settings.showOdds;
 		huntTimer.ButtonPressed = settings.showFullTimer;
 		encounterTimer.ButtonPressed = settings.showMiniTimer;
+		SetOddsButton();
 		SetComboButton();
 		
 		if (settings.pokemon.Count > 1)
@@ -90,6 +90,20 @@ public partial class HuntSettings : Control
 			regular.Disabled = false;
 		}
 		screenVisible = true;
+	}
+	
+	private void SetOddsButton()
+	{
+		if (settings.huntGame == "Other")
+		{
+			odds.Disabled = true;
+			odds.ButtonPressed = false;
+		}
+		else
+		{
+			combo.Disabled = false;
+			odds.ButtonPressed = settings.showOdds;
+		}
 	}
 	
 	private void SetComboButton()
@@ -131,6 +145,7 @@ public partial class HuntSettings : Control
 			settings.huntGame = gameName;
 			settings.huntMethod = method;
 			settings.pokemon = pokemon;
+			SetOddsButton();
 			SetComboButton();
 		}
 		
