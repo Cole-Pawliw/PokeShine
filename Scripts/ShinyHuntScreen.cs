@@ -273,6 +273,11 @@ public partial class ShinyHuntScreen : Control
 		int shinyRolls = (data.charm) ? 3 : 1; // Used to track multiple factors affecting odds
 		int chain; // Used in some cases to calculate odds with a formula
 		
+		if (data.huntGame == "Other")
+		{
+			return 0; // Don't show odds
+		}
+		
 		if (data.huntGame == "Legends Arceus" && data.charm)
 		{
 			shinyRolls++; // PLA gives one extra shiny roll
