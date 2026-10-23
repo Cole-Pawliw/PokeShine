@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://r7si871pi6oj"]
+[gd_scene format=3 uid="uid://r7si871pi6oj"]
 
 [ext_resource type="Script" uid="uid://bmkd40tj8qcb7" path="res://Scripts/FinishedStats.cs" id="1_071mg"]
 [ext_resource type="Texture2D" uid="uid://yul66a8fknmh" path="res://Assets/Buttons/1/back.png" id="3_t1ssc"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://5755nnpynjwe" path="res://Sprites/DP/Shiny/Abomasnow.png" id="4_eoea3"]
 [ext_resource type="PackedScene" uid="uid://c1fphqg4nagq8" path="res://Scenes/Verify.tscn" id="5_l1512"]
 
-[node name="FinishedStats" type="Control"]
+[node name="FinishedStats" type="Control" unique_id=1871833867]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,22 +15,48 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_071mg")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=144721919]
+custom_minimum_size = Vector2(480, 720)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Background" type="ColorRect" parent="ScrollContainer"]
-custom_minimum_size = Vector2(480, 720)
-layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0.176471, 0.180392, 0.34902, 1)
 
-[node name="NameLabel" type="Label" parent="ScrollContainer/Background"]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=368698448]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.39000002
+anchor_right = 0.5
+anchor_bottom = 0.87600005
+offset_left = -220.0
+offset_top = 0.19998169
+offset_right = 220.0
+offset_bottom = 0.27996826
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StatsLabel" type="Label" parent="ScrollContainer" unique_id=2116636837]
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Started on:
+Ended on:
+Hunted in:
+Found at:
+Method:
+Gender:
+Ball:
+Time spent:
+Notes:"
+autowrap_mode = 2
+
+[node name="NameLabel" type="Label" parent="." unique_id=1147234276]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -44,28 +70,7 @@ offset_bottom = 87.72
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
-[node name="StatsLabel" type="Label" parent="ScrollContainer/Background"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.619
-anchor_right = 0.5
-anchor_bottom = 0.619
-offset_left = -191.0
-offset_top = -150.68
-offset_right = -50.0
-offset_bottom = 115.32
-theme_override_font_sizes/font_size = 25
-text = "Started on:
-Ended on:
-Hunted in:
-Found at:
-Method:
-Gender:
-Ball:
-Time spent:"
-
-[node name="CountLabel" type="Label" parent="ScrollContainer/Background"]
+[node name="CountLabel" type="Label" parent="." unique_id=2111445714]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -73,14 +78,14 @@ anchor_top = 0.342
 anchor_right = 0.5
 anchor_bottom = 0.342
 offset_left = -62.0
-offset_top = -29.24
+offset_top = -29.240005
 offset_right = 63.0
-offset_bottom = 28.76
+offset_bottom = 28.759995
 theme_override_font_sizes/font_size = 40
 text = "XXXXX"
 horizontal_alignment = 1
 
-[node name="BackButton" type="TextureButton" parent="ScrollContainer/Background"]
+[node name="BackButton" type="TextureButton" parent="." unique_id=1603202300]
 layout_mode = 0
 offset_left = 19.0
 offset_top = 12.0
@@ -90,21 +95,21 @@ texture_normal = ExtResource("3_t1ssc")
 texture_disabled = ExtResource("4_eh0i3")
 stretch_mode = 0
 
-[node name="Panel" type="Panel" parent="ScrollContainer/Background"]
+[node name="Panel" type="Panel" parent="." unique_id=467530503]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.174
 anchor_right = 0.5
 anchor_bottom = 0.174
-offset_top = -0.280006
-offset_bottom = -0.280006
+offset_top = -0.2800064
+offset_bottom = -0.2800064
 
-[node name="ShinySprite" type="Sprite2D" parent="ScrollContainer/Background/Panel"]
+[node name="ShinySprite" type="Sprite2D" parent="Panel" unique_id=569308524]
 scale = Vector2(1.55, 1.55)
 texture = ExtResource("4_eoea3")
 
-[node name="EditButton" type="Button" parent="ScrollContainer/Background"]
+[node name="EditButton" type="Button" parent="." unique_id=1846629592]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.339
@@ -117,7 +122,7 @@ offset_right = 37.28
 offset_bottom = -20.0
 text = "Edit"
 
-[node name="DeleteButton" type="Button" parent="ScrollContainer/Background"]
+[node name="DeleteButton" type="Button" parent="." unique_id=1931820850]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.661
@@ -130,12 +135,12 @@ offset_right = 37.72
 offset_bottom = -20.0
 text = "Delete"
 
-[node name="Verify" parent="." instance=ExtResource("5_l1512")]
+[node name="Verify" parent="." unique_id=1492928533 instance=ExtResource("5_l1512")]
 visible = false
 layout_mode = 1
 
-[connection signal="pressed" from="ScrollContainer/Background/BackButton" to="." method="BackToMenu"]
-[connection signal="pressed" from="ScrollContainer/Background/EditButton" to="." method="EditHunt"]
-[connection signal="pressed" from="ScrollContainer/Background/DeleteButton" to="." method="DeleteButtonPressed"]
+[connection signal="pressed" from="BackButton" to="." method="BackToMenu"]
+[connection signal="pressed" from="EditButton" to="." method="EditHunt"]
+[connection signal="pressed" from="DeleteButton" to="." method="DeleteButtonPressed"]
 [connection signal="Cancel" from="Verify" to="." method="VerifyCancelPressed"]
 [connection signal="Confirm" from="Verify" to="." method="VerifyDeletePressed"]

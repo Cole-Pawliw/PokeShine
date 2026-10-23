@@ -240,7 +240,7 @@ public partial class SceneController : Control
 		CapturedData huntToAdd = new CapturedData(s.startDate.date, s.endDate.date, s.selections[0], s.selections[1],
 												s.selections[2], s.selections[3], s.selections[4], s.selections[5],
 												s.nickname.Text, s.charmButton.ButtonPressed,
-												(int)s.counter.Value, s.timer.totalTime);
+												(int)s.counter.Value, s.timer.totalTime, s.notes.Text);
 		
 		// Fill empty values
 		string DT = Time.GetDatetimeStringFromSystem();
@@ -261,10 +261,10 @@ public partial class SceneController : Control
 		CloseCapturedCreator();
 	}
 	
-	private void FinishHunt(string nickname, string ball, string gender)
+	private void FinishHunt(string nickname, string notes, string ball, string gender)
 	{
 		string endDT = Time.GetDatetimeStringFromSystem().Split('T')[0];
-		CapturedData finishedHunt = new CapturedData(huntScreen.data, endDT, nickname, ball, gender);
+		CapturedData finishedHunt = new CapturedData(huntScreen.data, endDT, nickname, ball, gender, notes);
 		mainScreen.RemoveHunt(huntScreen.data);
 		mainScreen.AddCaptured(finishedHunt);
 		mainScreen.Visible = true;

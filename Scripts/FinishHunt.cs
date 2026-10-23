@@ -10,6 +10,7 @@ public partial class FinishHunt : Control
 	CheckBox charmButton;
 	Label info;
 	LineEdit nickname;
+	TextEdit notes;
 	
 	AvailabilityInformation dicts;
 	
@@ -21,7 +22,7 @@ public partial class FinishHunt : Control
 	[Signal]
 	public delegate void BackButtonPressedEventHandler();
 	[Signal]
-	public delegate void FinishButtonPressedEventHandler(string nickname, string ball, string gender);
+	public delegate void FinishButtonPressedEventHandler(string nickname, string notes, string ball, string gender);
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -35,6 +36,7 @@ public partial class FinishHunt : Control
 		charmButton = GetNode<CheckBox>("CharmButton");
 		info = GetNode<Label>("Info");
 		nickname = GetNode<LineEdit>("Nickname");
+		notes = GetNode<TextEdit>("Notes");
 		finishButton = GetNode<Button>("FinishButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
@@ -377,7 +379,7 @@ public partial class FinishHunt : Control
 		
 		screenVisible = false;
 		data.isComplete = true;
-		EmitSignal("FinishButtonPressed", nickname.Text, altSelections[0], altSelections[1]);
+		EmitSignal("FinishButtonPressed", nickname.Text, notes.Text, altSelections[0], altSelections[1]);
 	}
 	
 	public void Cleanup()

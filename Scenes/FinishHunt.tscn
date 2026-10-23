@@ -176,6 +176,19 @@ offset_right = 62.04
 offset_bottom = 17.52
 placeholder_text = "Nickname:"
 
+[node name="Notes" type="TextEdit" parent="." unique_id=108209721]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.698
+anchor_top = 0.434
+anchor_right = 0.698
+anchor_bottom = 0.434
+offset_left = -55.96
+offset_top = -17.480011
+offset_right = 62.04001
+offset_bottom = 17.519989
+placeholder_text = "Notes:"
+
 [connection signal="pressed" from="PokemonSelect" to="." method="PokemonSelectPressed"]
 [connection signal="pressed" from="CharmButton" to="." method="CharmButtonToggled"]
 [connection signal="pressed" from="BackButton" to="." method="BackToHunt"]

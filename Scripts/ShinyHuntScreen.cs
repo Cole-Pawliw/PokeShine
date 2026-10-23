@@ -24,7 +24,7 @@ public partial class ShinyHuntScreen : Control
 	[Signal]
 	public delegate void HuntChangedEventHandler();
 	[Signal]
-	public delegate void FinishHuntEventHandler(string nickname, string ball, string gender);
+	public delegate void FinishHuntEventHandler(string nickname, string notes, string ball, string gender);
 	[Signal]
 	public delegate void RequestSaveEventHandler();
 	
@@ -611,7 +611,7 @@ public partial class ShinyHuntScreen : Control
 		activeHunt = true;
 	}
 	
-	private void HuntCompleted(string nickname, string ball, string gender)
+	private void HuntCompleted(string nickname, string notes, string ball, string gender)
 	{
 		FinishHunt finishMenu = GetNode<FinishHunt>("FinishHunt");
 		data = finishMenu.data;
@@ -619,7 +619,7 @@ public partial class ShinyHuntScreen : Control
 		finishMenu.Cleanup();
 		ClearSprites();
 		activeHunt = false;
-		EmitSignal("FinishHunt", nickname, ball, gender);
+		EmitSignal("FinishHunt", nickname, notes, ball, gender);
 	}
 	
 	private void DeleteHunt()

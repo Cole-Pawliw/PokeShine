@@ -21,10 +21,10 @@ public partial class FinishedStats : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		statsLabel = GetNode<Label>("ScrollContainer/Background/StatsLabel");
-		countLabel = GetNode<Label>("ScrollContainer/Background/CountLabel");
-		nameLabel = GetNode<Label>("ScrollContainer/Background/NameLabel");
-		sprite = GetNode<Sprite2D>("ScrollContainer/Background/Panel/ShinySprite");
+		statsLabel = GetNode<Label>("ScrollContainer/StatsLabel");
+		countLabel = GetNode<Label>("CountLabel");
+		nameLabel = GetNode<Label>("NameLabel");
+		sprite = GetNode<Sprite2D>("Panel/ShinySprite");
 		verify = GetNode<Control>("Verify");
 		
 		SetColors();
@@ -33,10 +33,10 @@ public partial class FinishedStats : Control
 	public void SetColors()
 	{
 		TextureButton backButton;
-		backButton = GetNode<TextureButton>("ScrollContainer/Background/BackButton");
+		backButton = GetNode<TextureButton>("BackButton");
 		backButton.TextureNormal = (Texture2D)GD.Load($"res://Assets/Buttons/{GlobalSettings.colorMode}/back.png");
 		
-		ColorRect bg = GetNode<ColorRect>("ScrollContainer/Background");
+		ColorRect bg = GetNode<ColorRect>("Background");
 		bg.Color = new Color(GlobalSettings.backgrounds[GlobalSettings.colorMode - 1]);
 	}
 	
@@ -128,6 +128,11 @@ public partial class FinishedStats : Control
 		string timerInHourFormat = $"{hours:00}:{minutes:00}:{seconds:00}"; // :00 pads 2 zeros to everything
 		stats += $"Time spent: {timerInHourFormat}"; // Time spent
 		
+		if (data.notes != "")
+		{
+			stats += $"\n\nNotes: {data.notes}"; // Notes
+		}
+		
 		statsLabel.Text = stats;
 	}
 	
@@ -158,6 +163,7 @@ public partial class FinishedStats : Control
 		data.count = (int)startHuntScreen.counter.Value;
 		data.timeSpent = startHuntScreen.timer.totalTime;
 		data.charm = startHuntScreen.charmButton.ButtonPressed;
+		data.notes = startHuntScreen.notes.Text;
 		
 		SetSprite();
 		SetName();

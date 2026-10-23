@@ -11,6 +11,7 @@ public partial class CapturedCreator : Control
 	public TimeInputField timer;
 	public NumberInputField counter;
 	public LineEdit nickname;
+	public TextEdit notes;
 	Button addButton;
 	
 	AvailabilityInformation dicts;
@@ -39,6 +40,7 @@ public partial class CapturedCreator : Control
 		nickname = GetNode<LineEdit>("Nickname");
 		counter = GetNode<NumberInputField>("CounterValue");
 		timer = GetNode<TimeInputField>("TimerValue");
+		notes = GetNode<TextEdit>("Notes");
 		addButton = GetNode<Button>("AddButton");
 		
 		dicts = GetNode<AvailabilityInformation>("AvailabilityInformation");
@@ -92,6 +94,7 @@ public partial class CapturedCreator : Control
 		nickname.Text = data.nickname;
 		counter.Text = $"{data.count}";
 		timer.UpdateTime(data.timeSpent);
+		notes.Text = data.notes;
 		
 		startDate.UpdateDate(data.startDate);
 		endDate.UpdateDate(data.endDate);

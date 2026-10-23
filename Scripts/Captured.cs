@@ -24,7 +24,7 @@ public class CapturedData
 	}
 	public CapturedData(string start, string end, string game, string pokemonName,
 						string method, string gender, string ball, string route,
-						string name, bool shinyCharm, int c, int time)
+						string name, bool shinyCharm, int c, int time, string noteInput)
 	{
 		startDate = start;
 		endDate = end;
@@ -38,6 +38,7 @@ public class CapturedData
 		charm = shinyCharm;
 		count = c;
 		timeSpent = time;
+		notes = noteInput;
 		huntID = ++instances;
 	}
 	public CapturedData(CapturedData src)
@@ -57,11 +58,12 @@ public class CapturedData
 		charm = src.charm;
 		count = src.count;
 		timeSpent = src.timeSpent;
+		notes = src.notes;
 		
 		huntIndex = src.huntIndex;
 		huntID = src.huntID;
 	}
-	public CapturedData(HuntData src, string date, string name, string ball, string gender)
+	public CapturedData(HuntData src, string date, string name, string ball, string gender, string noteInput)
 	{
 		startDate = src.startDate;
 		endDate = date;
@@ -78,6 +80,7 @@ public class CapturedData
 		charm = src.charm;
 		count = src.count;
 		timeSpent = src.timeSpent;
+		notes = noteInput;
 		
 		huntID = ++instances;
 	}
@@ -190,6 +193,7 @@ public class CapturedData
 	public bool charm { get; set; } = false; // An item that increases shiny odds
 	public int count { get; set; } = 0; // The current number of encounters/resets for the pokemon
 	public int timeSpent { get; set; } = 0; // The number of seconds spent hunting
+	public string notes { get; set; } = ""; // Custom notes for the user to set
 	
 	public int huntIndex { get; set; } // An index used for sorting the hunts, indexing is separate for active and completed hunts
 	public int huntID { get; private set; } // Unique identifier for each HuntData
